@@ -521,10 +521,11 @@ MonoBehaviour:
   edges:
   - {fileID: 172823325583783767, guid: c8a52c78decce21409225aa68695492b, type: 3}
   - {fileID: 8684701656299746620, guid: 355eafa7a8ba0924596fad1737b40cff, type: 3}
-  mazeColumns: 10
-  mazeRows: 10
-  mazeInnerColumns: 4
-  mazeInnerRows: 4
+  mazeFromFile: 1
+  mazeColumns: 15
+  mazeRows: 15
+  mazeInnerColumns: 5
+  mazeInnerRows: 5
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class GameController : MonoBehaviour
 {
@@ -9,10 +10,12 @@ public class GameController : MonoBehaviour
     public GameObject[] corners;
     public GameObject[] edges;
 
-    public int mazeColumns;
-    public int mazeRows;
-    public int mazeInnerColumns;
-    public int mazeInnerRows;
+    public bool mazeFromFile = false;
+
+    public int mazeColumns = 15;
+    public int mazeRows = 15;
+    public int mazeInnerColumns = 5;
+    public int mazeInnerRows = 5;
 
     private int[,] m_Maze;
 
@@ -23,15 +26,39 @@ public class GameController : MonoBehaviour
         // simple setting
         m_MazeGenerator.setRatio(.75f);
 
-        m_Maze = m_MazeGenerator.FromDimensions(mazeColumns, mazeRows, mazeInnerColumns, mazeInnerRows);
-
-        // make two entrances
-        m_Maze[0, 1] = 0;
-        m_Maze[2 * mazeColumns, 2 * mazeRows - 1] = 0;
-
-        for(int i = 0; i < 2 * mazeColumns + 1; i++)
+        if (mazeFromFile)
         {
-            for(int j = 0; j < 2 * mazeRows + 1; j++)
+            string path = "Assets/Resources/Map.txt";
+
+            StreamReader reader = new StreamReader(path);
+            string line;
+            int cols = System.Convert.ToInt32(reader.ReadLine());
+            int rows = System.Convert.ToInt32(reader.ReadLine());
+            m_Maze = new int[2 * cols - 1, 2 * rows - 1];
+            for(int i = 0; i < 2 * cols - 1; i++)
+            {
+                line = reader.ReadLine();
+                for(int j = 0; j < 2 * rows - 1; j++)
+                {
+                    m_Maze[i, j] = line[j * 2] == '#' ? 1 : 0;
+                }
+            }
+            reader.Close();
+        }
+        else
+        {
+            m_Maze = m_MazeGenerator.FromDimensions(mazeColumns, mazeRows, mazeInnerColumns, mazeInnerRows);
+            // make two entrances
+            m_Maze[0, 1] = 0;
+            m_Maze[2 * mazeColumns, 2 * mazeRows - 1] = 0;
+
+            Debug.Log(m_MazeGenerator.ConvertToString(m_Maze));
+        }
+
+
+        for(int i = 0; i < m_Maze.GetLength(0); i++)
+        {
+            for(int j = 0; j < m_Maze.GetLength(1); j++)
             {
                 if (m_Maze[i, j] == 0) continue;
                 int type = i % 2 * 2 + j % 2;
