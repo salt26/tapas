@@ -34,11 +34,11 @@ public class GameController : MonoBehaviour
             string line;
             int cols = System.Convert.ToInt32(reader.ReadLine());
             int rows = System.Convert.ToInt32(reader.ReadLine());
-            m_Maze = new int[2 * cols - 1, 2 * rows - 1];
-            for(int i = 0; i < 2 * cols - 1; i++)
+            m_Maze = new int[2 * cols + 1, 2 * rows + 1];
+            for(int i = 0; i < 2 * cols + 1; i++)
             {
                 line = reader.ReadLine();
-                for(int j = 0; j < 2 * rows - 1; j++)
+                for(int j = 0; j < 2 * rows + 1; j++)
                 {
                     m_Maze[i, j] = line[j * 2] == '#' ? 1 : 0;
                 }
