@@ -10,22 +10,26 @@ public class GameController : MonoBehaviour
     public GameObject[] corners;
     public GameObject[] edges;
 
-    public bool mazeFromFile = false;
+    // public bool mazeFromFile = false;
+    // Currently, only procedural maps are allowed
 
-    public int mazeColumns = 15;
-    public int mazeRows = 15;
-    public int mazeInnerColumns = 5;
-    public int mazeInnerRows = 5;
+    public int columns = 15;
+    public int rows = 15;
+    public int innerColumns = 5;
+    public int innerRows = 5;
+    public int innerMaximumGates = 5;
+    public float growFactor = 0.75f;
+    public int minimumGates = 8;
+    public int minimumDepth = 4;
 
-    private int[,] m_Maze;
+    private int[,] maze;
 
     void Start()
     {
         Cursor.visible = false;
-        MazeGenerator m_MazeGenerator = new MazeGenerator();
-        // simple setting
-        m_MazeGenerator.setRatio(.75f);
+        MazeGenerator mazeGenerator = new MazeGenerator();
 
+        /*
         if (mazeFromFile)
         {
             string path = "Assets/Resources/Map.txt";
@@ -34,53 +38,64 @@ public class GameController : MonoBehaviour
             string line;
             int cols = System.Convert.ToInt32(reader.ReadLine());
             int rows = System.Convert.ToInt32(reader.ReadLine());
-            m_Maze = new int[2 * cols + 1, 2 * rows + 1];
+            maze = new int[2 * cols + 1, 2 * rows + 1];
             for(int i = 0; i < 2 * cols + 1; i++)
             {
                 line = reader.ReadLine();
                 for(int j = 0; j < 2 * rows + 1; j++)
                 {
-                    m_Maze[i, j] = line[j * 2] == '#' ? 1 : 0;
+                    maze[i, j] = line[j * 2] == '#' ? 1 : 0;
                 }
             }
             reader.Close();
         }
-        else
+        */
+
+        maze = mazeGenerator.GenerateWithGates(columns, rows, innerColumns, innerRows, 
+            innerMaximumGates, growFactor, minimumGates);
+        Debug.Log(mazeGenerator.ConvertToString(maze));
+
+
+        for(int i = 0; i < maze.GetLength(0); i++)
         {
-            m_Maze = m_MazeGenerator.FromDimensions(mazeColumns, mazeRows, mazeInnerColumns, mazeInnerRows);
-            // make two entrances
-            m_Maze[0, 1] = 0;
-            m_Maze[2 * mazeColumns, 2 * mazeRows - 1] = 0;
-
-            Debug.Log(m_MazeGenerator.ConvertToString(m_Maze));
-        }
-
-
-        for(int i = 0; i < m_Maze.GetLength(0); i++)
-        {
-            for(int j = 0; j < m_Maze.GetLength(1); j++)
+            for(int j = 0; j < maze.GetLength(1); j++)
             {
-                if (m_Maze[i, j] == 0) continue;
                 int type = i % 2 * 2 + j % 2;
-                switch (type)
+                Vector3 wallPosition = new Vector3(edgeLength * j / 2f, 0f, edgeLength * i / 2f) + transform.position;
+                if (maze[i, j] == 1) {
+                    switch (type)
+                    {
+                        case 0:
+                            Instantiate(corners[Random.Range(0, corners.Length)],
+                                wallPosition, Quaternion.Euler(0, 90f * Random.Range(0, 4), 0));
+                            break;
+                        case 1:
+                            Instantiate(edges[Random.Range(0, edges.Length)],
+                                wallPosition, Quaternion.Euler(0, 90f + 180f * Random.Range(0, 2), 0));
+                            break;
+                        case 2:
+                            Instantiate(edges[Random.Range(0, edges.Length)],
+                                wallPosition, Quaternion.Euler(0, 180f * Random.Range(0, 2), 0));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if(maze[i, j] == 2)
                 {
-                    case 0:
-                        Instantiate(corners[Random.Range(0, corners.Length)], 
-                            new Vector3(edgeLength * j / 2f, 0f, edgeLength * i / 2f) + transform.position,
-                            Quaternion.Euler(0, 90f * Random.Range(0, 4), 0));
-                        break;
-                    case 1:
-                        Instantiate(edges[Random.Range(0, edges.Length)],
-                            new Vector3(edgeLength * j / 2f, 0f, edgeLength * i / 2f) + transform.position, 
-                            Quaternion.Euler(0, 90f + 180f * Random.Range(0, 2), 0));
-                        break;
-                    case 2:
-                        Instantiate(edges[Random.Range(0, edges.Length)],
-                            new Vector3(edgeLength * j / 2f, 0f, edgeLength * i / 2f) + transform.position, 
-                            Quaternion.Euler(0, 180f * Random.Range(0, 2), 0));
-                        break;
-                    default:
-                        break;
+                    switch (type)
+                    {
+                        case 1:
+                            Instantiate(edges[Random.Range(0, edges.Length)],
+                                wallPosition, Quaternion.Euler(0, 180f * Random.Range(0, 2), 0));
+                            break;
+                        case 2:
+                            Instantiate(edges[Random.Range(0, edges.Length)],
+                                wallPosition, Quaternion.Euler(0, 90f + 180f * Random.Range(0, 2), 0));
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
