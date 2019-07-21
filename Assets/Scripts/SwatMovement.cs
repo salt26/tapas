@@ -64,14 +64,14 @@ public class SwatMovement : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Hello");
+        //Debug.Log("Hello");
     }
 
 
 
     void OnAnimatorIK(int layerIndex)
     {
-        m_Animator.SetLookAtWeight(.5f);
+        m_Animator.SetLookAtWeight(.7f);
         m_Animator.SetLookAtPosition(transform.position + mainCamera.transform.forward * 1000f);
         //m_Animator.SetIKRotation(AvatarIKGoal.Left, Quaternion.Euler(0, mainCamera.transform.eulerAngles.y, 0));
     }

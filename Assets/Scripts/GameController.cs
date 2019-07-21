@@ -11,6 +11,8 @@ public class GameController : MonoBehaviour
 
     public int mazeColumns;
     public int mazeRows;
+    public int mazeInnerColumns;
+    public int mazeInnerRows;
 
     private int[,] m_Maze;
 
@@ -18,7 +20,10 @@ public class GameController : MonoBehaviour
     {
         Cursor.visible = false;
         MazeGenerator m_MazeGenerator = new MazeGenerator();
-        m_Maze = m_MazeGenerator.FromDimensions(mazeColumns, mazeRows);
+        // simple setting
+        m_MazeGenerator.setRatio(.75f);
+
+        m_Maze = m_MazeGenerator.FromDimensions(mazeColumns, mazeRows, mazeInnerColumns, mazeInnerRows);
 
         // make two entrances
         m_Maze[0, 1] = 0;
