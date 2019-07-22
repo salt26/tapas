@@ -15,11 +15,12 @@ public class GameController : MonoBehaviour
 
     public int columns = 15;
     public int rows = 15;
+    public int gates = 8;
     public int innerColumns = 5;
     public int innerRows = 5;
     public int innerMaximumGates = 5;
+    public int loops = 3;
     public float growFactor = 0.75f;
-    public int minimumGates = 8;
     public int minimumDepth = 4;
 
     private int[,] maze;
@@ -51,8 +52,9 @@ public class GameController : MonoBehaviour
         }
         */
 
-        maze = mazeGenerator.GenerateWithGates(columns, rows, innerColumns, innerRows, 
-            innerMaximumGates, growFactor, minimumGates);
+        maze = mazeGenerator.GenerateWithGates(columns, rows, gates, innerColumns, innerRows,
+            innerMaximumGates, loops, growFactor);
+
         Debug.Log(mazeGenerator.ConvertToString(maze));
 
 
