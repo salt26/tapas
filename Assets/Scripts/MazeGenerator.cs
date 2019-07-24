@@ -42,11 +42,11 @@ public class MazeGenerator
         dy = new int[4] { 0, 1, 0, -1 };
     }
 
-    public int[,] GenerateWithGates(int rows, int cols, int gates, int innerRows, int innerCols, int innerGates, 
+    public int[,] GenerateWithGates(int rows, int cols, int gates, int innerRows, int innerCols, 
         int loops, float growFactor)
     {
         int gateCount = 1;
-        int[,] maze = Generate(rows, cols, innerRows, innerCols, innerGates, growFactor);
+        int[,] maze = Generate(rows, cols, innerRows, innerCols, growFactor);
 
         // 0 : border gate
         switch (Random.Range(0, 4))
@@ -103,14 +103,15 @@ public class MazeGenerator
         for(int i = 0, j = 0; i < gates && j < 10000; j++)
         {
             int x, y;
-            if(Random.Range(0, 2) == 0)
+            if (Random.Range(0, 2) == 0)
             {
-                x = Random.Range(0, cols + 1) * 2;
-                y = Random.Range(0, rows) * 2 + 1;
-            } else
+                x = Random.Range(0, rows + 1) * 2;
+                y = Random.Range(0, cols) * 2 + 1;
+            }
+            else
             {
-                x = Random.Range(0, cols) * 2 + 1;
-                y = Random.Range(0, rows + 1) * 2;
+                x = Random.Range(0, rows) * 2 + 1;
+                y = Random.Range(0, cols + 1) * 2;
             }
             if (maze[x, y] == 0 && (x < x1 || x >= x2 || y < y1 || y >= y2) && (x != 0 && x != 2 * rows && y != 0 && y != 2 * cols))
             {
@@ -120,24 +121,26 @@ public class MazeGenerator
 
         // 3. wall -> gate randomly
         // but first, let's index the maze
-        // j is for infinite loop killer
         int[,] index = Indexing(maze);
+        
+
+        // j is for infinite loop killer
         for (int i = 0, j = 0; i < loops && j < 10000; j++)
         {
             int x, y;
             if (Random.Range(0, 2) == 0)
             {
-                x = Random.Range(1, cols) * 2;
-                y = Random.Range(0, rows) * 2 + 1;
+                x = Random.Range(1, rows) * 2;
+                y = Random.Range(0, cols) * 2 + 1;
                 if (index[x - 1, y] == index[x + 1, y]) continue;
             }
             else
             {
-                x = Random.Range(0, cols) * 2 + 1;
-                y = Random.Range(1, rows) * 2;
+                x = Random.Range(0, rows) * 2 + 1;
+                y = Random.Range(1, cols) * 2;
                 if (index[x, y - 1] == index[x, y + 1]) continue;
             }
-            if (maze[x, y] == 1 && (x < x1 || x >= x2 || y < y1 || y >= y2))
+            if (maze[x, y] == 1 && (x < x1 || x > x2 || y < y1 || y > y2))
             {
                 maze[x, y] = 2;
                 i++;
@@ -149,7 +152,7 @@ public class MazeGenerator
         return maze;
     }
 
-    public int[,] Generate(int rows, int cols, int innerRows, int innerCols, int innerGates, float growFactor)
+    public int[,] Generate(int rows, int cols, int innerRows, int innerCols, float growFactor)
     {
         if(innerRows == 0 || innerCols == 0)
         {
@@ -169,34 +172,18 @@ public class MazeGenerator
                 for(int j = y1; j < y2; j++)
                 {
                     vis[i, j] = true;
-                    if (i == x1 || i == x2 - 1 || j == y1 || j == y2 - 1)
+                    if (i == rows / 2 || j == cols / 2)
                     {
                         list.Insert(Random.Range(0, list.Count + 1), i * cols + j);
                     }
                 }
             }
-            list.RemoveRange(innerGates, list.Count - innerGates);
 
-            
-            for(int i = x1 + 1; i < x2; i++)
+            for (int i = 2 * x1 + 1; i < 2 * x2; i++)
             {
-                for(int j = y1 + 1; j < y2; j++)
+                for(int j = 2 * y1 + 1; j < 2 * y2; j++)
                 {
-                    maze[2 * i, 2 * j] = 0;
-                }
-            }
-            for(int i = x1; i < x2; i++)
-            {
-                for(int j = y1 + 1; j < y2; j++)
-                {
-                    maze[2 * i + 1, 2 * j] = 0;
-                }
-            }
-            for (int i = x1 + 1; i < x2; i++)
-            {
-                for (int j = y1; j < y2; j++)
-                {
-                    maze[2 * i, 2 * j + 1] = 0;
+                    maze[i, j] = 0;
                 }
             }
             TreeBuilder(maze, vis, list, growFactor);
@@ -270,7 +257,7 @@ public class MazeGenerator
         {
             for (int j = 0; j < maze.GetLength(1); j++)
             {
-                sb.Append(maze[i, j] == 0 ? ".." : "##");
+                sb.Append(maze[i, j] == 0 ? ".." : maze[i, j] == 1 ? "##" : "//");
             }
             sb.Append("\n");
         }

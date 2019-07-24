@@ -9,16 +9,15 @@ public class GameController : MonoBehaviour
     public float edgeLength;
     public GameObject[] corners;
     public GameObject[] edges;
+    public GameObject[] doors;
 
-    // public bool mazeFromFile = false;
-    // Currently, only procedural maps are allowed
+    public bool mazeFromFile = false;
 
     public int columns = 15;
     public int rows = 15;
     public int gates = 8;
     public int innerColumns = 5;
     public int innerRows = 5;
-    public int innerMaximumGates = 5;
     public int loops = 3;
     public float growFactor = 0.75f;
     public int minimumDepth = 4;
@@ -30,7 +29,7 @@ public class GameController : MonoBehaviour
         Cursor.visible = false;
         MazeGenerator mazeGenerator = new MazeGenerator();
 
-        /*
+
         if (mazeFromFile)
         {
             string path = "Assets/Resources/Map.txt";
@@ -40,22 +39,23 @@ public class GameController : MonoBehaviour
             int cols = System.Convert.ToInt32(reader.ReadLine());
             int rows = System.Convert.ToInt32(reader.ReadLine());
             maze = new int[2 * cols + 1, 2 * rows + 1];
-            for(int i = 0; i < 2 * cols + 1; i++)
+            for (int i = 0; i < 2 * cols + 1; i++)
             {
                 line = reader.ReadLine();
-                for(int j = 0; j < 2 * rows + 1; j++)
+                for (int j = 0; j < 2 * rows + 1; j++)
                 {
-                    maze[i, j] = line[j * 2] == '#' ? 1 : 0;
+                    maze[i, j] = line[j * 2] == '#' ? 1 : line[j * 2] == '/' ? 2 : 0;
                 }
             }
             reader.Close();
         }
-        */
+        else
+        {
+            maze = mazeGenerator.GenerateWithGates(columns, rows, gates, innerColumns, innerRows,
+                loops, growFactor);
 
-        maze = mazeGenerator.GenerateWithGates(columns, rows, gates, innerColumns, innerRows,
-            innerMaximumGates, loops, growFactor);
-
-        Debug.Log(mazeGenerator.ConvertToString(maze));
+            Debug.Log(mazeGenerator.ConvertToString(maze));
+        }
 
 
         for(int i = 0; i < maze.GetLength(0); i++)
@@ -71,11 +71,11 @@ public class GameController : MonoBehaviour
                             Instantiate(corners[Random.Range(0, corners.Length)],
                                 wallPosition, Quaternion.Euler(0, 90f * Random.Range(0, 4), 0));
                             break;
-                        case 1:
+                        case 2:
                             Instantiate(edges[Random.Range(0, edges.Length)],
                                 wallPosition, Quaternion.Euler(0, 90f + 180f * Random.Range(0, 2), 0));
                             break;
-                        case 2:
+                        case 1:
                             Instantiate(edges[Random.Range(0, edges.Length)],
                                 wallPosition, Quaternion.Euler(0, 180f * Random.Range(0, 2), 0));
                             break;
@@ -88,11 +88,11 @@ public class GameController : MonoBehaviour
                     switch (type)
                     {
                         case 1:
-                            Instantiate(edges[Random.Range(0, edges.Length)],
+                            Instantiate(doors[Random.Range(0, doors.Length)],
                                 wallPosition, Quaternion.Euler(0, 180f * Random.Range(0, 2), 0));
                             break;
                         case 2:
-                            Instantiate(edges[Random.Range(0, edges.Length)],
+                            Instantiate(doors[Random.Range(0, doors.Length)],
                                 wallPosition, Quaternion.Euler(0, 90f + 180f * Random.Range(0, 2), 0));
                             break;
                         default:
@@ -101,6 +101,7 @@ public class GameController : MonoBehaviour
                 }
             }
         }
+
     }
 
     void Update()
