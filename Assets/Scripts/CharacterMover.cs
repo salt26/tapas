@@ -50,7 +50,7 @@ public class CharacterMover : MonoBehaviour
         // 이동
         Moving(v, h);
         mouseLook.LookRotation(GetComponent<Transform>(), head.transform);
-
+        
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             quitText.SetActive(true);
@@ -103,7 +103,7 @@ public class CharacterMover : MonoBehaviour
         d.AcquireControl();
         head.gameObject.SetActive(false);
     }
-
+    
     public MouseLook GetMouseLook()
     {
         return mouseLook;
