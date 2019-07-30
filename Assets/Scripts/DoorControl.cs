@@ -7,9 +7,11 @@ public class DoorControl : MonoBehaviour
     public GameObject doorL;
     public GameObject doorR;
     public float distance = 1.333333333f;
+    public float openDuration = 1f;
 
     private bool isOpen;
     private float openness;
+    private float openTime;
 
     // Start is called before the first frame update
     void Start()
@@ -22,8 +24,24 @@ public class DoorControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        openness = (1f + Mathf.Sin(Time.time)) / 2f;
+        if (isOpen)
+        {
+            openness = (1f - Mathf.Cos(Mathf.Min((Time.time - openTime) / openDuration, 1f) * Mathf.PI)) / 2f;
+        }
+        else
+        {
+            openness = 0;
+        }
         UpdateDoor();
+    }
+
+    public void Open()
+    {
+        if (!isOpen)
+        {
+            isOpen = true;
+            openTime = Time.time;
+        }
     }
 
     void UpdateDoor()

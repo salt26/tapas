@@ -42,6 +42,129 @@ public class MazeGenerator
         dy = new int[4] { 0, 1, 0, -1 };
     }
 
+    public int[,] GenerateZoneGates()
+    {
+        // parameters //////
+        int size0 = 32;
+        int size1 = 22;
+        int size2 = 8;
+        float growFactor = 0.75f;
+        float openness = 0.25f;
+
+        int cornerGateDist = 3;
+        int edgeGateDist = 6;
+        int centerGateDist = 2; 
+
+        ////////////////////
+
+        int size01 = (size0 + size1) / 2;
+        int sCorner = (size0 - size1) / 2;
+        int[] dxVal = new int[8] { 0, 0, size01, size01, 0, sCorner, sCorner, size01 };
+        int[] dyVal = new int[8] { 0, size01, 0, size01, sCorner, 0, size01, sCorner };
+        int[] xVal = new int[8] { sCorner, sCorner, sCorner, sCorner, sCorner, size1, size1, sCorner };
+        int[] yVal = new int[8] { sCorner, sCorner, sCorner, sCorner, size1, sCorner, sCorner, size1 };
+
+        int[,] maze = new int[2 * size0 + 1, 2 * size0 + 1];
+        int len = maze.GetLength(0);
+
+        for (int i = 0; i < 8; i++) {
+            int[,] boundMaze = Generate(xVal[i], yVal[i], growFactor);
+            for(int j = 0; j < boundMaze.GetLength(0); j++)
+            {
+                for(int k = 0; k < boundMaze.GetLength(1); k++)
+                {
+                    maze[dxVal[i] * 2 + j, dyVal[i] * 2 + k] = boundMaze[j, k];
+                }
+            }
+        }
+
+        bool[,] mask = new bool[size1, size1];
+        int size12 = (size1 + size2) / 2;
+        for(int i = size1 - size12; i < size12; i++)
+        {
+            for(int j = size1 - size12; j < size12; j++)
+            {
+                mask[i, j] = true;
+            }
+        }
+        int[,] centerMaze = Generate(mask, growFactor);
+        for(int i = 0; i < centerMaze.GetLength(0); i++)
+        {
+            for(int j = 0; j < centerMaze.GetLength(1); j++)
+            {
+                maze[i + sCorner * 2, j + sCorner * 2] = centerMaze[i, j]; 
+            }
+        }
+        
+        for(int i = size0 - size2 + 1; i < size0 + size2; i++)
+        {
+            for(int j = size0 - size2 + 1; j < size0 + size2; j++)
+            {
+                maze[i, j] = 0;
+            }
+        }
+
+        for(int i = 0; i < len; i++)
+        {
+            for(int j = 0; j < len; j++)
+            {
+                if ((i % 2 != j % 2) &&
+                    i != 0 && i != sCorner * 2 && i != len - 1 && i != len - sCorner * 2 - 1 &&
+                    j != 0 && j != sCorner * 2 && j != len - 1 && j != len - sCorner * 2 - 1 &&
+                       !((i >= size0 - size2 && i <= size0 + size2) && (j == size0 - size2 || j == size0 + size2)) &&
+                       !((j >= size0 - size2 && j <= size0 + size2) && (i == size0 - size2 || i == size0 + size2)))
+                {
+                    maze[i, j] = Random.Range(0f, 1f) < openness ? 0 : maze[i, j];
+                }
+            }
+        }
+
+        for(int i = 2; i < len - 2; i += 2)
+        {
+            for(int j = 2; j < len - 2; j += 2)
+            {
+                int cnt = 0;
+                for(int k = 0; k < 4; k++)
+                {
+                    if (maze[i + dx[k], j + dy[k]] == 0) cnt++;
+                }
+                if (cnt == 4) maze[i, j] = 0;
+            }
+        }
+
+        maze[sCorner * 2, cornerGateDist * 2 - 1] = 2;
+        maze[cornerGateDist * 2 - 1, sCorner * 2] = 2;
+        maze[sCorner * 2, len - cornerGateDist * 2] = 2;
+        maze[cornerGateDist * 2 - 1, len - sCorner * 2 - 1] = 2;
+        maze[len - cornerGateDist * 2, sCorner * 2] = 2;
+        maze[len - sCorner * 2 - 1, cornerGateDist * 2 - 1] = 2;
+        maze[len - cornerGateDist * 2, len - sCorner * 2 - 1] = 2;
+        maze[len - sCorner * 2 - 1, len - cornerGateDist * 2] = 2;
+
+        maze[size0 - edgeGateDist * 2 + 1, sCorner * 2] = 2;
+        maze[size0 + edgeGateDist * 2 - 1, sCorner * 2] = 2;
+        maze[size0 - edgeGateDist * 2 + 1, len - sCorner * 2 - 1] = 2;
+        maze[size0 + edgeGateDist * 2 - 1, len - sCorner * 2 - 1] = 2;
+        maze[sCorner * 2, size0 - edgeGateDist * 2 + 1] = 2;
+        maze[sCorner * 2, size0 + edgeGateDist * 2 - 1] = 2;
+        maze[len - sCorner * 2 - 1, size0 - edgeGateDist * 2 + 1] = 2;
+        maze[len - sCorner * 2 - 1, size0 + edgeGateDist * 2 - 1] = 2;
+
+        maze[size0 - centerGateDist * 2 + 1, size0 - size2] = 0;
+        maze[size0 + centerGateDist * 2 - 1, size0 - size2] = 0;
+        maze[size0 - centerGateDist * 2 + 1, size0 + size2] = 0;
+        maze[size0 + centerGateDist * 2 - 1, size0 + size2] = 0;
+        maze[size0 - size2, size0 - centerGateDist * 2 + 1] = 0;
+        maze[size0 - size2, size0 + centerGateDist * 2 - 1] = 0;
+        maze[size0 + size2, size0 - centerGateDist * 2 + 1] = 0;
+        maze[size0 + size2, size0 + centerGateDist * 2 - 1] = 0;
+
+        //maze[len - cornerGateDist * 2 - 2, sCorner * 2] = 2;
+
+
+        return maze;
+    }
+
     public int[,] GenerateWithGates(int rows, int cols, int gates, int innerRows, int innerCols, 
         int loops, float growFactor)
     {
@@ -205,6 +328,37 @@ public class MazeGenerator
         vis[x, y] = true;
         TreeBuilder(maze, vis, list, growFactor);
         
+        return maze;
+    }
+
+    public int[,] Generate(bool[,] mask, float growFactor)
+    {
+        int rows = mask.GetLength(0);
+        int cols = mask.GetLength(1);
+        int[,] maze = new int[rows * 2 + 1, cols * 2 + 1];
+        bool[,] vis = new bool[rows, cols];
+        List<int> list = new List<int>();
+        InitializeMaze(maze);
+
+        for (int i = 0; i < rows; i++)
+        {
+            for(int j = 0; j < cols; j++)
+            {
+                vis[i, j] = mask[i, j];
+            }
+        }
+
+        int x, y;
+        do
+        {
+            x = Random.Range(0, rows);
+            y = Random.Range(0, cols);
+        } while (vis[x, y]);
+
+        list.Add(x * cols + y);
+        vis[x, y] = true;
+        TreeBuilder(maze, vis, list, growFactor);
+
         return maze;
     }
 

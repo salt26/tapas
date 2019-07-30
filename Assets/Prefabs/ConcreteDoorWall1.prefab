@@ -48,6 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doorL: {fileID: 7467957674686610131}
   doorR: {fileID: 2318908789808030837}
+  distance: 1.3333334
+  openDuration: 2
 --- !u!1001 &2975644400897001595
 PrefabInstance:
   m_ObjectHideFlags: 0
