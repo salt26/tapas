@@ -10,8 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3454069161876646409}
   - component: {fileID: 7680296892646588278}
-  - component: {fileID: 8296172669223367407}
-  - component: {fileID: 8405548312402360452}
+  - component: {fileID: 6349245649374175869}
   m_Layer: 0
   m_Name: Switch
   m_TagString: Untagged
@@ -44,41 +43,23 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 1
-  m_Height: 1
+  m_Radius: 2
+  m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8296172669223367407
+--- !u!114 &6349245649374175869
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1852114429552826394}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1cc8bc77faa778449744c163358f337, type: 3}
+  m_Script: {fileID: 11500000, guid: 83c42970f8d99f943800fa949e9c7550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectedSwitch: []
-  connectedDoor:
-  - {fileID: 0}
-  state: 0
-  nonActiveColor: {r: 0, g: 0, b: 0, a: 0}
-  activeColor: {r: 60, g: 40.1, b: 5, a: 1}
-  deadColor: {r: 5, g: 40.1, b: 60, a: 1}
---- !u!156049354 &8405548312402360452
-Grid:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1852114429552826394}
-  m_Enabled: 1
-  m_CellSize: {x: 10, y: 10, z: 10}
-  m_CellGap: {x: 0, y: 0, z: 0}
-  m_CellLayout: 0
-  m_CellSwizzle: 1
+  user: {fileID: 0}
 --- !u!1 &5312069348186652039
 GameObject:
   m_ObjectHideFlags: 0
