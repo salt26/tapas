@@ -136,11 +136,21 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
         public void StartGame(int sceneID)
         {
+            /* My custom code */
+            if (NetworkManager.Instance.IsServer)
+            {
+                ((IServer)NetworkManager.Instance.Networker).StopAcceptingConnections();
+                if (LobbyService.Instance.MasterLobby.LobbyPlayers.Count != 2)
+                {
+                    Debug.Log("Player number must be 2!");
+                    return;
+                }
 #if UNITY_5_6_OR_NEWER
-            SceneManager.LoadScene(sceneID);
+                SceneManager.LoadScene(sceneID);
 #else
-            Application.LoadLevel(sceneID);
+                Application.LoadLevel(sceneID);
 #endif
+            }
         }
         #endregion
 

@@ -1,23 +1,48 @@
-﻿using System.Collections;
+﻿using BeardedManStudios.Forge.Networking.Unity;
+using BeardedManStudios.Forge.Networking.Generated;
+using BeardedManStudios.Forge.Networking;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Enemy : MonoBehaviour
+public class Enemy : EnemyBehavior
 {
-    public Image ui;
+    public Image statusUI;
 
-    bool isTriggered = false;
-    
+    protected override void NetworkStart()
+    {
+        base.NetworkStart();
+
+        if (!NetworkManager.Instance.IsServer) return;
+        networkObject.isTriggered = false;
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!isTriggered && other.gameObject.name.Equals("Player"))
+        if (!NetworkManager.Instance.IsServer) return;
+
+        if (!networkObject.isTriggered && other.gameObject.tag.Equals("Player"))
         {
-            isTriggered = true;
-            ui.color = new Color(ui.color.r, ui.color.g, ui.color.b, 0.2f);
-            StatusText.st.Decrease();
-            GetComponent<AudioSource>().Play();
+            Debug.Log("Enemy Triggered");
+            networkObject.isTriggered = true;
+            networkObject.SendRpc(
+                EnemyBehavior.RPC_CAUGHT,
+                Receivers.All
+            );
         }
+    }
+    
+    public override void Caught(RpcArgs args)
+    {
+        statusUI.color = new Color(
+            statusUI.color.r,
+            statusUI.color.g,
+            statusUI.color.b,
+            0.2f
+        );
+        StatusText.st.Decrease();
+        GetComponent<AudioSource>().Play();
     }
 }

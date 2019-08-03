@@ -1,35 +1,54 @@
-﻿using System.Collections;
+﻿using BeardedManStudios.Forge.Networking;
+using BeardedManStudios.Forge.Networking.Generated;
+using BeardedManStudios.Forge.Networking.Unity;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-public class CharacterMover : MonoBehaviour
+public class CharacterMover : PlayerBehavior
 {
-
     public float moveSpeed;
-    public GameObject quitText;
-    public DroneMover d;
+    //public DroneMover d;
+    public Camera head;
 
-    Camera head;
+    GameObject quitText;
     CharacterController character;
     CollisionFlags collisionFlags;
     Vector3 movement;
     MouseLook mouseLook = new MouseLook();
+    /*
     bool isControlling = true;
     bool isAcquiredInstantly = false;
-    
-    void Awake()
+    */
+
+    protected override void NetworkStart()
     {
+        base.NetworkStart();
         head = GetComponentInChildren<Camera>();
         character = GetComponent<CharacterController>();
+        quitText = GameObject.Find("QuitText");
+
+        if (!networkObject.IsOwner)
+        {
+            head.gameObject.SetActive(false);
+        }
         mouseLook.Init(GetComponent<Transform>(), head.transform);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (networkObject == null) return;
+        if (!networkObject.IsOwner)
+        {
+            transform.position = networkObject.position;
+            return;
+        }
+        /*
         if (!isControlling)
         {
             movement = new Vector3(0f, 0f, 0f);
@@ -43,6 +62,7 @@ public class CharacterMover : MonoBehaviour
             character.Move(movement);
             return;
         }
+        */
 
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
@@ -50,19 +70,17 @@ public class CharacterMover : MonoBehaviour
         // 이동
         Moving(v, h);
         mouseLook.LookRotation(GetComponent<Transform>(), head.transform);
+        networkObject.position = transform.position;
         
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            quitText.SetActive(true);
+            NetworkManager.Instance.Disconnect();
+            quitText.GetComponent<Text>().text = "종료하는 중...";
 #if UNITY_EDITOR
             EditorApplication.isPlaying = false;
 #else
             Application.Quit();
 #endif
-        }
-        else if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            ReleaseControl();
         }
     }
 
@@ -82,6 +100,7 @@ public class CharacterMover : MonoBehaviour
         collisionFlags = character.Move(movement * Time.fixedDeltaTime);
     }
 
+    /*
     /// <summary>
     /// 플레이어 캐릭터가 조종권을 가져갑니다.
     /// </summary>
@@ -103,6 +122,7 @@ public class CharacterMover : MonoBehaviour
         d.AcquireControl();
         head.gameObject.SetActive(false);
     }
+    */
     
     public MouseLook GetMouseLook()
     {
@@ -111,6 +131,7 @@ public class CharacterMover : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        if (!networkObject.IsOwner) return;
         Rigidbody body = hit.collider.attachedRigidbody;
         // Don't move the rigidbody if the character is on top of it
         if (collisionFlags == CollisionFlags.Below)
@@ -124,4 +145,5 @@ public class CharacterMover : MonoBehaviour
         }
         body.AddForceAtPosition(character.velocity * 0.1f, hit.point, ForceMode.Impulse);
     }
+
 }

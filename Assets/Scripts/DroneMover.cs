@@ -1,6 +1,10 @@
-﻿using System.Collections;
+﻿using BeardedManStudios.Forge.Networking;
+using BeardedManStudios.Forge.Networking.Generated;
+using BeardedManStudios.Forge.Networking.Unity;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -8,9 +12,9 @@ using UnityEditor;
 public class DroneMover : MonoBehaviour
 {
     public float moveSpeed;
-    public GameObject quitText;
     public CharacterMover c;
 
+    GameObject quitText;
     Camera head;
     CharacterController character;
     CollisionFlags collisionFlags;
@@ -24,9 +28,10 @@ public class DroneMover : MonoBehaviour
     {
         head = GetComponentInChildren<Camera>();
         character = GetComponent<CharacterController>();
+        quitText = GameObject.Find("QuitText");
         mouseLook.Init(GetComponent<Transform>(), head.transform);
         mouseLook.MinimumX = 0f;
-        ReleaseControl();
+        //ReleaseControl();
     }
 
     // Update is called once per frame
@@ -53,18 +58,15 @@ public class DroneMover : MonoBehaviour
         Moving(v, h);
         mouseLook.LookRotation(GetComponent<Transform>(), head.transform);
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            quitText.SetActive(true);
+            NetworkManager.Instance.Disconnect();
+            quitText.GetComponent<Text>().text = "종료하는 중...";
 #if UNITY_EDITOR
             EditorApplication.isPlaying = false;
 #else
             Application.Quit();
 #endif
-        }
-        else if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            ReleaseControl();
         }
     }
 
@@ -80,6 +82,7 @@ public class DroneMover : MonoBehaviour
         collisionFlags = character.Move(movement * Time.fixedDeltaTime);
     }
 
+    /*
     /// <summary>
     /// 드론이 조종권을 가져갑니다.
     /// </summary>
@@ -90,7 +93,7 @@ public class DroneMover : MonoBehaviour
         isAcquiredInstantly = true;
         head.gameObject.SetActive(true);
     }
-
+    
     /// <summary>
     /// 플레이어 캐릭터에게 조종권을 넘겨줍니다.
     /// </summary>
@@ -101,6 +104,7 @@ public class DroneMover : MonoBehaviour
         c.AcquireControl();
         head.gameObject.SetActive(false);
     }
+    */
 
     public MouseLook GetMouseLook()
     {
