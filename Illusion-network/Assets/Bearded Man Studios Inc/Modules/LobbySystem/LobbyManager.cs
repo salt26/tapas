@@ -10,6 +10,8 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 {
 	public class LobbyManager : MonoBehaviour, ILobbyMaster
 	{
+        public static LobbyManager lm;
+
 		public GameObject PlayerItem;
 		public LobbyPlayerItem Myself;
 		public InputField ChatInputBox;
@@ -53,7 +55,18 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
 		public void Awake()
 		{
-			if (NetworkManager.Instance.IsServer)
+            /* My custom code */
+            if (lm != null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            lm = this;
+            DontDestroyOnLoad(this);
+            GetComponent<Canvas>().enabled = true;
+            /* My custom code ends */
+
+            if (NetworkManager.Instance.IsServer)
 			{
 				SetupComplete();
 				return;
@@ -140,9 +153,33 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             if (NetworkManager.Instance.IsServer)
             {
                 ((IServer)NetworkManager.Instance.Networker).StopAcceptingConnections();
-                if (LobbyService.Instance.MasterLobby.LobbyPlayers.Count != 2)
+                if (LobbyService.Instance.MasterLobby.LobbyPlayers.Count != 3)
                 {
-                    Debug.Log("Player number must be 2!");
+                    Debug.Log("Player number must be 3!");
+                    return;
+                }
+                bool[] teams = new bool[3] { false, false, false };
+                foreach (var p in LobbyService.Instance.MasterLobby.LobbyPlayers)
+                {
+                    if (p.TeamID < 0 || p.TeamID > 2)
+                    {
+                        Debug.Log("Player TeamID must be in range of [0, 2]!");
+                        return;
+                    }
+
+                    if (!teams[p.TeamID])
+                    {
+                        teams[p.TeamID] = true;
+                    }
+                    else
+                    {
+                        Debug.Log("Player TeamID must not be duplicated!");
+                        return;
+                    }
+                }
+                if (Myself.AssociatedPlayer.TeamID != 0)
+                {
+                    Debug.Log("Host TeamID must be 0!");
                     return;
                 }
 #if UNITY_5_6_OR_NEWER

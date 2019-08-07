@@ -28,7 +28,7 @@ public class CharacterMover : PlayerBehavior
     protected override void NetworkStart()
     {
         base.NetworkStart();
-        head = GetComponentInChildren<Camera>();
+        //head = GetComponentInChildren<Camera>();
         character = GetComponent<CharacterController>();
         quitText = GameObject.Find("QuitText");
 
@@ -46,6 +46,7 @@ public class CharacterMover : PlayerBehavior
         if (!networkObject.IsOwner)
         {
             transform.position = networkObject.position;
+            transform.rotation = networkObject.rotation;
             return;
         }
         /*
@@ -71,6 +72,7 @@ public class CharacterMover : PlayerBehavior
         Moving(v, h);
         mouseLook.LookRotation(GetComponent<Transform>(), head.transform);
         networkObject.position = transform.position;
+        networkObject.rotation = transform.rotation;
         
         if (Input.GetKeyDown(KeyCode.Q))
         {

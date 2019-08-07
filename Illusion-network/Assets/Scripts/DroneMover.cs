@@ -9,26 +9,34 @@ using UnityEngine.UI;
 using UnityEditor;
 #endif
 
-public class DroneMover : MonoBehaviour
+public class DroneMover : DroneBehavior
 {
     public float moveSpeed;
-    public CharacterMover c;
+    //public CharacterMover c;
+    public Camera head;
 
     GameObject quitText;
-    Camera head;
     CharacterController character;
     CollisionFlags collisionFlags;
     Vector3 movement;
     MouseLook mouseLook = new MouseLook();
+    /*
     bool isControlling = false;
     bool isAcquiredInstantly = false;
+    */
 
     // Start is called before the first frame update
-    void Start()
+    protected override void NetworkStart()
     {
-        head = GetComponentInChildren<Camera>();
+        base.NetworkStart();
+        //head = GetComponentInChildren<Camera>();
         character = GetComponent<CharacterController>();
         quitText = GameObject.Find("QuitText");
+
+        if (!networkObject.IsOwner)
+        {
+            head.gameObject.SetActive(false);
+        }
         mouseLook.Init(GetComponent<Transform>(), head.transform);
         mouseLook.MinimumX = 0f;
         //ReleaseControl();
@@ -37,6 +45,14 @@ public class DroneMover : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (networkObject == null) return;
+        if (!networkObject.IsOwner)
+        {
+            transform.position = networkObject.position;
+            transform.rotation = networkObject.rotation;
+            return;
+        }
+        /*
         if (!isControlling)
         {
             movement = new Vector3(0f, 0f, 0f);
@@ -50,6 +66,7 @@ public class DroneMover : MonoBehaviour
             character.Move(movement);
             return;
         }
+        */
 
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
@@ -57,6 +74,8 @@ public class DroneMover : MonoBehaviour
         // 이동
         Moving(v, h);
         mouseLook.LookRotation(GetComponent<Transform>(), head.transform);
+        networkObject.position = transform.position;
+        networkObject.rotation = transform.rotation;
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -113,6 +132,7 @@ public class DroneMover : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        if (!networkObject.IsOwner) return;
         Rigidbody body = hit.collider.attachedRigidbody;
         // Don't move the rigidbody if the character is on top of it
         if (collisionFlags == CollisionFlags.Below)

@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 175140301577012775}
   - component: {fileID: 175140301577012772}
   - component: {fileID: 175140301577012773}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Drone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,5 +208,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1.2
-  quitText: {fileID: 0}
-  c: {fileID: 0}
+  head: {fileID: 175140301350202969}
