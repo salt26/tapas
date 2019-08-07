@@ -20,7 +20,7 @@ public class SwitchPuzzle : MonoBehaviour
         material.SetColor("_EmissionColor", color);
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision other)
     {
         GameData.Instance.CollisionEnter(this, other);
     }

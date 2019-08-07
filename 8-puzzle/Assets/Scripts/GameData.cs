@@ -7,9 +7,9 @@ public class GameData : MonoBehaviour
     // singleton implementation
     private static GameData _instance = null;
 
-    public Collider player;
-    public SwitchPuzzle[] switches;
-    public DoorControl[] doors;
+    public GameObject player;
+    // public SwitchPuzzle[] switches;
+    // public DoorControl[] doors;
     [ColorUsageAttribute(true, true)]
     public Color[] colors;
 
@@ -17,6 +17,8 @@ public class GameData : MonoBehaviour
     private int recentIndex;
     private bool[] state;
     private int[] pairIndex;
+    private SwitchPuzzle[] switches;
+    private DoorControl[] doors;
 
     public static GameData Instance
     {
@@ -38,6 +40,9 @@ public class GameData : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        switches = FindObjectsOfType(typeof(SwitchPuzzle)) as SwitchPuzzle[];
+        doors = FindObjectsOfType(typeof(DoorControl)) as DoorControl[];
+
         score = 0;
         recentIndex = -1;
         state = new bool[switches.Length];
@@ -82,9 +87,9 @@ public class GameData : MonoBehaviour
         }
     }
 
-    public void CollisionEnter(SwitchPuzzle mySwitch, Collider other)
+    public void CollisionEnter(SwitchPuzzle mySwitch, Collision other)
     {
-        if (other == player)
+        if (other.gameObject == player)
         {
             for(int i = 0; i < switches.Length; i++)
             {
