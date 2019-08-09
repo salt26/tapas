@@ -7,11 +7,12 @@ public class GameData : MonoBehaviour
     // singleton implementation
     private static GameData _instance = null;
 
-    public GameObject player;
     // public SwitchPuzzle[] switches;
     // public DoorControl[] doors;
-    [ColorUsageAttribute(true, true)]
-    public Color[] colors;
+    //[ColorUsageAttribute(true, true)]
+    //public Color[] colors;
+    public Texture[] scoreTextures;
+    public Texture[] indexTextures;
 
     private int score;
     private int recentIndex;
@@ -40,6 +41,9 @@ public class GameData : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         switches = FindObjectsOfType(typeof(SwitchPuzzle)) as SwitchPuzzle[];
         doors = FindObjectsOfType(typeof(DoorControl)) as DoorControl[];
 
@@ -48,56 +52,57 @@ public class GameData : MonoBehaviour
         state = new bool[switches.Length];
         pairIndex = new int[switches.Length];
 
+        
         for(int i = 0; i < switches.Length; i++)
             pairIndex[i] = i;
 
-        for(int i = 0; i < switches.Length; i++)
+        // shuffle!
+        for (int i = 0; i < switches.Length; i++)
         {
             int j = Random.Range(0, switches.Length);
             int tmp = pairIndex[i];
             pairIndex[i] = pairIndex[j];
             pairIndex[j] = tmp;
         }
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        Calculate();
-        for (int i = 0; i < switches.Length; i++)
+        for(int i = 0; i < switches.Length; i++)
         {
-            switches[i].SetColor(colors[score]);
-        }
-        if(score == 4)
-        {
-            for(int i = 0; i < doors.Length; i++)
-            {
-                doors[i].Open();
-            }
+            switches[i].SetIndexTexture(indexTextures[i]);
+            switches[i].SetScoreTexture(scoreTextures[0]);
         }
     }
 
     void Calculate()
     {
         score = 0;
-        for(int i = 0; i < switches.Length; i += 2)
+        for (int i = 0; i < switches.Length - 1; i += 2)
         {
             if (state[pairIndex[i]] != state[pairIndex[i + 1]])
                 score++;
         }
     }
 
-    public void CollisionEnter(SwitchPuzzle mySwitch, Collision other)
+    public void CollisionEnter(Transform others)
     {
-        if (other.gameObject == player)
+        for(int i = 0; i < switches.Length; i++)
         {
-            for(int i = 0; i < switches.Length; i++)
+            if(recentIndex != i && others.transform == switches[i].transform)
             {
-                if(recentIndex != i && mySwitch == switches[i])
+                recentIndex = i;
+                state[i] = !state[i];
+                Debug.Log("Switch " + (i + 1) + " Toggled");
+                Calculate();
+                for(int j = 0; j < switches.Length; j++)
                 {
-                    recentIndex = i;
-                    state[i] = !state[i];
-                    Debug.Log("Switch " + i + " Toggled");
+                    switches[j].SetScoreTexture(scoreTextures[score]);
+                    switches[j].SetRotation(recentIndex == j);
+                }
+                if (score == 4)
+                {
+                    for (int j = 0; j < doors.Length; j++)
+                    {
+                        doors[j].Open();
+                    }
                 }
             }
         }

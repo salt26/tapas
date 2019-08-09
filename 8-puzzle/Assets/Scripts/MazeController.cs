@@ -6,12 +6,13 @@ using UnityEngine.UI;
 
 public class MazeController : MonoBehaviour
 {
-
     public float edgeLength;
     public GameObject[] corners;
     public GameObject[] edges;
     public GameObject[] doors;
     public GameObject[] switches;
+
+    public float irregularity = 0.1f;
 
     public enum Input
     {
@@ -132,6 +133,8 @@ public class MazeController : MonoBehaviour
                     {
                         wall.transform.parent = mazeWall1.transform;
                         wall.name = i + ", " + j;
+                        wall.transform.localScale = Vector3.Scale(wall.transform.localScale,
+                            new Vector3(1f, Random.Range(1f - irregularity, 1f + irregularity), 1f));
                     }
                 }
                 else if(maze[i, j] == 2)

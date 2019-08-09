@@ -4,29 +4,56 @@ using UnityEngine;
 
 public class SwitchPuzzle : MonoBehaviour
 {
-    private Color color;
-    private Material material;
+    private bool isRotate;
+    private bool isLoaded;
+    private float rotationSpeed;
+    private Material indexMaterial;
+    private Material scoreMaterial;
+    private Transform emissiveObject0;
+    private Transform emissiveObject1;
 
-    // Start is called before the first frame update
     void Start()
     {
-        material = transform.GetChild(0).GetComponent<Renderer>().material;
-        color = new Color();
+        rotationSpeed = 60f;
+        isRotate = false;
+        isLoaded = false;
     }
 
-    // Update is called once per frame
+    void CheckObjects()
+    {
+        if (!isLoaded)
+        {
+            emissiveObject0 = transform.Find("ApertureSwitchEmission/SwitchEmission");
+            emissiveObject1 = transform.Find("ApertureSwitchEmission/SwitchEmissionCenter");
+            indexMaterial = emissiveObject1.GetComponent<Renderer>().material;
+            scoreMaterial = emissiveObject0.GetComponent<Renderer>().material;
+        }
+    }
+
     void Update()
     {
-        material.SetColor("_EmissionColor", color);
+        if (isRotate)
+        {
+            CheckObjects();
+            emissiveObject0.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
+            emissiveObject1.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
+        }
     }
 
-    void OnCollisionEnter(Collision other)
+    public void SetRotation(bool isRotate)
     {
-        GameData.Instance.CollisionEnter(this, other);
+        this.isRotate = isRotate;
     }
 
-    public void SetColor(Color c)
+    public void SetScoreTexture(Texture scoreTexture)
     {
-        color = c;
+        CheckObjects();
+        scoreMaterial.SetTexture("_EmissionMap", scoreTexture);
+    }
+
+    public void SetIndexTexture(Texture indexTexture)
+    {
+        CheckObjects();
+        indexMaterial.SetTexture("_EmissionMap", indexTexture);
     }
 }

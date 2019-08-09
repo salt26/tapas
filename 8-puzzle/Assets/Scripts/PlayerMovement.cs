@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// DroneMovement와 유사한 코드
+// Superclass?
+
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Speed Settings")]

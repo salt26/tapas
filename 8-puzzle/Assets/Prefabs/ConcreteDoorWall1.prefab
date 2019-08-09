@@ -15,7 +15,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &7400438726704300872
 Transform:
@@ -61,6 +61,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ConcreteDoorR
+      objectReference: {fileID: 0}
+    - target: {fileID: 677219530766904334, guid: d7e520ba8a0f7364db6c6a9b9467c4dd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4557271513610821149, guid: d7e520ba8a0f7364db6c6a9b9467c4dd,
         type: 3}
@@ -117,6 +122,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6442888809580956051, guid: d7e520ba8a0f7364db6c6a9b9467c4dd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7e520ba8a0f7364db6c6a9b9467c4dd, type: 3}
 --- !u!1 &2318908789808030837 stripped
@@ -142,6 +152,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ConcreteDoorL
+      objectReference: {fileID: 0}
+    - target: {fileID: 677219530766904334, guid: d7e520ba8a0f7364db6c6a9b9467c4dd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4557271513610821149, guid: d7e520ba8a0f7364db6c6a9b9467c4dd,
         type: 3}
@@ -198,6 +213,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6442888809580956051, guid: d7e520ba8a0f7364db6c6a9b9467c4dd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7e520ba8a0f7364db6c6a9b9467c4dd, type: 3}
 --- !u!1 &7467957674686610131 stripped
@@ -223,6 +243,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ConcreteDoorcase1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6609882937090548762, guid: 4da4b0ba7d473e344986d6817a8f15b2,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7917429688004531721, guid: 4da4b0ba7d473e344986d6817a8f15b2,
         type: 3}
@@ -278,6 +303,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 844230509848052103, guid: 4da4b0ba7d473e344986d6817a8f15b2,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4da4b0ba7d473e344986d6817a8f15b2, type: 3}
