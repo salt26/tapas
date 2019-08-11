@@ -46,7 +46,7 @@ public class DoorControl : MonoBehaviour
 
     void UpdateDoor()
     {
-        doorL.transform.localPosition = new Vector3(- distance * (1f - openness), 0);
-        doorR.transform.localPosition = new Vector3(distance * (1f - openness), 0);
+        doorL.transform.localPosition = new Vector3(- distance * (1f - openness), 0, 0);
+        doorR.transform.localPosition = new Vector3(distance * (1f - openness), 0, 0);
     }
 }

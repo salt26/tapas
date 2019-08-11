@@ -61,7 +61,7 @@
         }
     },
     "texturesets": {
-        "ConcreteDoorCase_01": {
+        "ConcreteDoorCase1": {
             "shader": "Main shader"
         }
     }
