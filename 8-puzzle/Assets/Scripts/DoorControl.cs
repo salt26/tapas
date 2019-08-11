@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class DoorControl : MonoBehaviour
 {
-    public GameObject doorL;
-    public GameObject doorR;
-    public float distance = 1.333333333f;
+    [System.Serializable]
+    public class DoorData
+    {
+        public GameObject door;
+        public Vector3 initialLocalPosition;
+        public Vector3 finalLocalPosition;
+    }
+
+    public DoorData[] doorDatas;
     public float openDuration = 1f;
 
     private bool isOpen;
@@ -26,7 +32,8 @@ public class DoorControl : MonoBehaviour
     {
         if (isOpen)
         {
-            openness = (1f - Mathf.Cos(Mathf.Min((Time.time - openTime) / openDuration, 1f) * Mathf.PI)) / 2f;
+            // openness = (1f - Mathf.Cos(Mathf.Min((Time.time - openTime) / openDuration, 1f) * Mathf.PI)) / 2f;
+            openness = Mathf.Min((Time.time - openTime) / openDuration, 1f);
         }
         else
         {
@@ -46,7 +53,10 @@ public class DoorControl : MonoBehaviour
 
     void UpdateDoor()
     {
-        doorL.transform.localPosition = new Vector3(- distance * (1f - openness), 0, 0);
-        doorR.transform.localPosition = new Vector3(distance * (1f - openness), 0, 0);
+        for(int i = 0; i < doorDatas.Length; i++)
+        {
+            doorDatas[i].door.transform.localPosition = openness * doorDatas[i].finalLocalPosition 
+                + (1f - openness) * doorDatas[i].initialLocalPosition;
+        }
     }
 }

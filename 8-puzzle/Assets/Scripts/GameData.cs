@@ -7,10 +7,8 @@ public class GameData : MonoBehaviour
     // singleton implementation
     private static GameData _instance = null;
 
-    // public SwitchPuzzle[] switches;
-    // public DoorControl[] doors;
-    //[ColorUsageAttribute(true, true)]
-    //public Color[] colors;
+
+    public int maxScore = 4;
     public Texture[] scoreTextures;
     public Texture[] indexTextures;
 
@@ -97,7 +95,7 @@ public class GameData : MonoBehaviour
                     switches[j].SetScoreTexture(scoreTextures[score]);
                     switches[j].SetRotation(recentIndex == j);
                 }
-                if (score == 4)
+                if (score == maxScore)
                 {
                     for (int j = 0; j < doors.Length; j++)
                     {

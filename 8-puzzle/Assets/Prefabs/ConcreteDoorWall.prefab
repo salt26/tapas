@@ -46,10 +46,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3de7bbff8ed54974aa0dca9c9ca036e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorL: {fileID: 8405394119946187597}
-  doorR: {fileID: 301241947637461798}
-  distance: 0.6666667
+  doorDatas:
+  - door: {fileID: 8405394119946187597}
+    initialLocalPosition: {x: -0.6666666, y: 0, z: 0}
+    finalLocalPosition: {x: 0, y: 0, z: 0}
+  - door: {fileID: 301241947637461798}
+    initialLocalPosition: {x: 0.6666667, y: 0, z: 0}
+    finalLocalPosition: {x: 0, y: 0, z: 0}
   openDuration: 1
+  isOpen: 0
 --- !u!1001 &2902092135905132067
 PrefabInstance:
   m_ObjectHideFlags: 0
