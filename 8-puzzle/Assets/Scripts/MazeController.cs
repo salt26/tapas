@@ -7,12 +7,12 @@ using UnityEngine.UI;
 public class MazeController : MonoBehaviour
 {
     public float edgeLength;
+    public float height;
     public GameObject[] corners;
     public GameObject[] edges;
     public GameObject[] doors;
-    public GameObject[] switches;
-
-    public float irregularity = 0.1f;
+    public GameObject switches;
+    public float[] addProbability;
 
     public enum Input
     {
@@ -108,38 +108,44 @@ public class MazeController : MonoBehaviour
             for(int j = 0; j < maze.GetLength(1); j++)
             {
                 int type = i % 2 * 2 + j % 2;
-                int switchCount = 0; // Round-Robin for switch...
-                Vector3 wallPosition = new Vector3(edgeLength * j / 2f, 0f, edgeLength * i / 2f);
-                if (maze[i, j] == 1) {
-                    GameObject wall = null;
-                    switch (type)
+                if (maze[i, j] == 1)
+                {
+                    for (int k = 0; k < addProbability.Length; k++)
                     {
-                        case 0:
-                            wall = Instantiate(corners[Random.Range(0, corners.Length)],
-                                wallPosition, Quaternion.Euler(0, 90f * Random.Range(0, 4), 0));
-                            break;
-                        case 2:
-                            wall = Instantiate(edges[Random.Range(0, edges.Length)],
-                                wallPosition, Quaternion.Euler(0, 90f + 180f * Random.Range(0, 2), 0));
-                            break;
-                        case 1:
-                            wall = Instantiate(edges[Random.Range(0, edges.Length)],
-                                wallPosition, Quaternion.Euler(0, 180f * Random.Range(0, 2), 0));
-                            break;
-                        default:
-                            break;
-                    }
-                    if (wall != null)
-                    {
-                        wall.transform.parent = mazeWall1.transform;
-                        wall.name = i + ", " + j;
-                        wall.transform.localScale = Vector3.Scale(wall.transform.localScale,
-                            new Vector3(1f, Random.Range(1f - irregularity, 1f + irregularity), 1f));
+                        if (Random.Range(0f, 1f) > addProbability[k]) break;
+                        Vector3 wallPosition = new Vector3(edgeLength * j / 2f, height * k, edgeLength * i / 2f);
+
+                        GameObject wall = null;
+                        switch (type)
+                        {
+                            case 0:
+                                wall = Instantiate(corners[Random.Range(0, corners.Length)],
+                                    wallPosition, Quaternion.Euler(-90f, 90f * Random.Range(0, 4), 0));
+                                break;
+                            case 1:
+                                wall = Instantiate(edges[Random.Range(0, edges.Length)],
+                                    wallPosition, Quaternion.Euler(-90f, 90f + 180f * Random.Range(0, 2), 0));
+                                break;
+                            case 2:
+                                wall = Instantiate(edges[Random.Range(0, edges.Length)],
+                                    wallPosition, Quaternion.Euler(-90f, 180f * Random.Range(0, 2), 0));
+                                break;
+                            default:
+                                break;
+                        }
+                        if (wall != null)
+                        {
+                            wall.transform.parent = mazeWall1.transform;
+                            wall.name = i + ", " + j;
+                            //wall.transform.localScale = Vector3.Scale(wall.transform.localScale,
+                            //    new Vector3(1f, Random.Range(1f - irregularity, 1f + irregularity), 1f));
+                        }
                     }
                 }
-                else if(maze[i, j] == 2)
+                else if (maze[i, j] == 2)
                 {
                     GameObject wall = null;
+                    Vector3 wallPosition = new Vector3(edgeLength * j / 2f, 0f, edgeLength * i / 2f);
                     switch (type)
                     {
                         case 1:
@@ -159,10 +165,10 @@ public class MazeController : MonoBehaviour
                         wall.name = i + ", " + j;
                     }
                 }
-                else if(maze[i, j] == 3)
+                else if (maze[i, j] == 3)
                 {
-                    GameObject floorSwitch = Instantiate(switches[switchCount], wallPosition, Quaternion.Euler(0, 90f * Random.Range(0, 4), 0));
-                    switchCount = (switchCount + 1) % switches.Length;
+                    Vector3 wallPosition = new Vector3(edgeLength * j / 2f, 0f, edgeLength * i / 2f);
+                    GameObject floorSwitch = Instantiate(switches, wallPosition, Quaternion.Euler(0, 90f * Random.Range(0, 4), 0));
                     floorSwitch.transform.parent = mazeSwitch.transform;
                     floorSwitch.name = i + ", " + j;
                 }

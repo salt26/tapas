@@ -75,7 +75,9 @@ public class DroneMovement : MonoBehaviour
         angles.y += mouseX * Time.deltaTime;
         angles.x = Mathf.Clamp(angles.x, minAngle, maxAngle);
         float weight = Mathf.Exp(-Time.deltaTime / tiltTimeScale);
-        tiltAxis = tiltAxis * weight + new Vector3(verticalInput, 0, -horizontalInput).normalized * (1f - weight);
+        Vector3 movement = new Vector3(verticalInput, 0, -horizontalInput);
+        if (movement.magnitude > 1f) movement.Normalize();
+        tiltAxis = tiltAxis * weight + (1f - weight) * movement;
 
         transform.rotation = Quaternion.AngleAxis(angles.y, Vector3.up)
             * Quaternion.AngleAxis(tiltAxis.magnitude * maxTiltAngle, tiltAxis);
