@@ -4,7 +4,7 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
 
-public class MazeController : MonoBehaviour
+public class MazeControllerFog : MonoBehaviour
 {
     public float edgeLength;
     public float height;
