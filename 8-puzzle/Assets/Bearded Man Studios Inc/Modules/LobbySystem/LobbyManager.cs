@@ -124,6 +124,11 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 			LobbyService.Instance.SetTeamId(nextTeam);
 		}
 
+        public void ChangeMyTeam(int teamNumber)
+        {
+            LobbyService.Instance.SetTeamId(teamNumber);
+        }
+
 		public void SendPlayersMessage()
 		{
 			string chatMessage = ChatInputBox.text;
