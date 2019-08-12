@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 8900000, guid: f2e82c20330a88c4d888d6c74e512447, type: 3}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 1.1500099, g: 1.2020816, b: 1.3707347, a: 1}
+  m_IndirectSpecularColor: {r: 1.1500101, g: 1.2020825, b: 1.3707325, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -122788,6 +122788,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+<<<<<<< HEAD
+=======
+    - target: {fileID: 1113182621686613517, guid: fa4f9246743dae44ab4705b0cad132bb,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 100.00003
+      objectReference: {fileID: 0}
+    - target: {fileID: 1113182621686613517, guid: fa4f9246743dae44ab4705b0cad132bb,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 100.00003
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419943175897403129, guid: fa4f9246743dae44ab4705b0cad132bb,
+        type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419943175897403129, guid: fa4f9246743dae44ab4705b0cad132bb,
+        type: 3}
+      propertyPath: m_CookingOptions
+      value: -1
+      objectReference: {fileID: 0}
+>>>>>>> 756f260ae25c3891b88fd6e03b91018fa7176499
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa4f9246743dae44ab4705b0cad132bb, type: 3}
 --- !u!4 &8812706843071908613 stripped
