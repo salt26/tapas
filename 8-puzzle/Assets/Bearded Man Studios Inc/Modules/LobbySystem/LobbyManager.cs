@@ -16,7 +16,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		public LobbyPlayerItem Myself;
 		public InputField ChatInputBox;
 		public Text Chatbox;
-		public Transform Grid;
+		public Transform[] Grid;
 
 		private const int BUFFER_PLAYER_ITEMS = 10;
 		private List<LobbyPlayerItem> _lobbyPlayersInactive = new List<LobbyPlayerItem>();
@@ -136,14 +136,15 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		{
             // TODO: Host cannot change team! Host's team number is always 0.
 			LobbyService.Instance.SetTeamId(nextTeam);
+            item.SetParent(Grid[nextTeam]);
 		}
 
-        public void ChangeMyTeam(int teamNumber)
+        public void DisconnectLobby()
         {
-            LobbyService.Instance.SetTeamId(teamNumber);
+            NetworkManager.Instance.Disconnect();
         }
 
-		public void SendPlayersMessage()
+        public void SendPlayersMessage()
 		{
 			string chatMessage = ChatInputBox.text;
 			if (string.IsNullOrEmpty(chatMessage))
@@ -215,7 +216,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 				{
 					LobbyPlayerItem item = CreateNewPlayerItem();
 					item.ToggleObject(false);
-					item.SetParent(Grid);
+					item.SetParent(Grid[0]);
 					_lobbyPlayersInactive.Add(item);
 				}
 				returnValue = CreateNewPlayerItem();
@@ -330,7 +331,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                 item.Setup(convertedPlayer, false);
                 if (LobbyService.Instance.IsServer)
                     item.KickButton.SetActive(true);
-                item.SetParent(Grid);
+                item.SetParent(Grid[0]);
             });
         }
 
@@ -490,7 +491,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             
 			//If I am the host, then I should show the kick button for all players here
 			LobbyPlayerItem item = GetNewPlayerItem(); //This will just auto generate the 10 items we need to start with
-			item.SetParent(Grid);
+			item.SetParent(Grid[0]);
 			PutBackToPool(item);
 
 			_myself = GrabPlayer(LobbyService.Instance.MyMockPlayer);

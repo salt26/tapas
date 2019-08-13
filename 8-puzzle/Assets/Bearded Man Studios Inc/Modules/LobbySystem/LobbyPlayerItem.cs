@@ -11,8 +11,8 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		public GameObject KickButton;
 		public Image AvatarBG;
 		public Text AvatarID;
-		public InputField PlayerName;
-		public Text PlayerTeamID;
+		public InputField PlayerName;  //use only this one
+		public Text PlayerTeamID;  //maybe use?
 
         public Button[] Buttons;
 
@@ -53,16 +53,12 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 			_manager.KickPlayer(this);
 		}
 		
-		public void RequestChangeTeam()
+		public void RequestChangeTeam(int nextID)
 		{
-			int nextID = AssociatedPlayer.TeamID + 1;
-			if (nextID >= TeamColors.Length)
-				nextID = 0;
-
 			_manager.ChangeTeam(this, nextID);
 		}
 
-		public void RequestChangeAvatarID()
+		public void RequestChangeAvatarID()  //will not use
 		{
 			int nextID = AssociatedPlayer.AvatarID + 1;
 			if (nextID >= AvatarColors.Length)
@@ -76,7 +72,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 			_manager.ChangeName(this, PlayerName.text);
 		}
 
-		public void ChangeAvatarID(int id)
+		public void ChangeAvatarID(int id)   //will not use
 		{
 			Color avatarColor = Color.white;
 
