@@ -50,5 +50,13 @@ MonoBehaviour:
   - {fileID: 1000012738253334, guid: feb25ecf90a8d8b4ab922a455249997b, type: 3}
   NetworkCameraNetworkObject:
   - {fileID: 139536, guid: 661f29f0c0c86fa47b6015bd602d0ac6, type: 3}
+  PoliceNetworkObject:
+  - {fileID: 4307861840612455201, guid: fac76d1bd3c284e4dbe2742319a80ab1, type: 3}
+  SupporterNetworkObject:
+  - {fileID: 7690331090536809184, guid: 80e5b3a5513516a4ababacb60cf3ade6, type: 3}
+  - {fileID: 1035698624846868439, guid: 627c106f104fbb643a556abe8a2ded99, type: 3}
   TestNetworkObject: []
+  ThiefNetworkObject:
+  - {fileID: 7653402450864112662, guid: a199069bfda82344b9cd1f3982c67cd5, type: 3}
+  SwitchManagerNetworkObject: []
   automaticScenes: 1

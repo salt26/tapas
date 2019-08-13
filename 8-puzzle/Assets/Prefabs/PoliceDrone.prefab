@@ -609,6 +609,7 @@ GameObject:
   - component: {fileID: 4836190055381653833}
   - component: {fileID: 4013857582712094471}
   - component: {fileID: 83751842}
+  - component: {fileID: 1890999826203776137}
   m_Layer: 0
   m_Name: PoliceDrone
   m_TagString: Untagged
@@ -695,6 +696,18 @@ MonoBehaviour:
   wingReversed:
   - {fileID: 3835341842217001063}
   - {fileID: 2352964264545234506}
+--- !u!114 &1890999826203776137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7690331090536809184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf8797eea350564488672d14a61132b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7772851496398824431
 GameObject:
   m_ObjectHideFlags: 0

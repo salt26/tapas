@@ -1473,6 +1473,7 @@ GameObject:
   - component: {fileID: 5925079148007121979}
   - component: {fileID: 7603352444293706022}
   - component: {fileID: 2892411634117987718}
+  - component: {fileID: 1189092253850260975}
   m_Layer: 0
   m_Name: Police
   m_TagString: Untagged
@@ -1567,6 +1568,18 @@ MonoBehaviour:
   minAngle: -70
   maxAngle: 70
   CameraOffset: {x: 0, y: 0, z: 0.1}
+--- !u!114 &1189092253850260975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4307861840612455201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9da79313a6b288408f1b45e6b27f628, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4651658905792967848
 GameObject:
   m_ObjectHideFlags: 0

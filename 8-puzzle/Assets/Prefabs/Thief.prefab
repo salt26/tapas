@@ -2603,6 +2603,7 @@ GameObject:
   - component: {fileID: 1808113803655728876}
   - component: {fileID: 4723601986895006463}
   - component: {fileID: 1808113803655728878}
+  - component: {fileID: -1710703803660405873}
   m_Layer: 0
   m_Name: Thief
   m_TagString: Untagged
@@ -2697,6 +2698,18 @@ MonoBehaviour:
   minAngle: -70
   maxAngle: 70
   CameraOffset: {x: 0, y: 0, z: 0.1}
+--- !u!114 &-1710703803660405873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7653402450864112662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7c0c2c5a396744b0fdc052b65f9f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7712062161778833743
 GameObject:
   m_ObjectHideFlags: 0
