@@ -116,15 +116,15 @@ public class MazeController : MonoBehaviour
                     {
                         case 0:
                             wall = Instantiate(corners[Random.Range(0, corners.Length)],
-                                wallPosition, Quaternion.Euler(0, 90f * Random.Range(0, 4), 0));
+                                wallPosition, Quaternion.Euler(-90f, 90f * Random.Range(0, 4), 0));
                             break;
                         case 2:
                             wall = Instantiate(edges[Random.Range(0, edges.Length)],
-                                wallPosition, Quaternion.Euler(0, 90f + 180f * Random.Range(0, 2), 0));
+                                wallPosition, Quaternion.Euler(-90f, 90f + 180f * Random.Range(0, 2), 0));
                             break;
                         case 1:
                             wall = Instantiate(edges[Random.Range(0, edges.Length)],
-                                wallPosition, Quaternion.Euler(0, 180f * Random.Range(0, 2), 0));
+                                wallPosition, Quaternion.Euler(-90f, 180f * Random.Range(0, 2), 0));
                             break;
                         default:
                             break;

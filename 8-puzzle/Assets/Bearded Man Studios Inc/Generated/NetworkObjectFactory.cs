@@ -39,9 +39,25 @@ namespace BeardedManStudios.Forge.Networking.Generated
 						availableCallback = true;
 						obj = new NetworkCameraNetworkObject(networker, id, frame);
 						break;
+					case PoliceNetworkObject.IDENTITY:
+						availableCallback = true;
+						obj = new PoliceNetworkObject(networker, id, frame);
+						break;
+					case SupporterNetworkObject.IDENTITY:
+						availableCallback = true;
+						obj = new SupporterNetworkObject(networker, id, frame);
+						break;
+					case SwitchManagerNetworkObject.IDENTITY:
+						availableCallback = true;
+						obj = new SwitchManagerNetworkObject(networker, id, frame);
+						break;
 					case TestNetworkObject.IDENTITY:
 						availableCallback = true;
 						obj = new TestNetworkObject(networker, id, frame);
+						break;
+					case ThiefNetworkObject.IDENTITY:
+						availableCallback = true;
+						obj = new ThiefNetworkObject(networker, id, frame);
 						break;
 				}
 

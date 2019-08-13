@@ -182,8 +182,9 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                     Debug.Log("Host TeamID must be 0!");
                     return;
                 }
+                
 #if UNITY_5_6_OR_NEWER
-                SceneManager.LoadScene(sceneID);
+                SceneManager.LoadScene(sceneID + UnityEngine.Random.Range(0, 2));
 #else
                 Application.LoadLevel(sceneID);
 #endif
