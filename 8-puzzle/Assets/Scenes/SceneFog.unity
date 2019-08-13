@@ -3468,7 +3468,7 @@ Terrain:
   m_TreeMaximumFullLODCount: 50
   m_DetailObjectDistance: 80
   m_DetailObjectDensity: 1
-  m_HeightmapPixelError: 5
+  m_HeightmapPixelError: 10
   m_SplatMapDistance: 1000
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 2
@@ -5597,6 +5597,36 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -409656387835658821, guid: c1635b2fc2cb58e4381cb9062df0b9af,
         type: 3}
+    - target: {fileID: 5097800705964420526, guid: eef7742d2d0d10044b5a7d1aae5d2887,
+        type: 3}
+      propertyPath: m_Materials.Array.data[4]
+      value: 
+      objectReference: {fileID: 2100000, guid: aa18c57168b90534baca33d2be1577e5, type: 2}
+    - target: {fileID: 5097800705964420526, guid: eef7742d2d0d10044b5a7d1aae5d2887,
+        type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: adc4dacc14923e144baa0740030aa543, type: 2}
+    - target: {fileID: 5097800705964420526, guid: eef7742d2d0d10044b5a7d1aae5d2887,
+        type: 3}
+      propertyPath: m_Materials.Array.data[5]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2e87ae371550bb64f8486728f4cb9387, type: 2}
+    - target: {fileID: 5097800705964420526, guid: eef7742d2d0d10044b5a7d1aae5d2887,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e55e85efb573e5b4dbaeb12d8d93f21a, type: 2}
+    - target: {fileID: 5097800705964420526, guid: eef7742d2d0d10044b5a7d1aae5d2887,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4864e934154b024aa61f5043111106e, type: 2}
+    - target: {fileID: 5097800705964420526, guid: eef7742d2d0d10044b5a7d1aae5d2887,
+        type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: a9c528a0b8096134cb45329e89dc6f98, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eef7742d2d0d10044b5a7d1aae5d2887, type: 3}
 --- !u!4 &5006512735947827046 stripped
