@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[[\"int\"][\"string\"]]")]
-	[GeneratedRPCVariableNames("{\"types\":[[\"switchID\"][\"message\"]]")]
+	[GeneratedRPC("{\"types\":[[][\"string\"]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[][\"message\"]]")]
 	public abstract partial class ThiefBehavior : NetworkBehavior
 	{
 		public const byte RPC_PRESS_SWITCH = 0 + 5;
@@ -23,7 +23,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.AttachedBehavior = this;
 
 			base.SetupHelperRpcs(networkObject);
-			networkObject.RegisterRpc("PressSwitch", PressSwitch, typeof(int));
+			networkObject.RegisterRpc("PressSwitch", PressSwitch);
 			networkObject.RegisterRpc("Chat", Chat, typeof(string));
 
 			networkObject.onDestroy += DestroyGameObject;
@@ -103,12 +103,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 
 		/// <summary>
 		/// Arguments:
-		/// int switchID
 		/// </summary>
 		public abstract void PressSwitch(RpcArgs args);
 		/// <summary>
 		/// Arguments:
-		/// string message
 		/// </summary>
 		public abstract void Chat(RpcArgs args);
 

@@ -28,6 +28,14 @@ public class Thief : ThiefBehavior
         {
             networkObject.position = transform.position;
             networkObject.rotation = transform.rotation;
+            
+            if (Input.GetMouseButtonDown(0))
+            {
+                networkObject.SendRpc(
+                    RPC_PRESS_SWITCH,
+                    Receivers.Server
+                );
+            }
         }
         else
         {
@@ -38,11 +46,13 @@ public class Thief : ThiefBehavior
 
     public override void PressSwitch(RpcArgs args)
     {
-        throw new System.NotImplementedException();
+        if (!NetworkManager.Instance.IsServer) return;
+        GetComponentInChildren<PlayerTouch>().Touch();
     }
 
     public override void Chat(RpcArgs args)
     {
+        // TODO
         throw new System.NotImplementedException();
     }
 }

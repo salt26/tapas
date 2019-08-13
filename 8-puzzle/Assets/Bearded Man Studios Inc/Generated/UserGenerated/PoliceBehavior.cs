@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[[\"int\"][\"int\"][][\"string\"]]")]
-	[GeneratedRPCVariableNames("{\"types\":[[\"boxID\"][\"itemID\"][][\"message\"]]")]
+	[GeneratedRPC("{\"types\":[[][\"int\"][][\"string\"]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[][\"itemID\"][][\"message\"]]")]
 	public abstract partial class PoliceBehavior : NetworkBehavior
 	{
 		public const byte RPC_OPEN_BOX = 0 + 5;
@@ -25,7 +25,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.AttachedBehavior = this;
 
 			base.SetupHelperRpcs(networkObject);
-			networkObject.RegisterRpc("OpenBox", OpenBox, typeof(int));
+			networkObject.RegisterRpc("OpenBox", OpenBox);
 			networkObject.RegisterRpc("UseItem", UseItem, typeof(int));
 			networkObject.RegisterRpc("CatchThief", CatchThief);
 			networkObject.RegisterRpc("Chat", Chat, typeof(string));
@@ -107,12 +107,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 
 		/// <summary>
 		/// Arguments:
-		/// int boxID
 		/// </summary>
 		public abstract void OpenBox(RpcArgs args);
 		/// <summary>
 		/// Arguments:
-		/// int itemID
 		/// </summary>
 		public abstract void UseItem(RpcArgs args);
 		/// <summary>

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1245807084}
   - component: {fileID: 2108060792}
   - component: {fileID: 596481493}
-  - component: {fileID: 144253193474720834}
   m_Layer: 0
   m_Name: FirstPersonCamera
   m_TagString: Untagged
@@ -138,19 +137,6 @@ MonoBehaviour:
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
 --- !u!114 &596481493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1245807080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4123b4c8a8f1bf9499d73dcd8411d7c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxDistance: 2
---- !u!114 &144253193474720834
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

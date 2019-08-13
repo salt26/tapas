@@ -43,6 +43,7 @@ public class ThiefSupporter : SupporterBehavior
 
     public override void ChatToThief(RpcArgs args)
     {
+        // TODO
         throw new System.NotImplementedException();
     }
 

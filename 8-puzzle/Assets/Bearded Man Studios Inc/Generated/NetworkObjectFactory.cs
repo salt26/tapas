@@ -47,6 +47,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 						availableCallback = true;
 						obj = new SupporterNetworkObject(networker, id, frame);
 						break;
+					case SwitchManagerNetworkObject.IDENTITY:
+						availableCallback = true;
+						obj = new SwitchManagerNetworkObject(networker, id, frame);
+						break;
 					case TestNetworkObject.IDENTITY:
 						availableCallback = true;
 						obj = new TestNetworkObject(networker, id, frame);
@@ -54,10 +58,6 @@ namespace BeardedManStudios.Forge.Networking.Generated
 					case ThiefNetworkObject.IDENTITY:
 						availableCallback = true;
 						obj = new ThiefNetworkObject(networker, id, frame);
-						break;
-					case SwitchManagerNetworkObject.IDENTITY:
-						availableCallback = true;
-						obj = new SwitchManagerNetworkObject(networker, id, frame);
 						break;
 				}
 
