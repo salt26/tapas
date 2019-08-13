@@ -85,6 +85,8 @@ MonoBehaviour:
   wingRpm: 10000
   forceMagnitude: 12
   dragMagnitude: 4
+  tiltTimeScale: 0.5
+  maxTiltAngle: 20
   mouseSensitivity: 60
   minAngle: -90
   maxAngle: 0
@@ -393,7 +395,7 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 2
+  m_TargetDisplay: 3
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
