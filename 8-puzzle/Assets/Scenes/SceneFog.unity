@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 8900000, guid: f2e82c20330a88c4d888d6c74e512447, type: 3}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.62060356, g: 0.65429455, b: 0.6894535, a: 1}
+  m_IndirectSpecularColor: {r: 0.6201172, g: 0.65429455, b: 0.68896365, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2057,7 +2057,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &930502568
 Transform:
   m_ObjectHideFlags: 0
@@ -2079,7 +2079,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 930502567}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb47debb4187b834d92d04622193f346, type: 3}
   m_Name: 
@@ -2274,6 +2274,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ThiefDrone
+      objectReference: {fileID: 0}
+    - target: {fileID: 1035698624846868439, guid: 627c106f104fbb643a556abe8a2ded99,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4036583925807406532, guid: 627c106f104fbb643a556abe8a2ded99,
         type: 3}
@@ -4031,6 +4036,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 39073885122389018, guid: fac76d1bd3c284e4dbe2742319a80ab1,
+        type: 3}
+      propertyPath: far clip plane
+      value: 1000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fac76d1bd3c284e4dbe2742319a80ab1, type: 3}
 --- !u!1 &1655758135
@@ -4903,6 +4913,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PoliceDrone
       objectReference: {fileID: 0}
+    - target: {fileID: 7690331090536809184, guid: 80e5b3a5513516a4ababacb60cf3ade6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6693143689696391411, guid: 80e5b3a5513516a4ababacb60cf3ade6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5048,6 +5063,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Thief
+      objectReference: {fileID: 0}
+    - target: {fileID: 7653402450864112662, guid: a199069bfda82344b9cd1f3982c67cd5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6659980670184125957, guid: a199069bfda82344b9cd1f3982c67cd5,
         type: 3}
@@ -5271,6 +5291,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PackedContainer
+      objectReference: {fileID: 0}
+    - target: {fileID: 6810516546502039922, guid: eef7742d2d0d10044b5a7d1aae5d2887,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7554939488183151457, guid: eef7742d2d0d10044b5a7d1aae5d2887,
         type: 3}

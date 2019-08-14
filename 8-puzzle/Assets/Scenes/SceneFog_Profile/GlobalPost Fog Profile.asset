@@ -1329,10 +1329,10 @@ MonoBehaviour:
     value: 1
   mode:
     overrideState: 1
-    value: 0
+    value: 1
   intensity:
     overrideState: 1
-    value: 0.13
+    value: 0.3
   color:
     overrideState: 1
     value: {r: 0, g: 0, b: 0, a: 1}
@@ -1359,7 +1359,7 @@ MonoBehaviour:
     value: 1
   quality:
     overrideState: 1
-    value: 4
+    value: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1376,7 +1376,6 @@ MonoBehaviour:
   - {fileID: -8306067399419177620}
   - {fileID: -766970273378357267}
   - {fileID: 605169993526412795}
-  - {fileID: 7153207220877085029}
 --- !u!114 &605169993526412795
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1416,7 +1415,7 @@ MonoBehaviour:
     value: {r: 0.25, g: 0.25, b: 0.25, a: 1}
   fastMode:
     overrideState: 1
-    value: 0
+    value: 1
   dirtTexture:
     overrideState: 1
     value: {fileID: 0}
@@ -1424,31 +1423,3 @@ MonoBehaviour:
   dirtIntensity:
     overrideState: 1
     value: 0
---- !u!114 &7153207220877085029
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 556797029e73b2347956b6579e77e05b, type: 3}
-  m_Name: DepthOfField
-  m_EditorClassIdentifier: 
-  active: 0
-  enabled:
-    overrideState: 1
-    value: 1
-  focusDistance:
-    overrideState: 1
-    value: 1
-  aperture:
-    overrideState: 1
-    value: 19
-  focalLength:
-    overrideState: 1
-    value: 50
-  kernelSize:
-    overrideState: 1
-    value: 1
