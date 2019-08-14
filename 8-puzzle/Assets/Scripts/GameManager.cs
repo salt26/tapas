@@ -8,7 +8,6 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     private int m_TeamID = -1;
-    /*
     void Awake()
     {
         if (LobbyManager.lm != null)
@@ -35,5 +34,4 @@ public class GameManager : MonoBehaviour
     {
         
     }
-    */
 }
