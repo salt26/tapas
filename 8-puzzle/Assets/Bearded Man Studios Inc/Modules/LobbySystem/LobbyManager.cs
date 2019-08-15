@@ -135,13 +135,20 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		public void ChangeTeam(LobbyPlayerItem item, int nextTeam)
 		{
             // TODO: Host cannot change team! Host's team number is always 0.
+            if (NetworkManager.Instance.IsServer) return;
 			LobbyService.Instance.SetTeamId(nextTeam);
-            item.SetParent(Grid[nextTeam]);
+            //item.SetParent(Grid[nextTeam]);
 		}
 
         public void DisconnectLobby()
         {
             NetworkManager.Instance.Disconnect();
+            foreach (Button b in GameObject.FindObjectsOfType<Button>())
+            {
+                b.interactable = false;
+            }
+            SceneManager.LoadScene(0);
+            Destroy(gameObject);
         }
 
         public void SendPlayersMessage()
@@ -188,6 +195,10 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                 {
                     Debug.Log("Host TeamID must be 0!");
                     return;
+                }
+                foreach (Button b in GameObject.FindObjectsOfType<Button>())
+                {
+                    b.interactable = false;
                 }
 #if UNITY_5_6_OR_NEWER
                 SceneManager.LoadScene(sceneID);
