@@ -446,6 +446,8 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             bool playerCreated = false;
             for (int i = 0; i < _lobbyPlayersPool.Count; ++i)
             {
+                if (_lobbyPlayersPool[i] == null || _lobbyPlayersPool[i].AssociatedPlayer == null) continue;
+                if (player == null) BMSLogger.DebugLog("IClientMockPlayer player is null");
                 if (_lobbyPlayersPool[i].AssociatedPlayer.NetworkId == player.NetworkId)
                     playerCreated = true;
             }
@@ -656,6 +658,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 			Myself.Setup(_myself, true);
 
             List<IClientMockPlayer> currentPlayers = LobbyService.Instance.MasterLobby.LobbyPlayers;
+            Debug.Log("currentPlayers num is " + currentPlayers.Count);
 			for (int i = 0; i < currentPlayers.Count; ++i)
 			{
 				IClientMockPlayer currentPlayer = currentPlayers[i];
