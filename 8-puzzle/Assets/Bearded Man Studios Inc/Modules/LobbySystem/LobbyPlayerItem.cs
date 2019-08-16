@@ -125,18 +125,19 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                         break;
                 }
             }
-            // TODO: 푯말 움직이는 코드를 여기에 넣으세요.
 		}
 
 		public void ToggleInteractables(bool value)
 		{
+            /*
             for (int i = 0; i < Buttons.Length; ++i)
                 Buttons[i].interactable = value;
+            */
 
             //AvatarBG.raycastTarget = value;
             if (PlayerTeamID != null)
 			    PlayerTeamID.raycastTarget = value;
-			PlayerName.interactable = value;
+			//PlayerName.interactable = value;
 		}
 
 		public void ToggleObject(bool value)

@@ -35,6 +35,8 @@ public class PlayerMovement : MonoBehaviour
     private float mouseX;
     private float mouseY;
 
+    private bool isReady = false;
+
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
@@ -68,6 +70,8 @@ public class PlayerMovement : MonoBehaviour
             + m_Animator.GetBoneTransform(HumanBodyBones.RightEye).position) / 2f
             + Quaternion.Euler(0, angles.y, 0) * CameraOffset;
         m_Camera.transform.eulerAngles = eulerRotation;
+
+        isReady = true;
     }
 
     void FixedUpdate()
@@ -96,6 +100,8 @@ public class PlayerMovement : MonoBehaviour
     
     void OnAnimatorMove()
     {
+        if (!isReady) return;
+
         m_Rigidbody.MovePosition(m_Animator.rootPosition);
 
         // rotation management
@@ -118,6 +124,8 @@ public class PlayerMovement : MonoBehaviour
 
     void OnAnimatorIK(int layerIndex)
     {
+        if (!isReady) return;
+
         // Modify head direction
         m_Animator.SetLookAtWeight(.7f);
         m_Animator.SetLookAtPosition(transform.position + m_Camera.transform.forward * 1000f);
