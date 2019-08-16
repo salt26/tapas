@@ -6,8 +6,7 @@ public class GameData : MonoBehaviour
 {
     // singleton implementation
     private static GameData _instance = null;
-
-
+    
     public int maxScore = 4;
     public Texture[] scoreTextures;
     public Texture[] indexTextures;
@@ -72,6 +71,8 @@ public class GameData : MonoBehaviour
 
     void Calculate()
     {
+        if (score == maxScore) return; // puzzle already cleared
+
         score = 0;
         for (int i = 0; i < switches.Length - 1; i += 2)
         {
@@ -82,7 +83,9 @@ public class GameData : MonoBehaviour
 
     public void CollisionEnter(Transform others)
     {
-        for(int i = 0; i < switches.Length; i++)
+        if (score == maxScore) return; // puzzle already cleared
+
+        for (int i = 0; i < switches.Length; i++)
         {
             if(recentIndex != i && others.transform == switches[i].transform)
             {
