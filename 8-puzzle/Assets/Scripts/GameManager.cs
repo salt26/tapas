@@ -105,12 +105,13 @@ public class GameManager : GameManagerBehavior
 
     public override void GameEnd(RpcArgs args)
     {
-        if (args.GetNext<int>() == 1) // Police win
+        int win = args.GetNext<int>();
+        if (win == 1) // Police win
         {
             Debug.Log("Police win");
             // TODO: POLICE WIN
         }
-        else if (args.GetNext<int>() == 2) // Thief win
+        else if (win == 2) // Thief win
         {
             Debug.Log("Thief win");
             // TODO: THIEF WIN
