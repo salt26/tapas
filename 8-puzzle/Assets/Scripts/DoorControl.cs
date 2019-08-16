@@ -19,6 +19,14 @@ public class DoorControl : MonoBehaviour
     private float openness;
     private float openTime;
 
+    public bool IsOpen
+    {
+        get
+        {
+            return isOpen;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
