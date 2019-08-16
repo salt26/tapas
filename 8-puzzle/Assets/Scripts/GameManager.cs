@@ -11,10 +11,14 @@ public class GameManager : GameManagerBehavior
 {
     public static GameManager instance;
 
+    public float time;
+    public Transform maze;
+
     private int m_TeamID = -1;
     private int win_TeamID = 0; // 0 : Game running, 1 : Police win, 2 : Thief win, 3 : Game end
     private float roundTime = 10000000f;
-    public float time;
+    
+    private float mazeScale = 1f;
 
     public int Win_TeamID
     {
@@ -41,15 +45,17 @@ public class GameManager : GameManagerBehavior
 
     void Start()
     {
+        mazeScale = maze.localScale.x;
+
         int r = Random.Range(0, 4);
         List<Vector3> policePositions;
         List<Quaternion> policeRotations;
         policePositions = new List<Vector3>
         {
-            new Vector3(2f, 0f, 2f),
-            new Vector3(135f, 0f, 2f),
-            new Vector3(135f, 0f, 135f),
-            new Vector3(2f, 0f, 135f)
+            new Vector3(2f * mazeScale, 0f, 2f * mazeScale),
+            new Vector3(104.7f * mazeScale, 0f, 2f * mazeScale),
+            new Vector3(104.7f * mazeScale, 0f, 104.7f * mazeScale),
+            new Vector3(2f * mazeScale, 0f, 104.7f * mazeScale)
         };
         policeRotations = new List<Quaternion>
         {
@@ -61,11 +67,11 @@ public class GameManager : GameManagerBehavior
         if (m_TeamID == 1)
             NetworkManager.Instance.InstantiatePolice(position: policePositions[r], rotation: policeRotations[r]);
         else if (m_TeamID == 2)
-            NetworkManager.Instance.InstantiateThief(position: new Vector3(68.5f, 0f, 68.5f));
+            NetworkManager.Instance.InstantiateThief(position: new Vector3(53.3f * mazeScale, 0f, 53.3f * mazeScale));
         else if (m_TeamID == 3)
-            NetworkManager.Instance.InstantiateSupporter(0, position: new Vector3(62.5f, 8f, 68.5f));
+            NetworkManager.Instance.InstantiateSupporter(0, position: new Vector3(48.3f * mazeScale, 7f * mazeScale, 53.3f * mazeScale));
         else if (m_TeamID == 4)
-            NetworkManager.Instance.InstantiateSupporter(1, position: new Vector3(74.5f, 8f, 68.5f));
+            NetworkManager.Instance.InstantiateSupporter(1, position: new Vector3(58.3f * mazeScale, 7f * mazeScale, 53.3f * mazeScale));
 
         if (NetworkManager.Instance.IsServer)
         {
@@ -93,7 +99,7 @@ public class GameManager : GameManagerBehavior
                 Win_TeamID = 1;
             }
 
-            BMSLogger.DebugLog(win_TeamID.ToString());
+            //BMSLogger.DebugLog(win_TeamID.ToString());
         }
     }
 

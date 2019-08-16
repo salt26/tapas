@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class Police : PoliceBehavior
 {
+    public Transform camera;
+
     // Start is called before the first frame update
     protected override void NetworkStart()
     {
@@ -30,15 +32,12 @@ public class Police : PoliceBehavior
         {
             networkObject.position = transform.position;
             networkObject.rotation = transform.rotation;
+            networkObject.cameraRotation = camera.rotation;
 
             if (Input.GetMouseButtonDown(0))
             {
                 networkObject.SendRpc(
-                    RPC_CATCH_THIEF,
-                    Receivers.Server
-                );
-                networkObject.SendRpc(
-                    RPC_OPEN_BOX,
+                    RPC_TOUCH,
                     Receivers.Server
                 );
             }
@@ -71,16 +70,11 @@ public class Police : PoliceBehavior
         {
             transform.position = networkObject.position;
             transform.rotation = networkObject.rotation;
+            camera.rotation = networkObject.cameraRotation;
         }
     }
 
-    public override void CatchThief(RpcArgs args)
-    {
-        // TODO
-        throw new System.NotImplementedException();
-    }
-
-    public override void OpenBox(RpcArgs args)
+    public override void Touch(RpcArgs args)
     {
         // TODO
         throw new System.NotImplementedException();

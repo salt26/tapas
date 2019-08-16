@@ -19,7 +19,7 @@ public class Exit : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (NetworkManager.Instance.IsServer && other.CompareTag("thief") && GameManager.instance.Win_TeamID == 0)
+        if (NetworkManager.Instance.IsServer && other.CompareTag("Thief") && GameManager.instance.Win_TeamID == 0)
         {
             GameManager.instance.Win_TeamID = 2;
         }

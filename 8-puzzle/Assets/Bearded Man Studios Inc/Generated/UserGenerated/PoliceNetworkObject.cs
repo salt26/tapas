@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedInterpol("{\"inter\":[0.15,0.15,0,0,0]")]
+	[GeneratedInterpol("{\"inter\":[0.15,0.15,0,0,0,0.15]")]
 	public partial class PoliceNetworkObject : NetworkObject
 	{
 		public const int IDENTITY = 6;
@@ -170,6 +170,37 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			if (item3NumChanged != null) item3NumChanged(_item3Num, timestep);
 			if (fieldAltered != null) fieldAltered("item3Num", _item3Num, timestep);
 		}
+		[ForgeGeneratedField]
+		private Quaternion _cameraRotation;
+		public event FieldEvent<Quaternion> cameraRotationChanged;
+		public InterpolateQuaternion cameraRotationInterpolation = new InterpolateQuaternion() { LerpT = 0.15f, Enabled = true };
+		public Quaternion cameraRotation
+		{
+			get { return _cameraRotation; }
+			set
+			{
+				// Don't do anything if the value is the same
+				if (_cameraRotation == value)
+					return;
+
+				// Mark the field as dirty for the network to transmit
+				_dirtyFields[0] |= 0x20;
+				_cameraRotation = value;
+				hasDirtyFields = true;
+			}
+		}
+
+		public void SetcameraRotationDirty()
+		{
+			_dirtyFields[0] |= 0x20;
+			hasDirtyFields = true;
+		}
+
+		private void RunChange_cameraRotation(ulong timestep)
+		{
+			if (cameraRotationChanged != null) cameraRotationChanged(_cameraRotation, timestep);
+			if (fieldAltered != null) fieldAltered("cameraRotation", _cameraRotation, timestep);
+		}
 
 		protected override void OwnershipChanged()
 		{
@@ -184,6 +215,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			item1NumInterpolation.current = item1NumInterpolation.target;
 			item2NumInterpolation.current = item2NumInterpolation.target;
 			item3NumInterpolation.current = item3NumInterpolation.target;
+			cameraRotationInterpolation.current = cameraRotationInterpolation.target;
 		}
 
 		public override int UniqueIdentity { get { return IDENTITY; } }
@@ -195,6 +227,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			UnityObjectMapper.Instance.MapBytes(data, _item1Num);
 			UnityObjectMapper.Instance.MapBytes(data, _item2Num);
 			UnityObjectMapper.Instance.MapBytes(data, _item3Num);
+			UnityObjectMapper.Instance.MapBytes(data, _cameraRotation);
 
 			return data;
 		}
@@ -221,6 +254,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			item3NumInterpolation.current = _item3Num;
 			item3NumInterpolation.target = _item3Num;
 			RunChange_item3Num(timestep);
+			_cameraRotation = UnityObjectMapper.Instance.Map<Quaternion>(payload);
+			cameraRotationInterpolation.current = _cameraRotation;
+			cameraRotationInterpolation.target = _cameraRotation;
+			RunChange_cameraRotation(timestep);
 		}
 
 		protected override BMSByte SerializeDirtyFields()
@@ -238,6 +275,8 @@ namespace BeardedManStudios.Forge.Networking.Generated
 				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _item2Num);
 			if ((0x10 & _dirtyFields[0]) != 0)
 				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _item3Num);
+			if ((0x20 & _dirtyFields[0]) != 0)
+				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _cameraRotation);
 
 			// Reset all the dirty fields
 			for (int i = 0; i < _dirtyFields.Length; i++)
@@ -319,6 +358,19 @@ namespace BeardedManStudios.Forge.Networking.Generated
 					RunChange_item3Num(timestep);
 				}
 			}
+			if ((0x20 & readDirtyFlags[0]) != 0)
+			{
+				if (cameraRotationInterpolation.Enabled)
+				{
+					cameraRotationInterpolation.target = UnityObjectMapper.Instance.Map<Quaternion>(data);
+					cameraRotationInterpolation.Timestep = timestep;
+				}
+				else
+				{
+					_cameraRotation = UnityObjectMapper.Instance.Map<Quaternion>(data);
+					RunChange_cameraRotation(timestep);
+				}
+			}
 		}
 
 		public override void InterpolateUpdate()
@@ -350,6 +402,11 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			{
 				_item3Num = (int)item3NumInterpolation.Interpolate();
 				//RunChange_item3Num(item3NumInterpolation.Timestep);
+			}
+			if (cameraRotationInterpolation.Enabled && !cameraRotationInterpolation.current.UnityNear(cameraRotationInterpolation.target, 0.0015f))
+			{
+				_cameraRotation = (Quaternion)cameraRotationInterpolation.Interpolate();
+				//RunChange_cameraRotation(cameraRotationInterpolation.Timestep);
 			}
 		}
 

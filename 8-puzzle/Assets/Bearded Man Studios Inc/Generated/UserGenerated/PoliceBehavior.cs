@@ -4,14 +4,13 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[[][\"int\"][][\"string\"]]")]
-	[GeneratedRPCVariableNames("{\"types\":[[][\"itemID\"][][\"message\"]]")]
+	[GeneratedRPC("{\"types\":[[][\"int\"][\"string\"]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[][\"itemID\"][\"message\"]]")]
 	public abstract partial class PoliceBehavior : NetworkBehavior
 	{
-		public const byte RPC_OPEN_BOX = 0 + 5;
+		public const byte RPC_TOUCH = 0 + 5;
 		public const byte RPC_USE_ITEM = 1 + 5;
-		public const byte RPC_CATCH_THIEF = 2 + 5;
-		public const byte RPC_CHAT = 3 + 5;
+		public const byte RPC_CHAT = 2 + 5;
 		
 		public PoliceNetworkObject networkObject = null;
 
@@ -25,9 +24,8 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.AttachedBehavior = this;
 
 			base.SetupHelperRpcs(networkObject);
-			networkObject.RegisterRpc("OpenBox", OpenBox);
+			networkObject.RegisterRpc("Touch", Touch);
 			networkObject.RegisterRpc("UseItem", UseItem, typeof(int));
-			networkObject.RegisterRpc("CatchThief", CatchThief);
 			networkObject.RegisterRpc("Chat", Chat, typeof(string));
 
 			networkObject.onDestroy += DestroyGameObject;
@@ -108,15 +106,11 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		/// <summary>
 		/// Arguments:
 		/// </summary>
-		public abstract void OpenBox(RpcArgs args);
+		public abstract void Touch(RpcArgs args);
 		/// <summary>
 		/// Arguments:
 		/// </summary>
 		public abstract void UseItem(RpcArgs args);
-		/// <summary>
-		/// Arguments:
-		/// </summary>
-		public abstract void CatchThief(RpcArgs args);
 		/// <summary>
 		/// Arguments:
 		/// </summary>
