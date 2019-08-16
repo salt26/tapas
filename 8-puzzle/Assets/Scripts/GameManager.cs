@@ -13,7 +13,7 @@ public class GameManager : GameManagerBehavior
 
     private int m_TeamID = -1;
     private int win_TeamID = 0; // 0 : Game running, 1 : Police win, 2 : Thief win, 3 : Game end
-    private float roundTime = 10f;
+    private float roundTime = 10000000f;
     public float time;
 
     public int Win_TeamID
@@ -81,16 +81,19 @@ public class GameManager : GameManagerBehavior
         {
             if (win_TeamID != 0) // Police or thief win
             {
-                networkObject.SendRpc(RPC_GAME_END, Receivers.Others, win_TeamID);
+                networkObject.SendRpc(RPC_GAME_END, Receivers.All, win_TeamID);
                 win_TeamID = 3;
+                return;
             }
 
             time -= Time.deltaTime;
             if (time <= 0)
             {
                 time = 0;
-                win_TeamID = 1;
+                Win_TeamID = 1;
             }
+
+            BMSLogger.DebugLog(win_TeamID.ToString());
         }
     }
 
