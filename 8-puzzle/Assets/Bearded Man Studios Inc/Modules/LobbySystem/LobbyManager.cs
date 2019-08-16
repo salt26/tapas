@@ -152,10 +152,12 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		public void ChangeTeam(LobbyPlayerItem item, int nextTeam)
 		{
             // TODO: Host cannot change team! Host's team number is always 0.
-            if (NetworkManager.Instance.IsServer)
-            {
+            if (NetworkManager.Instance.IsServer && nextTeam != 0)
                 return;
-            }
+
+            if (!NetworkManager.Instance.IsServer && nextTeam == 0)
+                return;
+
 			LobbyService.Instance.SetTeamId(nextTeam);
         }
 
@@ -503,8 +505,9 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 				LobbyPlayerItem item = GrabLobbyPlayerItem(convertedPlayer);
                 if (item != null)
                     item.ChangeName(convertedPlayer.Name);
-			}
-		}
+            }
+            MainThreadManager.Instance.Execute(() => UpdateChosens());
+        }
 
 		public void OnFNTeamChanged(IClientMockPlayer player)
 		{
@@ -631,24 +634,26 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             LobbyService.Instance.Initialize(NetworkManager.Instance.Networker);
             
 			//If I am the host, then I should show the kick button for all players here
-			LobbyPlayerItem item = GetNewPlayerItem(); //This will just auto generate the 10 items we need to start with
-			item.SetParent(Grid[0]);
-			PutBackToPool(item);
+            MainThreadManager.Run(() =>
+            {
+                LobbyPlayerItem item = GetNewPlayerItem(); //This will just auto generate the 10 items we need to start with
+                item.SetParent(Grid[0]);
+                PutBackToPool(item);
+                if (NetworkManager.Instance.IsServer)
+                {
+                    item.RequestChangeTeam(0);
+                }
+                else
+                {
+                    item.RequestChangeTeam(1);
+                }
+            });
 
 			_myself = GrabPlayer(LobbyService.Instance.MyMockPlayer);
 			if (!LobbyPlayers.Contains(_myself))
 				LobbyPlayers.Add(_myself);
 			Myself.Init(this);
 			Myself.Setup(_myself, true);
-
-            if (NetworkManager.Instance.IsServer)
-            {
-                Myself.AssociatedPlayer.TeamID = 0;
-            }
-            else
-            {
-                Myself.AssociatedPlayer.TeamID = 1;
-            }
 
             List<IClientMockPlayer> currentPlayers = LobbyService.Instance.MasterLobby.LobbyPlayers;
 			for (int i = 0; i < currentPlayers.Count; ++i)
@@ -659,7 +664,10 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 				OnFNPlayerConnected(currentPlayers[i]);
 			}
 
-            UpdateChosens();
+            MainThreadManager.Run(() =>
+            {
+                UpdateChosens();
+            });
 		}
 		#endregion
 	}

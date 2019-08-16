@@ -16,10 +16,12 @@ public class PoliceSupporter : SupporterBehavior
         base.NetworkStart();
         if (networkObject.IsOwner)
         {
-            PlayerPrefs.SetInt("UnitySelectMonitor", 3);
+            //PlayerPrefs.SetInt("UnitySelectMonitor", 3);
+            //Display.displays[2].Activate();
         }
         else
         {
+            GetComponentInChildren<Camera>().enabled = false;
             GetComponent<DroneMovement>().enabled = false;
         }
     }

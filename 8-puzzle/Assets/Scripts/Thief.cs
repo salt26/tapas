@@ -13,10 +13,12 @@ public class Thief : ThiefBehavior
         base.NetworkStart();
         if (networkObject.IsOwner)
         {
-            PlayerPrefs.SetInt("UnitySelectMonitor", 2);
+            //PlayerPrefs.SetInt("UnitySelectMonitor", 2);
+            //Display.displays[1].Activate();
         }
         else
         {
+            GetComponentInChildren<Camera>().enabled = false;
             GetComponent<PlayerMovement>().enabled = false;
         }
     }

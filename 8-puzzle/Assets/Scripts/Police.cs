@@ -13,10 +13,12 @@ public class Police : PoliceBehavior
         base.NetworkStart();
         if (networkObject.IsOwner)
         {
-            PlayerPrefs.SetInt("UnitySelectMonitor", 1);
+            //PlayerPrefs.SetInt("UnitySelectMonitor", 1);
+            //Display.displays[0].Activate();
         }
         else
         {
+            GetComponentInChildren<Camera>().enabled = false;
             GetComponent<PlayerMovement>().enabled = false;
         }
     }
