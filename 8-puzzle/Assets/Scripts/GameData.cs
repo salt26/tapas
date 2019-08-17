@@ -134,7 +134,7 @@ public class GameData : SwitchManagerBehavior
             switches[j].SetScoreTexture(scoreTextures[networkObject.onGroupsNum]);
             switches[j].SetRotation(networkObject.lastTouch == j);
         }
-        if (networkObject.lastTouch == maxScore)
+        if (networkObject.onGroupsNum == maxScore)
         {
             for (int j = 0; j < doors.Length; j++)
             {

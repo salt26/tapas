@@ -111,6 +111,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 				return;
 			}
 
+            NetworkManager.Instance.Networker.objectCreateRequested -= CheckForService;
 			NetworkObject obj = new LobbyService.LobbyServiceNetworkObject(networker, id, frame);
 			if (callback != null)
 				callback(obj);
@@ -118,8 +119,8 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		}
 
 		private void FactoryObjectCreated(NetworkObject obj)
-		{
-			if (obj.UniqueIdentity != LobbyService.LobbyServiceNetworkObject.IDENTITY)
+        {
+            if (obj.UniqueIdentity != LobbyService.LobbyServiceNetworkObject.IDENTITY)
 				return;
 
             NetworkManager.Instance.Networker.factoryObjectCreated -= FactoryObjectCreated;
@@ -191,7 +192,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                 /*
                 if (LobbyService.Instance.MasterLobby.LobbyPlayers.Count != 5)
                 {
-                    Debug.Log("Player number must be 5!");
+                    Logging.BMSLog.Log("Player number must be 5!");
                     return;
                 }
                 */
@@ -200,7 +201,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                 {
                     if (p.TeamID < 0 || p.TeamID > 4)
                     {
-                        Debug.Log("Player TeamID must be in range of [0, 4]!");
+                        Logging.BMSLog.Log("Player TeamID must be in range of [0, 4]!");
                         return;
                     }
 
@@ -210,13 +211,13 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                     }
                     else
                     {
-                        Debug.Log("Player TeamID must not be duplicated!");
+                        Logging.BMSLog.Log("Player TeamID must not be duplicated!");
                         return;
                     }
                 }
                 if (Myself.AssociatedPlayer.TeamID != 0)
                 {
-                    Debug.Log("Host TeamID must be 0!");
+                    Logging.BMSLog.Log("Host TeamID must be 0!");
                     return;
                 }
                 foreach (Button b in GameObject.FindObjectsOfType<Button>())
@@ -658,7 +659,6 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 			Myself.Setup(_myself, true);
 
             List<IClientMockPlayer> currentPlayers = LobbyService.Instance.MasterLobby.LobbyPlayers;
-            Debug.Log("currentPlayers num is " + currentPlayers.Count);
 			for (int i = 0; i < currentPlayers.Count; ++i)
 			{
 				IClientMockPlayer currentPlayer = currentPlayers[i];
