@@ -67,8 +67,8 @@ public class GameData : SwitchManagerBehavior
 
         for(int i = 0; i < switches.Length; i++)
         {
-            switches[i].SetIndexTexture(indexTextures[i]);
-            switches[i].SetScoreTexture(scoreTextures[0]);
+            //switches[i].SetIndexTexture(indexTextures[i]);
+            //switches[i].SetScoreTexture(scoreTextures[0]);
         }
     }
 
