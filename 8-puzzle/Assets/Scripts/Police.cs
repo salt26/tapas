@@ -77,7 +77,9 @@ public class Police : PoliceBehavior
     public override void Touch(RpcArgs args)
     {
         // TODO
-        throw new System.NotImplementedException();
+        if (!NetworkManager.Instance.IsServer) return;
+        Debug.Log("MouseClick");
+        GetComponentInChildren<PlayerTouch>().Touch();
     }
 
     public override void UseItem(RpcArgs args)

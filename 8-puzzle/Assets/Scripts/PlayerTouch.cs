@@ -31,13 +31,18 @@ public class PlayerTouch : MonoBehaviour
         else if (NetworkManager.Instance.IsServer && touchTimer > 0 && other != null)
         {
             touchTimer = 0;
-            foreach (string s in touchableTags)
+            if (other.tag.Equals("Switch"))
             {
-                if (other.tag.Equals(s))
-                {
-                    Debug.Log("Touch with " + other.name);
-                    GameData.Instance.CollisionEnter(other.transform);
-                }
+                Debug.Log("Touch with " + other.name);
+                GameData.Instance.CollisionEnter(other.transform);
+            }
+            else if (other.tag.Equals("Box"))
+            {
+                // TODO
+            }
+            else if (other.tag.Equals("Thief"))
+            {
+                // TODO
             }
         }
     }
