@@ -483,7 +483,8 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		public void OnFNPlayerDisconnected(IClientMockPlayer player)
 		{
 			LobbyPlayer convertedPlayer = GrabPlayer(player);
-			MainThreadManager.Run(() =>
+
+            MainThreadManager.Run(() =>
 			{
 				if (LobbyPlayers.Contains(convertedPlayer))
 				{
@@ -493,7 +494,9 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 					LobbyPlayerItem item = GrabLobbyPlayerItem(convertedPlayer);
 					if (item != null)
 						PutBackToPool(item);
-				}
+
+                    UpdateChosens();
+                }
 			});
 		}
 

@@ -677,7 +677,8 @@ namespace BeardedManStudios.Forge.Networking.Lobby
 			// TODO:  This should be called
 			//Logging.BMSLog.Log("OH NO: " + player.Ip);
 			//BeardedManStudios.Forge.Logging.BMSLog.Log("Player disconnected");
-			networkObject.SendRpc(RPC_PLAYER_LEFT, Receivers.All, player.NetworkId);
+			networkObject.SendRpc(RPC_PLAYER_LEFT, Receivers.AllBuffered, player.NetworkId);
+            //networkObject.SendCancelingRpc(RPC_PLAYER_JOINED, Receivers.AllBuffered, player.NetworkId);
 		}
 		#endregion
 	}
