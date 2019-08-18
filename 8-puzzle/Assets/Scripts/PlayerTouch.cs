@@ -31,18 +31,24 @@ public class PlayerTouch : MonoBehaviour
         else if (NetworkManager.Instance.IsServer && touchTimer > 0 && other != null)
         {
             touchTimer = 0;
-            if (other.tag.Equals("Switch"))
+            foreach (string tag in touchableTags)
             {
-                Debug.Log("Touch with " + other.name);
-                GameData.Instance.CollisionEnter(other.transform);
-            }
-            else if (other.tag.Equals("Box"))
-            {
-                // TODO
-            }
-            else if (other.tag.Equals("Thief"))
-            {
-                // TODO
+                if (!other.tag.Equals(tag)) continue;
+
+                if (other.tag.Equals("Switch"))
+                {
+                    Debug.Log("Touch with " + other.name);
+                    GameData.Instance.CollisionEnter(other.transform);
+                    // TODO: 누른 스위치가 모든 클라이언트에서 보이도록 하기
+                }
+                if (other.tag.Equals("Box"))
+                {
+                    // TODO: open box
+                }
+                if (other.tag.Equals("Thief"))
+                {
+                    GameManager.instance.Win_TeamID = 1;
+                }
             }
         }
     }

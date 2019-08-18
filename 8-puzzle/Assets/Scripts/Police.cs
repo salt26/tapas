@@ -76,7 +76,6 @@ public class Police : PoliceBehavior
 
     public override void Touch(RpcArgs args)
     {
-        // TODO
         if (!NetworkManager.Instance.IsServer) return;
         Debug.Log("MouseClick");
         GetComponentInChildren<PlayerTouch>().Touch();
@@ -84,8 +83,31 @@ public class Police : PoliceBehavior
 
     public override void UseItem(RpcArgs args)
     {
-        // TODO
-        throw new System.NotImplementedException();
+        if (!NetworkManager.Instance.IsServer) return;
+        int i = args.GetNext<int>();
+        if(networkObject.item1Num > 0 && i == 1)
+        {
+            // Wire
+            Debug.Log("Used Item1");
+            ItemManager.instance.networkObject.SendRpc(ItemManagerBehavior.RPC_CREATE_ITEM, Receivers.All, i, networkObject.position);
+            networkObject.item1Num--;
+        }
+        else if(networkObject.item2Num > 0 && i == 2)
+        {
+            // BearTrap
+            Debug.Log("Used Item2");
+            ItemManager.instance.networkObject.SendRpc(ItemManagerBehavior.RPC_CREATE_ITEM, Receivers.All, i, networkObject.position);
+            networkObject.item2Num--;
+        }
+        else if(networkObject.item3Num > 0 && i == 3)
+        {
+            // Alert
+            Debug.Log("Used Item3");
+            ItemManager.instance.networkObject.SendRpc(ItemManagerBehavior.RPC_CREATE_ITEM, Receivers.All, i, networkObject.position);
+            networkObject.item3Num--;
+        }
+
+        Debug.Log("Out of Item");
     }
 
     public override void Chat(RpcArgs args)

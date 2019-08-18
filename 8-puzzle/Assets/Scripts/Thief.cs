@@ -56,7 +56,6 @@ public class Thief : ThiefBehavior
         if (!NetworkManager.Instance.IsServer) return;
         Debug.Log("MouseClick");
         GetComponentInChildren<PlayerTouch>().Touch();
-        // TODO: 누른 스위치가 모든 클라이언트에서 보이도록 하기
     }
 
     public override void Chat(RpcArgs args)

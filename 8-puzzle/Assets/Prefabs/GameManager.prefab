@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6527541136905919574}
   - component: {fileID: 6527541136905919577}
   - component: {fileID: 5715750567344172837}
+  - component: {fileID: 211386841}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -76,6 +77,22 @@ MonoBehaviour:
   timeUI: {fileID: 3863615882889239374}
   time: 0
   maze: {fileID: 0}
+--- !u!114 &211386841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6527541136905919576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69aab1b5efa305e48abf4d2a0341e8c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemPrefabs:
+  - {fileID: 8668225218619359926, guid: e9a32a1e0a509fb4596737db5574e3bb, type: 3}
+  - {fileID: 7440915734884310294, guid: 39490e8f084801349afe43671343d61d, type: 3}
+  - {fileID: 7295467581405780406, guid: d43e1c8e223df7149a256bc251a95055, type: 3}
 --- !u!1001 &1981412421982781204
 PrefabInstance:
   m_ObjectHideFlags: 0

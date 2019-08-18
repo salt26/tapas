@@ -18,7 +18,7 @@ public class GameManager : GameManagerBehavior
 
     private int m_TeamID = -1;
     private int win_TeamID = 0; // 0 : Game running, 1 : Police win, 2 : Thief win, 3 : Game end
-    private float roundTime = 20f;
+    private float roundTime = 320f;
     
     private float mazeScale = 1f;
 
@@ -133,5 +133,7 @@ public class GameManager : GameManagerBehavior
             Debug.Log("Thief win");
             // TODO: THIEF WIN
         }
+
+        SceneManager.LoadScene(1); //is it right??
     }
 }
