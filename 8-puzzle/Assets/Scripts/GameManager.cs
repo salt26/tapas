@@ -6,17 +6,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : GameManagerBehavior
 {
     public static GameManager instance;
+    public Text timeUI;
 
     public float time;
     public Transform maze;
 
     private int m_TeamID = -1;
     private int win_TeamID = 0; // 0 : Game running, 1 : Police win, 2 : Thief win, 3 : Game end
-    private float roundTime = 10000000f;
+    private float roundTime = 20f;
     
     private float mazeScale = 1f;
 
@@ -81,10 +83,10 @@ public class GameManager : GameManagerBehavior
     
     void Update()
     {
-        if (win_TeamID == 3) return; // game ended
-
         if (NetworkManager.Instance.IsServer)
         {
+            if (win_TeamID == 3) return; // game ended
+
             if (win_TeamID != 0) // Police or thief win
             {
                 networkObject.SendRpc(RPC_GAME_END, Receivers.All, win_TeamID);
@@ -93,13 +95,28 @@ public class GameManager : GameManagerBehavior
             }
 
             time -= Time.deltaTime;
+            networkObject.time = time;
+
             if (time <= 0)
             {
                 time = 0;
+                networkObject.time = time;
                 Win_TeamID = 1;
             }
 
             //BMSLogger.DebugLog(win_TeamID.ToString());
+        }
+        else // IsClient
+        {
+            int t = Mathf.CeilToInt(networkObject.time);
+            if (t % 60 < 10)
+            {
+                timeUI.text = (t / 60) + " : 0" + (t % 60);
+            }
+            else
+            {
+                timeUI.text = (t / 60) + " : " + (t % 60);
+            }
         }
     }
 
