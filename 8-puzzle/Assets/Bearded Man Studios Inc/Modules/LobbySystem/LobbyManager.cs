@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using BeardedManStudios.Forge.Networking.Lobby;
 using System;
 using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 {
@@ -24,6 +27,8 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
         public List<Color> chosenColors;    // 0번째 인덱스는 타인의 Chosen 색, 1번째 인덱스는 자신의 Chosen 색
         public Button startButton;
         public List<Button> teamChangeButtons;
+        public List<Button> otherButtons;
+        public List<InputField> otherInputFields;
 
         private const int BUFFER_PLAYER_ITEMS = 10;
 		private List<LobbyPlayerItem> _lobbyPlayersInactive = new List<LobbyPlayerItem>();
@@ -87,30 +92,40 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             startButton.interactable = false;
             foreach (Button b in teamChangeButtons)
             {
-                b.interactable = true;
+                b.interactable = false;
             }
-
-            for (int i = 0; i < NetworkObject.NetworkObjects.Count; ++i)
-			{
-				NetworkObject n = NetworkObject.NetworkObjects[i];
-				if (n is LobbyService.LobbyServiceNetworkObject)
-				{
-					SetupService(n);
-					return;
-				}
-			}
+            foreach (Button b in otherButtons)
+            {
+                b.interactable = false;
+            }
+            foreach (InputField f in otherInputFields)
+            {
+                f.interactable = false;
+            }
 
             NetworkManager.Instance.Networker.objectCreateRequested += CheckForService;
             NetworkManager.Instance.Networker.factoryObjectCreated += FactoryObjectCreated;
-		}
+            
+            for (int i = 0; i < NetworkObject.NetworkObjects.Count; ++i)
+            {
+                NetworkObject n = NetworkObject.NetworkObjects[i];
+                if (n is LobbyService.LobbyServiceNetworkObject)
+                {
+                    SetupService(n);
+                    return;
+                }
+            }
+        }
 
 		private void CheckForService(NetWorker networker, int identity, uint id, Frame.FrameStream frame, Action<NetworkObject> callback)
 		{
+            BMSLogger.DebugLog("CheckForService 1");
 			if (identity != LobbyService.LobbyServiceNetworkObject.IDENTITY)
 			{
 				return;
 			}
 
+            BMSLogger.DebugLog("CheckForService 2");
             NetworkManager.Instance.Networker.objectCreateRequested -= CheckForService;
 			NetworkObject obj = new LobbyService.LobbyServiceNetworkObject(networker, id, frame);
 			if (callback != null)
@@ -164,12 +179,21 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
         public void DisconnectLobby()
         {
-            NetworkManager.Instance.Disconnect();
+            NetworkManager.Instance.Networker.Disconnect(false);
             foreach (Button b in GameObject.FindObjectsOfType<Button>())
             {
                 b.interactable = false;
             }
-            SceneManager.LoadScene(0);
+            foreach (InputField f in GameObject.FindObjectsOfType<InputField>())
+            {
+                f.interactable = false;
+            }
+            //SceneManager.LoadScene(0);
+#if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
             Destroy(gameObject);
         }
 
@@ -188,20 +212,17 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             /* My custom code */
             if (NetworkManager.Instance.IsServer)
             {
-                ((IServer)NetworkManager.Instance.Networker).StopAcceptingConnections();
-                /*
-                if (LobbyService.Instance.MasterLobby.LobbyPlayers.Count != 5)
+                if (LobbyService.Instance.MasterLobby.LobbyPlayers.Count > 5)
                 {
-                    Logging.BMSLog.Log("Player number must be 5!");
+                    BMSLogger.DebugLog("Player number must be 5 or less!");
                     return;
                 }
-                */
                 bool[] teams = new bool[5] { false, false, false, false, false };
                 foreach (var p in LobbyService.Instance.MasterLobby.LobbyPlayers)
                 {
                     if (p.TeamID < 0 || p.TeamID > 4)
                     {
-                        Logging.BMSLog.Log("Player TeamID must be in range of [0, 4]!");
+                        BMSLogger.DebugLog("Player TeamID must be in range of [0, 4]!");
                         return;
                     }
 
@@ -211,15 +232,16 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                     }
                     else
                     {
-                        Logging.BMSLog.Log("Player TeamID must not be duplicated!");
+                        BMSLogger.DebugLog("Player TeamID must not be duplicated!");
                         return;
                     }
                 }
                 if (Myself.AssociatedPlayer.TeamID != 0)
                 {
-                    Logging.BMSLog.Log("Host TeamID must be 0!");
+                    BMSLogger.DebugLog("Host TeamID must be 0!");
                     return;
                 }
+                ((IServer)NetworkManager.Instance.Networker).StopAcceptingConnections();
                 foreach (Button b in GameObject.FindObjectsOfType<Button>())
                 {
                     b.interactable = false;
@@ -231,9 +253,9 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 #endif
             }
         }
-        #endregion
+#endregion
 
-        #region Private API
+#region Private API
         private LobbyPlayerItem GetNewPlayerItem()
 		{
 			LobbyPlayerItem returnValue = null;
@@ -358,7 +380,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             }
 
             int j;
-            for (j = 0; j < playerNames[1].Count; j++)
+            for (j = 0; j < playerNames[1].Count && j < chosen1s.Count; j++)
             {
                 chosen1s[j].SetActive(true);
                 chosen1s[j].GetComponentInChildren<Text>().text = playerNames[1][j].Substring(1);
@@ -377,7 +399,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                 chosen1s[j].SetActive(false);
             }
 
-            for (j = 0; j < playerNames[2].Count; j++)
+            for (j = 0; j < playerNames[2].Count && j < chosen2s.Count; j++)
             {
                 chosen2s[j].SetActive(true);
                 chosen2s[j].GetComponentInChildren<Text>().text = playerNames[2][j].Substring(1);
@@ -396,7 +418,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                 chosen2s[j].SetActive(false);
             }
 
-            for (j = 0; j < playerNames[3].Count; j++)
+            for (j = 0; j < playerNames[3].Count && j < chosen3s.Count; j++)
             {
                 chosen3s[j].SetActive(true);
                 chosen3s[j].GetComponentInChildren<Text>().text = playerNames[3][j].Substring(1);
@@ -416,7 +438,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             }
 
 
-            for (j = 0; j < playerNames[4].Count; j++)
+            for (j = 0; j < playerNames[4].Count && j < chosen4s.Count; j++)
             {
                 chosen4s[j].SetActive(true);
                 chosen4s[j].GetComponentInChildren<Text>().text = playerNames[4][j].Substring(1);
@@ -435,15 +457,17 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                 chosen4s[j].SetActive(false);
             }
         }
-		#endregion
+#endregion
 
-		#region Interface API
+#region Interface API
 		public void OnFNPlayerConnected(IClientMockPlayer player)
 		{
+            BMSLogger.DebugLog("OnFNPlayerConnected 1");
 			LobbyPlayer convertedPlayer = GrabPlayer(player);
 			if (convertedPlayer == _myself || _myself == null)
 				return; //Ignore re-adding ourselves
 
+            BMSLogger.DebugLog("OnFNPlayerConnected 2");
             bool playerCreated = false;
             for (int i = 0; i < _lobbyPlayersPool.Count; ++i)
             {
@@ -457,6 +481,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             if (playerCreated)
                 return;
 
+            BMSLogger.DebugLog("OnFNPlayerConnected 3");
             convertedPlayer.Created = true;
 
             if (!LobbyPlayers.Contains(convertedPlayer))
@@ -635,11 +660,14 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		}
 
 		private void SetupComplete()
-		{
-			LobbyService.Instance.SetLobbyMaster(this);
+        {
+            BMSLogger.DebugLog("SetupComplete");
+            LobbyService.Instance.SetLobbyMaster(this);
             LobbyService.Instance.Initialize(NetworkManager.Instance.Networker);
-            
-			//If I am the host, then I should show the kick button for all players here
+
+            LobbyService.Instance.FlushCreateActions();
+
+            //If I am the host, then I should show the kick button for all players here
             MainThreadManager.Run(() =>
             {
                 LobbyPlayerItem item = GetNewPlayerItem(); //This will just auto generate the 10 items we need to start with
@@ -668,13 +696,28 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 				if (currentPlayer == _myself)
 					continue;
 				OnFNPlayerConnected(currentPlayers[i]);
-			}
+            }
 
             MainThreadManager.Run(() =>
             {
+                foreach (Button b in otherButtons)
+                {
+                    b.interactable = true;
+                }
+                foreach (InputField f in otherInputFields)
+                {
+                    f.interactable = true;
+                }
+                if (!NetworkManager.Instance.IsServer)
+                {
+                    foreach (Button b in teamChangeButtons)
+                    {
+                        b.interactable = true;
+                    }
+                }
                 UpdateChosens();
             });
 		}
-		#endregion
+#endregion
 	}
 }

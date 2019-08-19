@@ -930,7 +930,7 @@ namespace BeardedManStudios.Forge.Networking
 
 			byte methodId = data.GetBasicType<byte>();
 
-			if (!Rpcs.ContainsKey(methodId))
+            if (!Rpcs.ContainsKey(methodId))
 				throw new BaseNetworkException("The rpc " + methodId + " was not found on this network object");
 
 			byte behaviorFlags = data.GetBasicType<byte>();
@@ -944,6 +944,7 @@ namespace BeardedManStudios.Forge.Networking
 			// If we are the server we need to determine if this RPC is okay to replicate
 			if (Networker is IServer && receivers != Receivers.Target)
 			{
+                BMSLogger.DebugLog("InvokeRPC SendRpc");
 				string methodName = inverseRpcLookup[methodId];
 
 				// Validate the RPC call using the method name and the supplied arguments from the client
@@ -955,7 +956,8 @@ namespace BeardedManStudios.Forge.Networking
 				return;
 			}
 
-			// Call the method on the client without validation
+            // Call the method on the client without validation
+            BMSLogger.DebugLog("Invoking RPC " + methodId);
 			Rpcs[methodId].Invoke(rpcArgs);
 		}
 

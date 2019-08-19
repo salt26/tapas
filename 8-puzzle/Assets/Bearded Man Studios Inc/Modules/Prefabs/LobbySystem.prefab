@@ -1615,6 +1615,12 @@ MonoBehaviour:
   - {fileID: 4214996656454880341}
   - {fileID: 2985853112765737971}
   - {fileID: 6084033492509107438}
+  otherButtons:
+  - {fileID: 114000012506698844}
+  - {fileID: 8171001242152981001}
+  otherInputFields:
+  - {fileID: 114000012809509130}
+  - {fileID: 114000014206881012}
 --- !u!1 &1000012499419964
 GameObject:
   m_ObjectHideFlags: 0

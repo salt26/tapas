@@ -460,6 +460,12 @@ namespace BeardedManStudios.Forge.Networking.Lobby
 		{
 			return networkObject.MyPlayerId == id;
 		}
+
+        // My custom code
+        public void FlushCreateActions()
+        {
+            networkObject.Networker.FlushCreateActions(networkObject);
+        }
 		#endregion
 
 		#region Network Behavior
@@ -535,9 +541,10 @@ namespace BeardedManStudios.Forge.Networking.Lobby
 		/// uint playerid
 		/// </summary>
 		private void PlayerJoined(RpcArgs args)
-		{
-			uint playerId = args.GetNext<uint>();
-			var player = CreateClientMockPlayer(playerId, "Player " + playerId);
+        {
+            uint playerId = args.GetNext<uint>();
+            BMSLogger.DebugLog(string.Format("Player {0} Joined", playerId));
+            var player = CreateClientMockPlayer(playerId, "Player " + playerId);
 
 			MasterLobby.OnFNPlayerConnected(player);
 		}
@@ -546,14 +553,16 @@ namespace BeardedManStudios.Forge.Networking.Lobby
 		/// uint playerid
 		/// </summary>
 		private void PlayerLeft(RpcArgs args)
-		{
-			uint playerId = args.GetNext<uint>();
+        {
+            BMSLogger.DebugLog("PlayerLeft 1");
+            uint playerId = args.GetNext<uint>();
 			var player = GetClientMockPlayer(playerId);
 
 			if (player == null)
 				return;
 
-			MasterLobby.OnFNPlayerDisconnected(player);
+            BMSLogger.DebugLog("PlayerLeft 2");
+            MasterLobby.OnFNPlayerDisconnected(player);
 		}
 		/// <summary>
 		/// Arguments:
@@ -663,9 +672,11 @@ namespace BeardedManStudios.Forge.Networking.Lobby
 
 			sender.IteratePlayers((p) =>
 			{
+                BMSLogger.DebugLog(p.Name + " in PlayerConnected");
 				if (p == player)
 					return;
 
+                BMSLogger.DebugLog(string.Format("Message to {0}, {1} has joined", player.NetworkId, p.NetworkId));
 				networkObject.SendRpc(player, RPC_PLAYER_JOINED, p.NetworkId);
 				IClientMockPlayer cPlayer = MasterLobby.LobbyPlayers.First(l => l.NetworkId == p.NetworkId);
 				networkObject.SendRpc(player, RPC_PLAYER_SYNC, p.NetworkId, cPlayer.Name, cPlayer.TeamID, cPlayer.AvatarID);
