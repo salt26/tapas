@@ -4,21 +4,25 @@ using UnityEngine;
 
 public class SwitchPuzzle : MonoBehaviour
 {
-    private bool isRotate;
-    private bool isLoaded;
+    public GameObject[] switches;
+
+    private int rotNum;
+    //private bool isLoaded;
     private float rotationSpeed;
+    /*
     private Material indexMaterial;
     private Material scoreMaterial;
     private Transform emissiveObject0;
     private Transform emissiveObject1;
-
+    */
+    
     void Start()
     {
+        rotNum = 0;
         rotationSpeed = 60f;
-        isRotate = false;
-        isLoaded = false;
     }
 
+    /*
     void CheckObjects()
     {
         if (!isLoaded)
@@ -29,22 +33,31 @@ public class SwitchPuzzle : MonoBehaviour
             scoreMaterial = emissiveObject0.GetComponent<Renderer>().material;
         }
     }
+    */
 
     void Update()
     {
+        if (rotNum == 0) return;
+
+        switches[rotNum - 1].transform.Find("Switch/ApertureSwitchEmission/SwitchEmission").Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+        switches[rotNum - 1].transform.Find("Switch/ApertureSwitchEmission/SwitchEmissionCenter").Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+
+        /*
         if (isRotate)
         {
-            CheckObjects();
+            //CheckObjects();
             emissiveObject0.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
             emissiveObject1.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
         }
+        */
     }
 
-    public void SetRotation(bool isRotate)
+    public void SetRotNum(int rotNum)
     {
-        this.isRotate = isRotate;
+        this.rotNum = rotNum;
     }
 
+    /*
     public void SetScoreTexture(Texture scoreTexture)
     {
         CheckObjects();
@@ -56,4 +69,5 @@ public class SwitchPuzzle : MonoBehaviour
         CheckObjects();
         indexMaterial.SetTexture("_EmissionMap", indexTexture);
     }
+    */
 }

@@ -8,7 +8,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 	[GeneratedInterpol("{\"inter\":[0,0,0]")]
 	public partial class SwitchManagerNetworkObject : NetworkObject
 	{
-		public const int IDENTITY = 9;
+		public const int IDENTITY = 12;
 
 		private byte[] _dirtyFields = new byte[1];
 
@@ -47,66 +47,66 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			if (fieldAltered != null) fieldAltered("switchesState", _switchesState, timestep);
 		}
 		[ForgeGeneratedField]
-		private int _onGroupsNum;
-		public event FieldEvent<int> onGroupsNumChanged;
-		public Interpolated<int> onGroupsNumInterpolation = new Interpolated<int>() { LerpT = 0f, Enabled = false };
-		public int onGroupsNum
+		private byte _state;
+		public event FieldEvent<byte> stateChanged;
+		public Interpolated<byte> stateInterpolation = new Interpolated<byte>() { LerpT = 0f, Enabled = false };
+		public byte state
 		{
-			get { return _onGroupsNum; }
+			get { return _state; }
 			set
 			{
 				// Don't do anything if the value is the same
-				if (_onGroupsNum == value)
+				if (_state == value)
 					return;
 
 				// Mark the field as dirty for the network to transmit
 				_dirtyFields[0] |= 0x2;
-				_onGroupsNum = value;
+				_state = value;
 				hasDirtyFields = true;
 			}
 		}
 
-		public void SetonGroupsNumDirty()
+		public void SetstateDirty()
 		{
 			_dirtyFields[0] |= 0x2;
 			hasDirtyFields = true;
 		}
 
-		private void RunChange_onGroupsNum(ulong timestep)
+		private void RunChange_state(ulong timestep)
 		{
-			if (onGroupsNumChanged != null) onGroupsNumChanged(_onGroupsNum, timestep);
-			if (fieldAltered != null) fieldAltered("onGroupsNum", _onGroupsNum, timestep);
+			if (stateChanged != null) stateChanged(_state, timestep);
+			if (fieldAltered != null) fieldAltered("state", _state, timestep);
 		}
 		[ForgeGeneratedField]
-		private int _lastTouch;
-		public event FieldEvent<int> lastTouchChanged;
-		public Interpolated<int> lastTouchInterpolation = new Interpolated<int>() { LerpT = 0f, Enabled = false };
-		public int lastTouch
+		private int _recentNum;
+		public event FieldEvent<int> recentNumChanged;
+		public Interpolated<int> recentNumInterpolation = new Interpolated<int>() { LerpT = 0f, Enabled = false };
+		public int recentNum
 		{
-			get { return _lastTouch; }
+			get { return _recentNum; }
 			set
 			{
 				// Don't do anything if the value is the same
-				if (_lastTouch == value)
+				if (_recentNum == value)
 					return;
 
 				// Mark the field as dirty for the network to transmit
 				_dirtyFields[0] |= 0x4;
-				_lastTouch = value;
+				_recentNum = value;
 				hasDirtyFields = true;
 			}
 		}
 
-		public void SetlastTouchDirty()
+		public void SetrecentNumDirty()
 		{
 			_dirtyFields[0] |= 0x4;
 			hasDirtyFields = true;
 		}
 
-		private void RunChange_lastTouch(ulong timestep)
+		private void RunChange_recentNum(ulong timestep)
 		{
-			if (lastTouchChanged != null) lastTouchChanged(_lastTouch, timestep);
-			if (fieldAltered != null) fieldAltered("lastTouch", _lastTouch, timestep);
+			if (recentNumChanged != null) recentNumChanged(_recentNum, timestep);
+			if (fieldAltered != null) fieldAltered("recentNum", _recentNum, timestep);
 		}
 
 		protected override void OwnershipChanged()
@@ -118,8 +118,8 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		public void SnapInterpolations()
 		{
 			switchesStateInterpolation.current = switchesStateInterpolation.target;
-			onGroupsNumInterpolation.current = onGroupsNumInterpolation.target;
-			lastTouchInterpolation.current = lastTouchInterpolation.target;
+			stateInterpolation.current = stateInterpolation.target;
+			recentNumInterpolation.current = recentNumInterpolation.target;
 		}
 
 		public override int UniqueIdentity { get { return IDENTITY; } }
@@ -127,8 +127,8 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		protected override BMSByte WritePayload(BMSByte data)
 		{
 			UnityObjectMapper.Instance.MapBytes(data, _switchesState);
-			UnityObjectMapper.Instance.MapBytes(data, _onGroupsNum);
-			UnityObjectMapper.Instance.MapBytes(data, _lastTouch);
+			UnityObjectMapper.Instance.MapBytes(data, _state);
+			UnityObjectMapper.Instance.MapBytes(data, _recentNum);
 
 			return data;
 		}
@@ -139,14 +139,14 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			switchesStateInterpolation.current = _switchesState;
 			switchesStateInterpolation.target = _switchesState;
 			RunChange_switchesState(timestep);
-			_onGroupsNum = UnityObjectMapper.Instance.Map<int>(payload);
-			onGroupsNumInterpolation.current = _onGroupsNum;
-			onGroupsNumInterpolation.target = _onGroupsNum;
-			RunChange_onGroupsNum(timestep);
-			_lastTouch = UnityObjectMapper.Instance.Map<int>(payload);
-			lastTouchInterpolation.current = _lastTouch;
-			lastTouchInterpolation.target = _lastTouch;
-			RunChange_lastTouch(timestep);
+			_state = UnityObjectMapper.Instance.Map<byte>(payload);
+			stateInterpolation.current = _state;
+			stateInterpolation.target = _state;
+			RunChange_state(timestep);
+			_recentNum = UnityObjectMapper.Instance.Map<int>(payload);
+			recentNumInterpolation.current = _recentNum;
+			recentNumInterpolation.target = _recentNum;
+			RunChange_recentNum(timestep);
 		}
 
 		protected override BMSByte SerializeDirtyFields()
@@ -157,9 +157,9 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			if ((0x1 & _dirtyFields[0]) != 0)
 				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _switchesState);
 			if ((0x2 & _dirtyFields[0]) != 0)
-				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _onGroupsNum);
+				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _state);
 			if ((0x4 & _dirtyFields[0]) != 0)
-				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _lastTouch);
+				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _recentNum);
 
 			// Reset all the dirty fields
 			for (int i = 0; i < _dirtyFields.Length; i++)
@@ -191,28 +191,28 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			}
 			if ((0x2 & readDirtyFlags[0]) != 0)
 			{
-				if (onGroupsNumInterpolation.Enabled)
+				if (stateInterpolation.Enabled)
 				{
-					onGroupsNumInterpolation.target = UnityObjectMapper.Instance.Map<int>(data);
-					onGroupsNumInterpolation.Timestep = timestep;
+					stateInterpolation.target = UnityObjectMapper.Instance.Map<byte>(data);
+					stateInterpolation.Timestep = timestep;
 				}
 				else
 				{
-					_onGroupsNum = UnityObjectMapper.Instance.Map<int>(data);
-					RunChange_onGroupsNum(timestep);
+					_state = UnityObjectMapper.Instance.Map<byte>(data);
+					RunChange_state(timestep);
 				}
 			}
 			if ((0x4 & readDirtyFlags[0]) != 0)
 			{
-				if (lastTouchInterpolation.Enabled)
+				if (recentNumInterpolation.Enabled)
 				{
-					lastTouchInterpolation.target = UnityObjectMapper.Instance.Map<int>(data);
-					lastTouchInterpolation.Timestep = timestep;
+					recentNumInterpolation.target = UnityObjectMapper.Instance.Map<int>(data);
+					recentNumInterpolation.Timestep = timestep;
 				}
 				else
 				{
-					_lastTouch = UnityObjectMapper.Instance.Map<int>(data);
-					RunChange_lastTouch(timestep);
+					_recentNum = UnityObjectMapper.Instance.Map<int>(data);
+					RunChange_recentNum(timestep);
 				}
 			}
 		}
@@ -227,15 +227,15 @@ namespace BeardedManStudios.Forge.Networking.Generated
 				_switchesState = (int)switchesStateInterpolation.Interpolate();
 				//RunChange_switchesState(switchesStateInterpolation.Timestep);
 			}
-			if (onGroupsNumInterpolation.Enabled && !onGroupsNumInterpolation.current.UnityNear(onGroupsNumInterpolation.target, 0.0015f))
+			if (stateInterpolation.Enabled && !stateInterpolation.current.UnityNear(stateInterpolation.target, 0.0015f))
 			{
-				_onGroupsNum = (int)onGroupsNumInterpolation.Interpolate();
-				//RunChange_onGroupsNum(onGroupsNumInterpolation.Timestep);
+				_state = (byte)stateInterpolation.Interpolate();
+				//RunChange_state(stateInterpolation.Timestep);
 			}
-			if (lastTouchInterpolation.Enabled && !lastTouchInterpolation.current.UnityNear(lastTouchInterpolation.target, 0.0015f))
+			if (recentNumInterpolation.Enabled && !recentNumInterpolation.current.UnityNear(recentNumInterpolation.target, 0.0015f))
 			{
-				_lastTouch = (int)lastTouchInterpolation.Interpolate();
-				//RunChange_lastTouch(lastTouchInterpolation.Timestep);
+				_recentNum = (int)recentNumInterpolation.Interpolate();
+				//RunChange_recentNum(recentNumInterpolation.Timestep);
 			}
 		}
 

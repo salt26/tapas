@@ -8,8 +8,8 @@ namespace BeardedManStudios.Forge.Networking.Generated
 	[GeneratedRPCVariableNames("{\"types\":[[][]]")]
 	public abstract partial class SwitchManagerBehavior : NetworkBehavior
 	{
-		public const byte RPC_GET_HISTORY = 0 + 5;
-		public const byte RPC_UPDATE_SWITCHES = 1 + 5;
+		public const byte RPC_UPDATE_SWITCHES = 0 + 5;
+		public const byte RPC_CANT_PUSH_AGAIN = 1 + 5;
 		
 		public SwitchManagerNetworkObject networkObject = null;
 
@@ -23,8 +23,8 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.AttachedBehavior = this;
 
 			base.SetupHelperRpcs(networkObject);
-			networkObject.RegisterRpc("GetHistory", GetHistory);
 			networkObject.RegisterRpc("UpdateSwitches", UpdateSwitches);
+			networkObject.RegisterRpc("CantPushAgain", CantPushAgain);
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -104,11 +104,11 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		/// <summary>
 		/// Arguments:
 		/// </summary>
-		public abstract void GetHistory(RpcArgs args);
+		public abstract void UpdateSwitches(RpcArgs args);
 		/// <summary>
 		/// Arguments:
 		/// </summary>
-		public abstract void UpdateSwitches(RpcArgs args);
+		public abstract void CantPushAgain(RpcArgs args);
 
 		// DO NOT TOUCH, THIS GETS GENERATED PLEASE EXTEND THIS CLASS IF YOU WISH TO HAVE CUSTOM CODE ADDITIONS
 	}
