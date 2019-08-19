@@ -15,6 +15,9 @@ public class Police : PoliceBehavior
         base.NetworkStart();
         if (networkObject.IsOwner)
         {
+            networkObject.item1Num = 5;
+            networkObject.item2Num = 5;
+            networkObject.item3Num = 5;
             //PlayerPrefs.SetInt("UnitySelectMonitor", 1);
             //Display.displays[0].Activate();
         }
@@ -106,8 +109,6 @@ public class Police : PoliceBehavior
             ItemManager.instance.networkObject.SendRpc(ItemManagerBehavior.RPC_CREATE_ITEM, Receivers.All, i, networkObject.position);
             networkObject.item3Num--;
         }
-
-        Debug.Log("Out of Item");
     }
 
     public override void Chat(RpcArgs args)
