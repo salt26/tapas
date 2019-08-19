@@ -11,10 +11,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Bearded Man Studios Inc/Scenes/Lobby.unity
     guid: d6a4ccf71fa1c1240a407fe67e79438e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SceneDesert.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/Scenes/SceneFog.unity
     guid: 7556c37c54a36a6478137a895b716483
+  - enabled: 1
+    path: Assets/Bearded Man Studios Inc/Scenes/Tutorial.unity
+    guid: 712f000391721184ea28944e2d90698c
+  - enabled: 1
+    path: Assets/Bearded Man Studios Inc/Scenes/TutorialPicture.unity
+    guid: c33aa81567f86b34b866d8d21f64e78f
   m_configObjects: {}
