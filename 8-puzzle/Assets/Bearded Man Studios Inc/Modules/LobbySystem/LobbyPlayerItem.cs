@@ -131,7 +131,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                 switch (id)
                 {
                     case 0:
-                        PlayerTeamID.text = "호스트";
+                        PlayerTeamID.text = "서버";
                         break;
                     case 1:
                         PlayerTeamID.text = "경찰";
@@ -144,6 +144,9 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                         break;
                     case 4:
                         PlayerTeamID.text = "도둑 조력자";
+                        break;
+                    case 5:
+                        PlayerTeamID.text = "직업 미정";
                         break;
                     default:
                         PlayerTeamID.text = "";

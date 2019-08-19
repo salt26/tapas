@@ -188,13 +188,11 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             {
                 f.interactable = false;
             }
-            //SceneManager.LoadScene(0);
 #if UNITY_EDITOR
             EditorApplication.isPlaying = false;
 #else
             Application.Quit();
 #endif
-            Destroy(gameObject);
         }
 
         public void SendPlayersMessage()
@@ -212,9 +210,9 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             /* My custom code */
             if (NetworkManager.Instance.IsServer)
             {
-                if (LobbyService.Instance.MasterLobby.LobbyPlayers.Count > 5)
+                if (LobbyService.Instance.MasterLobby.LobbyPlayers.Count != 5)
                 {
-                    BMSLogger.DebugLog("Player number must be 5 or less!");
+                    BMSLogger.DebugLog("Player number must be 5!");
                     return;
                 }
                 bool[] teams = new bool[5] { false, false, false, false, false };
@@ -366,7 +364,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
             foreach (var p in LobbyService.Instance.MasterLobby.LobbyPlayers)
             {
-                if (p.TeamID >= 1 || p.TeamID <= 4)
+                if (p.TeamID >= 1 && p.TeamID <= 4)
                 {
                     if (p.NetworkId == _myself.NetworkId)
                     {
@@ -568,16 +566,19 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 			if (!LobbyTeams[newID].Contains(player))
 			{
 				LobbyPlayer convertedPlayer = player as LobbyPlayer;
-				convertedPlayer.TeamID = newID;
+                if (convertedPlayer != null)
+                {
+                    convertedPlayer.TeamID = newID;
 
-				if (_myself == convertedPlayer)
-					Myself.ChangeTeam(newID);
-				else
-				{
-					LobbyPlayerItem item = GrabLobbyPlayerItem(convertedPlayer);
-					if (item != null)
-						item.ChangeTeam(newID);
-				}
+                    if (_myself == convertedPlayer)
+                        Myself.ChangeTeam(newID);
+                    else
+                    {
+                        LobbyPlayerItem item = GrabLobbyPlayerItem(convertedPlayer);
+                        if (item != null)
+                            item.ChangeTeam(newID);
+                    }
+                }
 
 				LobbyTeams[newID].Add(player);
 			}
@@ -679,7 +680,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                 }
                 else
                 {
-                    item.RequestChangeTeam(1);
+                    item.RequestChangeTeam(5);
                 }
             });
 
