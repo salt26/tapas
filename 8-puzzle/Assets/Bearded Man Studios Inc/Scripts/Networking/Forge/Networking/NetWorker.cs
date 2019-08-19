@@ -866,8 +866,20 @@ namespace BeardedManStudios.Forge.Networking
 		/// </summary>
 		protected void OnMessageReceived(NetworkingPlayer player, FrameStream frame)
 		{
+            byte[] frameData = (frame as Networking.Frame.Binary)?.GetData();
+            if (frameData != null)
+            {
+                var frameString = new System.Text.StringBuilder();
+                foreach (byte b in frameData)
+                {
+                    frameString.AppendFormat("{0:X} ", b);
+                }
+                BMSLogger.DebugLog("Byte frame received: " + frameString.ToString());
+            }
+
 			if (frame.GroupId == MessageGroupIds.NETWORK_ID_REQUEST && this is IClient)
 			{
+                BMSLogger.DebugLog("OnMessageReceived 1");
 				Time.SetStartTime(frame.TimeStep);
 				Me = new NetworkingPlayer(frame.StreamData.GetBasicType<uint>(), "0.0.0.0", false, null, this);
 				Me.AssignPort(Port);
@@ -876,8 +888,9 @@ namespace BeardedManStudios.Forge.Networking
 			}
 
 			if (frame.GroupId == MessageGroupIds.PING || frame.GroupId == MessageGroupIds.PONG)
-			{
-				long receivedTimestep = frame.StreamData.GetBasicType<long>();
+            {
+                BMSLogger.DebugLog("OnMessageReceived 2");
+                long receivedTimestep = frame.StreamData.GetBasicType<long>();
 				DateTime received = new DateTime(receivedTimestep);
 				TimeSpan ms = DateTime.UtcNow - received;
 
@@ -890,11 +903,13 @@ namespace BeardedManStudios.Forge.Networking
 			}
 
 			if (frame is Binary)
-			{
-				byte routerId = ((Binary)frame).RouterId;
+            {
+                BMSLogger.DebugLog("OnMessageReceived 3");
+                byte routerId = ((Binary)frame).RouterId;
 				if (routerId == RouterIds.RPC_ROUTER_ID || routerId == RouterIds.BINARY_DATA_ROUTER_ID || routerId == RouterIds.CREATED_OBJECT_ROUTER_ID)
-				{
-					uint id = frame.StreamData.GetBasicType<uint>();
+                {
+                    BMSLogger.DebugLog("OnMessageReceived 4");
+                    uint id = frame.StreamData.GetBasicType<uint>();
 					NetworkObject targetObject = null;
 
 					lock (NetworkObjects)
@@ -903,8 +918,9 @@ namespace BeardedManStudios.Forge.Networking
 					}
 
 					if (targetObject == null)
-					{
-						lock (missingObjectBuffer)
+                    {
+                        BMSLogger.DebugLog("OnMessageReceived 5");
+                        lock (missingObjectBuffer)
 						{
 							if (!missingObjectBuffer.ContainsKey(id))
 								missingObjectBuffer.Add(id, new List<Action<NetworkObject>>());
@@ -921,7 +937,8 @@ namespace BeardedManStudios.Forge.Networking
 						return;
 					}
 
-					ExecuteRouterAction(routerId, targetObject, (Binary)frame, player);
+                    BMSLogger.DebugLog("OnMessageReceived 6");
+                    ExecuteRouterAction(routerId, targetObject, (Binary)frame, player);
 				}
 				else if (routerId == RouterIds.NETWORK_OBJECT_ROUTER_ID)
 				{
