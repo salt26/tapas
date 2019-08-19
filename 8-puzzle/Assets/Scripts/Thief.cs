@@ -7,16 +7,20 @@ using UnityEngine;
 
 public class Thief : ThiefBehavior
 {
+    public Transform camera;
+
     // Start is called before the first frame update
     protected override void NetworkStart()
     {
         base.NetworkStart();
         if (networkObject.IsOwner)
         {
-            PlayerPrefs.SetInt("UnitySelectMonitor", 2);
+            //PlayerPrefs.SetInt("UnitySelectMonitor", 2);
+            //Display.displays[1].Activate();
         }
         else
         {
+            GetComponentInChildren<Camera>().enabled = false;
             GetComponent<PlayerMovement>().enabled = false;
         }
     }
@@ -28,11 +32,13 @@ public class Thief : ThiefBehavior
         {
             networkObject.position = transform.position;
             networkObject.rotation = transform.rotation;
+            networkObject.cameraRotation = camera.rotation;
             
             if (Input.GetMouseButtonDown(0))
             {
+                Debug.Log("MouseClick");
                 networkObject.SendRpc(
-                    RPC_PRESS_SWITCH,
+                    RPC_TOUCH,
                     Receivers.Server
                 );
             }
@@ -41,12 +47,14 @@ public class Thief : ThiefBehavior
         {
             transform.position = networkObject.position;
             transform.rotation = networkObject.rotation;
+            camera.rotation = networkObject.cameraRotation;
         }
     }
 
-    public override void PressSwitch(RpcArgs args)
+    public override void Touch(RpcArgs args)
     {
         if (!NetworkManager.Instance.IsServer) return;
+        Debug.Log("MouseClick");
         GetComponentInChildren<PlayerTouch>().Touch();
     }
 

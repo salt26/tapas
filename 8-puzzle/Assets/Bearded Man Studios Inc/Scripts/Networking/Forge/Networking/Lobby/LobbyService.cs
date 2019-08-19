@@ -423,7 +423,7 @@ namespace BeardedManStudios.Forge.Networking.Lobby
 			IClientMockPlayer player = GetClientMockPlayer(networkObject.MyPlayerId);
 			player.TeamID = teamId;
 			// TODO:  When someone joins they need to get the current players selections
-			networkObject.SendRpc(RPC_ASSIGN_TEAM, Receivers.All, networkObject.MyPlayerId, teamId);
+			networkObject.SendRpc(RPC_ASSIGN_TEAM, Receivers.AllBuffered, networkObject.MyPlayerId, teamId);
 		}
 
 		/// <summary>
@@ -659,7 +659,7 @@ namespace BeardedManStudios.Forge.Networking.Lobby
 		{
 			//Logging.BMSLog.Log("GG: " + player.Ip);
 			player.Name = "Player " + player.NetworkId;
-			networkObject.SendRpc(RPC_PLAYER_JOINED, Receivers.All, player.NetworkId);
+			networkObject.SendRpc(RPC_PLAYER_JOINED, Receivers.AllBuffered, player.NetworkId);
 
 			sender.IteratePlayers((p) =>
 			{
@@ -677,7 +677,8 @@ namespace BeardedManStudios.Forge.Networking.Lobby
 			// TODO:  This should be called
 			//Logging.BMSLog.Log("OH NO: " + player.Ip);
 			//BeardedManStudios.Forge.Logging.BMSLog.Log("Player disconnected");
-			networkObject.SendRpc(RPC_PLAYER_LEFT, Receivers.All, player.NetworkId);
+			networkObject.SendRpc(RPC_PLAYER_LEFT, Receivers.AllBuffered, player.NetworkId);
+            //networkObject.SendCancelingRpc(RPC_PLAYER_JOINED, Receivers.AllBuffered, player.NetworkId);
 		}
 		#endregion
 	}

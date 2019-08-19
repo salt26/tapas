@@ -16,10 +16,12 @@ public class ThiefSupporter : SupporterBehavior
         base.NetworkStart();
         if (networkObject.IsOwner)
         {
-            PlayerPrefs.SetInt("UnitySelectMonitor", 4);
+            //PlayerPrefs.SetInt("UnitySelectMonitor", 4);
+            //Display.displays[3].Activate();
         }
         else
         {
+            GetComponentInChildren<Camera>().enabled = false;
             GetComponent<DroneMovement>().enabled = false;
         }
     }

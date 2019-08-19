@@ -17,8 +17,15 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		public InputField ChatInputBox;
 		public Text Chatbox;
 		public Transform[] Grid;
+        public List<GameObject> chosen1s;
+        public List<GameObject> chosen2s;
+        public List<GameObject> chosen3s;
+        public List<GameObject> chosen4s;
+        public List<Color> chosenColors;    // 0번째 인덱스는 타인의 Chosen 색, 1번째 인덱스는 자신의 Chosen 색
+        public Button startButton;
+        public List<Button> teamChangeButtons;
 
-		private const int BUFFER_PLAYER_ITEMS = 10;
+        private const int BUFFER_PLAYER_ITEMS = 10;
 		private List<LobbyPlayerItem> _lobbyPlayersInactive = new List<LobbyPlayerItem>();
 		private List<LobbyPlayerItem> _lobbyPlayersPool = new List<LobbyPlayerItem>();
 		private LobbyPlayer _myself;
@@ -67,13 +74,23 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             /* My custom code ends */
 
             if (NetworkManager.Instance.IsServer)
-			{
-				SetupComplete();
+            {
+                startButton.interactable = true;
+                foreach (Button b in teamChangeButtons)
+                {
+                    b.interactable = false;
+                }
+                SetupComplete();
 				return;
 			}
 
+            startButton.interactable = false;
+            foreach (Button b in teamChangeButtons)
+            {
+                b.interactable = true;
+            }
 
-			for (int i = 0; i < NetworkObject.NetworkObjects.Count; ++i)
+            for (int i = 0; i < NetworkObject.NetworkObjects.Count; ++i)
 			{
 				NetworkObject n = NetworkObject.NetworkObjects[i];
 				if (n is LobbyService.LobbyServiceNetworkObject)
@@ -94,6 +111,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 				return;
 			}
 
+            NetworkManager.Instance.Networker.objectCreateRequested -= CheckForService;
 			NetworkObject obj = new LobbyService.LobbyServiceNetworkObject(networker, id, frame);
 			if (callback != null)
 				callback(obj);
@@ -101,8 +119,8 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		}
 
 		private void FactoryObjectCreated(NetworkObject obj)
-		{
-			if (obj.UniqueIdentity != LobbyService.LobbyServiceNetworkObject.IDENTITY)
+        {
+            if (obj.UniqueIdentity != LobbyService.LobbyServiceNetworkObject.IDENTITY)
 				return;
 
             NetworkManager.Instance.Networker.factoryObjectCreated -= FactoryObjectCreated;
@@ -135,10 +153,14 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		public void ChangeTeam(LobbyPlayerItem item, int nextTeam)
 		{
             // TODO: Host cannot change team! Host's team number is always 0.
-            if (NetworkManager.Instance.IsServer) return;
+            if (NetworkManager.Instance.IsServer && nextTeam != 0)
+                return;
+
+            if (!NetworkManager.Instance.IsServer && nextTeam == 0)
+                return;
+
 			LobbyService.Instance.SetTeamId(nextTeam);
-            //item.SetParent(Grid[nextTeam]);
-		}
+        }
 
         public void DisconnectLobby()
         {
@@ -167,17 +189,19 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             if (NetworkManager.Instance.IsServer)
             {
                 ((IServer)NetworkManager.Instance.Networker).StopAcceptingConnections();
+                /*
                 if (LobbyService.Instance.MasterLobby.LobbyPlayers.Count != 5)
                 {
-                    Debug.Log("Player number must be 5!");
+                    Logging.BMSLog.Log("Player number must be 5!");
                     return;
                 }
+                */
                 bool[] teams = new bool[5] { false, false, false, false, false };
                 foreach (var p in LobbyService.Instance.MasterLobby.LobbyPlayers)
                 {
                     if (p.TeamID < 0 || p.TeamID > 4)
                     {
-                        Debug.Log("Player TeamID must be in range of [0, 4]!");
+                        Logging.BMSLog.Log("Player TeamID must be in range of [0, 4]!");
                         return;
                     }
 
@@ -187,13 +211,13 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                     }
                     else
                     {
-                        Debug.Log("Player TeamID must not be duplicated!");
+                        Logging.BMSLog.Log("Player TeamID must not be duplicated!");
                         return;
                     }
                 }
                 if (Myself.AssociatedPlayer.TeamID != 0)
                 {
-                    Debug.Log("Host TeamID must be 0!");
+                    Logging.BMSLog.Log("Host TeamID must be 0!");
                     return;
                 }
                 foreach (Button b in GameObject.FindObjectsOfType<Button>())
@@ -305,6 +329,112 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
 			return returnValue;
 		}
+
+        // My custom code
+        /// <summary>
+        /// 팻말 표시를 현재 팀 구성에 맞게 업데이트합니다.
+        /// </summary>
+        private void UpdateChosens()
+        {
+            List<List<string>> playerNames = new List<List<string>>();
+            for (int i = 0; i <= 4; i++)
+            {
+                playerNames.Add(new List<string>());
+            }
+
+            foreach (var p in LobbyService.Instance.MasterLobby.LobbyPlayers)
+            {
+                if (p.TeamID >= 1 || p.TeamID <= 4)
+                {
+                    if (p.NetworkId == _myself.NetworkId)
+                    {
+                        playerNames[p.TeamID].Add("m" + p.Name);    // 내 이름
+                    }
+                    else
+                    {
+                        playerNames[p.TeamID].Add("o" + p.Name);    // 다른 플레이어의 이름
+                    }
+                }
+            }
+
+            int j;
+            for (j = 0; j < playerNames[1].Count; j++)
+            {
+                chosen1s[j].SetActive(true);
+                chosen1s[j].GetComponentInChildren<Text>().text = playerNames[1][j].Substring(1);
+                if (playerNames[1][j].Substring(0, 1).Equals("o"))
+                {
+                    chosen1s[j].GetComponent<Image>().color = chosenColors[0];
+                }
+                else if (playerNames[1][j].Substring(0, 1).Equals("m"))
+                {
+                    chosen1s[j].GetComponent<Image>().color = chosenColors[1];
+                }
+            }
+            for (; j < 4; j++)
+            {
+                chosen1s[j].GetComponentInChildren<Text>().text = "";
+                chosen1s[j].SetActive(false);
+            }
+
+            for (j = 0; j < playerNames[2].Count; j++)
+            {
+                chosen2s[j].SetActive(true);
+                chosen2s[j].GetComponentInChildren<Text>().text = playerNames[2][j].Substring(1);
+                if (playerNames[2][j].Substring(0, 1).Equals("o"))
+                {
+                    chosen2s[j].GetComponent<Image>().color = chosenColors[0];
+                }
+                else if (playerNames[2][j].Substring(0, 1).Equals("m"))
+                {
+                    chosen2s[j].GetComponent<Image>().color = chosenColors[1];
+                }
+            }
+            for (; j < 4; j++)
+            {
+                chosen2s[j].GetComponentInChildren<Text>().text = "";
+                chosen2s[j].SetActive(false);
+            }
+
+            for (j = 0; j < playerNames[3].Count; j++)
+            {
+                chosen3s[j].SetActive(true);
+                chosen3s[j].GetComponentInChildren<Text>().text = playerNames[3][j].Substring(1);
+                if (playerNames[3][j].Substring(0, 1).Equals("o"))
+                {
+                    chosen3s[j].GetComponent<Image>().color = chosenColors[0];
+                }
+                else if (playerNames[3][j].Substring(0, 1).Equals("m"))
+                {
+                    chosen3s[j].GetComponent<Image>().color = chosenColors[1];
+                }
+            }
+            for (; j < 4; j++)
+            {
+                chosen3s[j].GetComponentInChildren<Text>().text = "";
+                chosen3s[j].SetActive(false);
+            }
+
+
+            for (j = 0; j < playerNames[4].Count; j++)
+            {
+                chosen4s[j].SetActive(true);
+                chosen4s[j].GetComponentInChildren<Text>().text = playerNames[4][j].Substring(1);
+                if (playerNames[4][j].Substring(0, 1).Equals("o"))
+                {
+                    chosen4s[j].GetComponent<Image>().color = chosenColors[0];
+                }
+                else if (playerNames[4][j].Substring(0, 1).Equals("m"))
+                {
+                    chosen4s[j].GetComponent<Image>().color = chosenColors[1];
+                }
+            }
+            for (; j < 4; j++)
+            {
+                chosen4s[j].GetComponentInChildren<Text>().text = "";
+                chosen4s[j].SetActive(false);
+            }
+        }
 		#endregion
 
 		#region Interface API
@@ -317,6 +447,8 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             bool playerCreated = false;
             for (int i = 0; i < _lobbyPlayersPool.Count; ++i)
             {
+                if (_lobbyPlayersPool[i] == null || _lobbyPlayersPool[i].AssociatedPlayer == null) continue;
+                if (player == null) BMSLogger.DebugLog("IClientMockPlayer player is null");
                 if (_lobbyPlayersPool[i].AssociatedPlayer.NetworkId == player.NetworkId)
                     playerCreated = true;
             }
@@ -340,8 +472,10 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             {
                 LobbyPlayerItem item = GetNewPlayerItem();
                 item.Setup(convertedPlayer, false);
+                /*
                 if (LobbyService.Instance.IsServer)
                     item.KickButton.SetActive(true);
+                */
                 item.SetParent(Grid[0]);
             });
         }
@@ -349,7 +483,8 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		public void OnFNPlayerDisconnected(IClientMockPlayer player)
 		{
 			LobbyPlayer convertedPlayer = GrabPlayer(player);
-			MainThreadManager.Run(() =>
+
+            MainThreadManager.Run(() =>
 			{
 				if (LobbyPlayers.Contains(convertedPlayer))
 				{
@@ -359,7 +494,9 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 					LobbyPlayerItem item = GrabLobbyPlayerItem(convertedPlayer);
 					if (item != null)
 						PutBackToPool(item);
-				}
+
+                    UpdateChosens();
+                }
 			});
 		}
 
@@ -374,8 +511,9 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 				LobbyPlayerItem item = GrabLobbyPlayerItem(convertedPlayer);
                 if (item != null)
                     item.ChangeName(convertedPlayer.Name);
-			}
-		}
+            }
+            MainThreadManager.Instance.Execute(() => UpdateChosens());
+        }
 
 		public void OnFNTeamChanged(IClientMockPlayer player)
 		{
@@ -418,6 +556,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
 				LobbyTeams[newID].Add(player);
 			}
+            MainThreadManager.Instance.Execute(() => UpdateChosens());
 		}
 
 		public void OnFNAvatarIDChanged(IClientMockPlayer player)
@@ -501,9 +640,20 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             LobbyService.Instance.Initialize(NetworkManager.Instance.Networker);
             
 			//If I am the host, then I should show the kick button for all players here
-			LobbyPlayerItem item = GetNewPlayerItem(); //This will just auto generate the 10 items we need to start with
-			item.SetParent(Grid[0]);
-			PutBackToPool(item);
+            MainThreadManager.Run(() =>
+            {
+                LobbyPlayerItem item = GetNewPlayerItem(); //This will just auto generate the 10 items we need to start with
+                item.SetParent(Grid[0]);
+                PutBackToPool(item);
+                if (NetworkManager.Instance.IsServer)
+                {
+                    item.RequestChangeTeam(0);
+                }
+                else
+                {
+                    item.RequestChangeTeam(1);
+                }
+            });
 
 			_myself = GrabPlayer(LobbyService.Instance.MyMockPlayer);
 			if (!LobbyPlayers.Contains(_myself))
@@ -511,7 +661,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 			Myself.Init(this);
 			Myself.Setup(_myself, true);
 
-			List<IClientMockPlayer> currentPlayers = LobbyService.Instance.MasterLobby.LobbyPlayers;
+            List<IClientMockPlayer> currentPlayers = LobbyService.Instance.MasterLobby.LobbyPlayers;
 			for (int i = 0; i < currentPlayers.Count; ++i)
 			{
 				IClientMockPlayer currentPlayer = currentPlayers[i];
@@ -519,6 +669,11 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 					continue;
 				OnFNPlayerConnected(currentPlayers[i]);
 			}
+
+            MainThreadManager.Run(() =>
+            {
+                UpdateChosens();
+            });
 		}
 		#endregion
 	}

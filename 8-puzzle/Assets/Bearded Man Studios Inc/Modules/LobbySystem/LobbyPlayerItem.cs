@@ -25,24 +25,49 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		public LobbyPlayer AssociatedPlayer { get; private set; }
 		private LobbyManager _manager;
 
-		public void Init(LobbyManager manager)
+        private bool isAwakeCalled = false;
+        private bool isSetupCalledButNotReady = false;
+        private bool isReady = false;
+        private bool interactableValue;
+
+        void Awake()
+        {
+            ThisGameObject = gameObject;
+            ThisTransform = transform;
+            isAwakeCalled = true;
+        }
+
+        public void Init(LobbyManager manager)
 		{
-			ThisGameObject = gameObject;
-			ThisTransform = transform;
-			_manager = manager;
+            _manager = manager;
 		}
 
 		public void Setup(LobbyPlayer associatedPlayer, bool interactableValue)
-		{
-			ToggleInteractables(interactableValue);
-			AssociatedPlayer = associatedPlayer;
-            //ChangeAvatarID(associatedPlayer.AvatarID);
-            ChangeName(associatedPlayer.Name);
-            ChangeTeam(associatedPlayer.TeamID);
+        {
+            if (!isReady)
+            {
+                AssociatedPlayer = associatedPlayer;
+                isSetupCalledButNotReady = true;
+                this.interactableValue = interactableValue;
+            }
 		}
 
-		public void SetParent(Transform parent)
+        void Update()
+        {
+            if (isSetupCalledButNotReady)
+            {
+                isSetupCalledButNotReady = false;
+                ToggleInteractables(interactableValue);
+                //ChangeAvatarID(associatedPlayer.AvatarID);
+                ChangeName(AssociatedPlayer.Name);
+                ChangeTeam(AssociatedPlayer.TeamID);
+                isReady = true;
+            }
+        }
+
+        public void SetParent(Transform parent)
 		{
+            if (!isAwakeCalled) return;
 			ThisTransform.SetParent(parent);
 			ThisTransform.localPosition = Vector3.zero;
 			ThisTransform.localScale = Vector3.one;
@@ -125,23 +150,25 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                         break;
                 }
             }
-            // TODO: 푯말 움직이는 코드를 여기에 넣으세요.
 		}
 
 		public void ToggleInteractables(bool value)
 		{
+            /*
             for (int i = 0; i < Buttons.Length; ++i)
                 Buttons[i].interactable = value;
+            */
 
             //AvatarBG.raycastTarget = value;
             if (PlayerTeamID != null)
 			    PlayerTeamID.raycastTarget = value;
-			PlayerName.interactable = value;
+			//PlayerName.interactable = value;
 		}
 
 		public void ToggleObject(bool value)
-		{
-			ThisGameObject.SetActive(value);
+        {
+            if (!isAwakeCalled) return;
+            ThisGameObject.SetActive(value);
 		}
 	}
 }

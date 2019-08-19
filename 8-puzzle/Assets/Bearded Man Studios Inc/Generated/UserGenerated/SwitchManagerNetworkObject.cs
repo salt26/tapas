@@ -8,7 +8,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 	[GeneratedInterpol("{\"inter\":[0,0,0]")]
 	public partial class SwitchManagerNetworkObject : NetworkObject
 	{
-		public const int IDENTITY = 7;
+		public const int IDENTITY = 9;
 
 		private byte[] _dirtyFields = new byte[1];
 
@@ -16,35 +16,35 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		public event FieldChangedEvent fieldAltered;
 		#pragma warning restore 0067
 		[ForgeGeneratedField]
-		private int _switchsState;
-		public event FieldEvent<int> switchsStateChanged;
-		public Interpolated<int> switchsStateInterpolation = new Interpolated<int>() { LerpT = 0f, Enabled = false };
-		public int switchsState
+		private int _switchesState;
+		public event FieldEvent<int> switchesStateChanged;
+		public Interpolated<int> switchesStateInterpolation = new Interpolated<int>() { LerpT = 0f, Enabled = false };
+		public int switchesState
 		{
-			get { return _switchsState; }
+			get { return _switchesState; }
 			set
 			{
 				// Don't do anything if the value is the same
-				if (_switchsState == value)
+				if (_switchesState == value)
 					return;
 
 				// Mark the field as dirty for the network to transmit
 				_dirtyFields[0] |= 0x1;
-				_switchsState = value;
+				_switchesState = value;
 				hasDirtyFields = true;
 			}
 		}
 
-		public void SetswitchsStateDirty()
+		public void SetswitchesStateDirty()
 		{
 			_dirtyFields[0] |= 0x1;
 			hasDirtyFields = true;
 		}
 
-		private void RunChange_switchsState(ulong timestep)
+		private void RunChange_switchesState(ulong timestep)
 		{
-			if (switchsStateChanged != null) switchsStateChanged(_switchsState, timestep);
-			if (fieldAltered != null) fieldAltered("switchsState", _switchsState, timestep);
+			if (switchesStateChanged != null) switchesStateChanged(_switchesState, timestep);
+			if (fieldAltered != null) fieldAltered("switchesState", _switchesState, timestep);
 		}
 		[ForgeGeneratedField]
 		private int _onGroupsNum;
@@ -117,7 +117,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		
 		public void SnapInterpolations()
 		{
-			switchsStateInterpolation.current = switchsStateInterpolation.target;
+			switchesStateInterpolation.current = switchesStateInterpolation.target;
 			onGroupsNumInterpolation.current = onGroupsNumInterpolation.target;
 			lastTouchInterpolation.current = lastTouchInterpolation.target;
 		}
@@ -126,7 +126,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 
 		protected override BMSByte WritePayload(BMSByte data)
 		{
-			UnityObjectMapper.Instance.MapBytes(data, _switchsState);
+			UnityObjectMapper.Instance.MapBytes(data, _switchesState);
 			UnityObjectMapper.Instance.MapBytes(data, _onGroupsNum);
 			UnityObjectMapper.Instance.MapBytes(data, _lastTouch);
 
@@ -135,10 +135,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 
 		protected override void ReadPayload(BMSByte payload, ulong timestep)
 		{
-			_switchsState = UnityObjectMapper.Instance.Map<int>(payload);
-			switchsStateInterpolation.current = _switchsState;
-			switchsStateInterpolation.target = _switchsState;
-			RunChange_switchsState(timestep);
+			_switchesState = UnityObjectMapper.Instance.Map<int>(payload);
+			switchesStateInterpolation.current = _switchesState;
+			switchesStateInterpolation.target = _switchesState;
+			RunChange_switchesState(timestep);
 			_onGroupsNum = UnityObjectMapper.Instance.Map<int>(payload);
 			onGroupsNumInterpolation.current = _onGroupsNum;
 			onGroupsNumInterpolation.target = _onGroupsNum;
@@ -155,7 +155,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			dirtyFieldsData.Append(_dirtyFields);
 
 			if ((0x1 & _dirtyFields[0]) != 0)
-				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _switchsState);
+				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _switchesState);
 			if ((0x2 & _dirtyFields[0]) != 0)
 				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _onGroupsNum);
 			if ((0x4 & _dirtyFields[0]) != 0)
@@ -178,15 +178,15 @@ namespace BeardedManStudios.Forge.Networking.Generated
 
 			if ((0x1 & readDirtyFlags[0]) != 0)
 			{
-				if (switchsStateInterpolation.Enabled)
+				if (switchesStateInterpolation.Enabled)
 				{
-					switchsStateInterpolation.target = UnityObjectMapper.Instance.Map<int>(data);
-					switchsStateInterpolation.Timestep = timestep;
+					switchesStateInterpolation.target = UnityObjectMapper.Instance.Map<int>(data);
+					switchesStateInterpolation.Timestep = timestep;
 				}
 				else
 				{
-					_switchsState = UnityObjectMapper.Instance.Map<int>(data);
-					RunChange_switchsState(timestep);
+					_switchesState = UnityObjectMapper.Instance.Map<int>(data);
+					RunChange_switchesState(timestep);
 				}
 			}
 			if ((0x2 & readDirtyFlags[0]) != 0)
@@ -222,10 +222,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			if (IsOwner)
 				return;
 
-			if (switchsStateInterpolation.Enabled && !switchsStateInterpolation.current.UnityNear(switchsStateInterpolation.target, 0.0015f))
+			if (switchesStateInterpolation.Enabled && !switchesStateInterpolation.current.UnityNear(switchesStateInterpolation.target, 0.0015f))
 			{
-				_switchsState = (int)switchsStateInterpolation.Interpolate();
-				//RunChange_switchsState(switchsStateInterpolation.Timestep);
+				_switchesState = (int)switchesStateInterpolation.Interpolate();
+				//RunChange_switchesState(switchesStateInterpolation.Timestep);
 			}
 			if (onGroupsNumInterpolation.Enabled && !onGroupsNumInterpolation.current.UnityNear(onGroupsNumInterpolation.target, 0.0015f))
 			{

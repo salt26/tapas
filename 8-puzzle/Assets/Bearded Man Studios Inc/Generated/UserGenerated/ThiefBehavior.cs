@@ -8,7 +8,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 	[GeneratedRPCVariableNames("{\"types\":[[][\"message\"]]")]
 	public abstract partial class ThiefBehavior : NetworkBehavior
 	{
-		public const byte RPC_PRESS_SWITCH = 0 + 5;
+		public const byte RPC_TOUCH = 0 + 5;
 		public const byte RPC_CHAT = 1 + 5;
 		
 		public ThiefNetworkObject networkObject = null;
@@ -23,7 +23,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.AttachedBehavior = this;
 
 			base.SetupHelperRpcs(networkObject);
-			networkObject.RegisterRpc("PressSwitch", PressSwitch);
+			networkObject.RegisterRpc("Touch", Touch);
 			networkObject.RegisterRpc("Chat", Chat, typeof(string));
 
 			networkObject.onDestroy += DestroyGameObject;
@@ -104,7 +104,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		/// <summary>
 		/// Arguments:
 		/// </summary>
-		public abstract void PressSwitch(RpcArgs args);
+		public abstract void Touch(RpcArgs args);
 		/// <summary>
 		/// Arguments:
 		/// </summary>

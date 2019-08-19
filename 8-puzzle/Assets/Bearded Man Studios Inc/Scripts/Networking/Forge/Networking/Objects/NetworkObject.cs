@@ -1302,7 +1302,142 @@ namespace BeardedManStudios.Forge.Networking
 			}
 		}
 
-		private void InvokeRpcOnSelfServer(byte methodId, NetworkingPlayer sender, ulong timestep, object[] args)
+        /// <summary>
+		/// Build the network frame (message) data for this RPC call so that it is properly
+		/// delegated on the network / my custom code
+		/// </summary>
+		/// <param name="methodId">The id of the RPC to be called</param>
+		/// <param name="receivers">The clients / server to receive the message</param>
+		/// <param name="args">The input arguments for the method call</param>
+		public void SendCancelingRpc(byte methodId, Receivers receivers, params object[] args)
+        {
+            SendCancelingRpc(null, methodId, true, true, receivers, Networker.Me, args);
+        }
+
+        /// <summary>
+		/// Build the network frame (message) data for this RPC call so that it is properly
+		/// delegated on the network / my custom code
+		/// </summary>
+		/// <param name="targetPlayer">The target player that should receive the RPC</param>
+		/// <param name="methodId">The id of the RPC that is to be called</param>
+		/// <param name="receivers">The clients / server to receive the message</param>
+		/// <param name="args">The input arguments for the method call</param>
+		/// <returns></returns>
+		public void SendCancelingRpc(NetworkingPlayer targetPlayer, byte methodId, bool cancelPrevious, bool reliable, Receivers receivers, NetworkingPlayer sender, object[] args)
+        {
+            if (receivers == Receivers.Target && !(Networker is IServer))
+                receivers = Receivers.Server;
+
+            if (!ClientRegistered)
+            {
+                /*
+                pendingLocalRpcs.Add(new PendingLocalRPC()
+                {
+                    TargetPlayer = targetPlayer,
+                    MethodId = methodId,
+                    Receivers = receivers,
+                    Reliable = reliable,
+                    Args = args
+                });
+                */
+
+                return;
+            }
+
+            // Make sure that the parameters that were passed match the desired arguments
+            Rpcs[methodId].ValidateParameters(args);
+
+            ulong timestep = Networker.Time.Timestep;
+
+            // The server should execute the RPC before it is sent out to the clients
+            if (Networker is IServer)
+            {
+                // If we are only sending the message to the owner, we need to specify that
+                if (receivers == Receivers.Owner || receivers == Receivers.ServerAndOwner)
+                    targetPlayer = Owner;
+
+                // We don't need to do any extra work if the target player is the server
+                if (targetPlayer == Networker.Me)
+                {
+                    //InvokeRpcOnSelfServer(methodId, sender, timestep, args);
+                    return;
+                }
+            }
+
+            // Map the behavior flags to the rpc
+            byte behaviorFlags = 0;
+            //behaviorFlags |= cancelPrevious ? RPC_BEHAVIOR_OVERWRITE : (byte)0;
+
+            // Map the id of the object into the data so that the program knows what fire from
+            // Map the id of the Rpc as the second data into the byte array
+            // Map all of the data to bytes
+            BMSByte data = ObjectMapper.BMSByte(NetworkId, methodId, behaviorFlags);
+            ObjectMapper.Instance.MapBytes(data, args);
+
+            if (Networker is IServer)
+            {
+                // Buffered RPC messages are stored on the NetworkObject level and not on the NetWorker level
+                if (receivers == Receivers.AllBuffered || receivers == Receivers.OthersBuffered)
+                {
+                    if (receivers == Receivers.AllBuffered)
+                        receivers = Receivers.All;
+
+                    if (receivers == Receivers.OthersBuffered)
+                        receivers = Receivers.Others;
+
+                    lock (rpcBuffer)
+                    {
+                        BufferedRpc rpc = new BufferedRpc()
+                        {
+                            data = new BMSByte().Clone(data),
+                            receivers = receivers,
+                            methodId = methodId,
+                            timestep = timestep
+                        };
+
+                        bool replaced = false;
+                        if (cancelPrevious)
+                        {
+                            for (int i = 0; i < rpcBuffer.Count; i++)
+                            {
+                                if (rpcBuffer[i].methodId == methodId && rpcBuffer[i].data == data)
+                                {
+                                    rpcBuffer.RemoveAt(i);
+                                    replaced = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (!replaced)
+                        {
+                            // Add the RPC to the buffer to be sent on accept
+                            //rpcBuffer.Add(rpc);
+                        }
+                    }
+                }
+            }
+
+            if (!Networker.IsServer || receivers != Receivers.Server)
+                ;// FinalizeSendRpc(data, receivers, methodId, timestep, reliable, targetPlayer, sender);
+
+            if (Networker is IServer)
+            {
+                // Invoke if the the target player is the server itself or is an explicit receiver
+                if (targetPlayer == Networker.Me || receivers == Receivers.Server || receivers == Receivers.ServerAndOwner)
+                    ;// InvokeRpcOnSelfServer(methodId, sender, timestep, args);
+                // Don't execute the RPC if the server is sending it to receivers
+                // that don't include itself
+                else if (receivers != Receivers.Owner && ((sender != Networker.Me && sender != null) ||
+                    (receivers != Receivers.Others && receivers != Receivers.OthersBuffered &&
+                    receivers != Receivers.OthersProximity && receivers != Receivers.Target && receivers != Receivers.OthersProximityGrid)))
+                {
+                    ;// InvokeRpcOnSelfServer(methodId, sender, timestep, args);
+                }
+            }
+        }
+
+        private void InvokeRpcOnSelfServer(byte methodId, NetworkingPlayer sender, ulong timestep, object[] args)
 		{
 			Rpcs[methodId].Invoke(new RpcArgs(args, new RPCInfo { SendingPlayer = sender, TimeStep = timestep }), sender == Networker.Me);
 		}
