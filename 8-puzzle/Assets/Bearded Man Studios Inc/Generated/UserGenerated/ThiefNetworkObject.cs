@@ -408,6 +408,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 				{
 					_isRotatingRight = UnityObjectMapper.Instance.Map<bool>(data);
 					RunChange_isRotatingRight(timestep);
+				}
 				if (cameraRotationInterpolation.Enabled)
 				{
 					cameraRotationInterpolation.target = UnityObjectMapper.Instance.Map<Quaternion>(data);
@@ -454,6 +455,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			if (isRotatingRightInterpolation.Enabled && !isRotatingRightInterpolation.current.UnityNear(isRotatingRightInterpolation.target, 0.0015f))
 			{
 				_isRotatingRight = (bool)isRotatingRightInterpolation.Interpolate();
+			}
 				//RunChange_isRotatingRight(isRotatingRightInterpolation.Timestep);
 			if (cameraRotationInterpolation.Enabled && !cameraRotationInterpolation.current.UnityNear(cameraRotationInterpolation.target, 0.0015f))
 			{
