@@ -187,79 +187,79 @@ public class Tutorial : MonoBehaviour
                     QuitTutorialInstruction();
                     break;
             }
-        }
-        if(nKey<=8) {
-            TotalButtonOn=Button16+Button24+Button38+Button57;
-            if(TotalButtonOn==0) {
-                TempChar=(char)(LastClickedButton+'0');
-                TempString=TempChar.ToString();
-                PrintLog();
-    /*            Button1.GetComponent<Image>().sprite=sprites[0];
-                Button2.GetComponent<Image>().sprite=sprites[0];
-                Button3.GetComponent<Image>().sprite=sprites[0];
-                Button4.GetComponent<Image>().sprite=sprites[0];
-                Button5.GetComponent<Image>().sprite=sprites[0];
-                Button6.GetComponent<Image>().sprite=sprites[0];
-                Button7.GetComponent<Image>().sprite=sprites[0];
-                Button8.GetComponent<Image>().sprite=sprites[0];*/
-            }
-            if(TotalButtonOn==1) {
-                TempChar=(char)(LastClickedButton+'0');
-                TempString=TempChar.ToString();
-                PrintLog();
-                /*
-                Button1.GetComponent<Image>().sprite=sprites[1];
-                Button2.GetComponent<Image>().sprite=sprites[1];
-                Button3.GetComponent<Image>().sprite=sprites[1];
-                Button4.GetComponent<Image>().sprite=sprites[1];
-                Button5.GetComponent<Image>().sprite=sprites[1];
-                Button6.GetComponent<Image>().sprite=sprites[1];
-                Button7.GetComponent<Image>().sprite=sprites[1];
-                Button8.GetComponent<Image>().sprite=sprites[1];*/
-            }
-            if(TotalButtonOn==2) {
-                TempChar=(char)(LastClickedButton+'0');
-                TempString=TempChar.ToString();
-                PrintLog();
-                /*
-                Button1.GetComponent<Image>().sprite=sprites[2];
-                Button2.GetComponent<Image>().sprite=sprites[2];
-                Button3.GetComponent<Image>().sprite=sprites[2];
-                Button4.GetComponent<Image>().sprite=sprites[2];
-                Button5.GetComponent<Image>().sprite=sprites[2];
-                Button6.GetComponent<Image>().sprite=sprites[2];
-                Button7.GetComponent<Image>().sprite=sprites[2];
-                Button8.GetComponent<Image>().sprite=sprites[2];*/
+            if(nKey<=8) {
+                TotalButtonOn=Button16+Button24+Button38+Button57;
+                if(TotalButtonOn==0) {
+                    TempChar=(char)(LastClickedButton+'0');
+                    TempString=TempChar.ToString();
+                    PrintLog();
+        /*            Button1.GetComponent<Image>().sprite=sprites[0];
+                    Button2.GetComponent<Image>().sprite=sprites[0];
+                    Button3.GetComponent<Image>().sprite=sprites[0];
+                    Button4.GetComponent<Image>().sprite=sprites[0];
+                    Button5.GetComponent<Image>().sprite=sprites[0];
+                    Button6.GetComponent<Image>().sprite=sprites[0];
+                    Button7.GetComponent<Image>().sprite=sprites[0];
+                    Button8.GetComponent<Image>().sprite=sprites[0];*/
                 }
-            if(TotalButtonOn==3) {
-                TempChar=(char)(LastClickedButton+'0');
-                TempString=TempChar.ToString();
-                PrintLog();
-                /*
-                Button1.GetComponent<Image>().sprite=sprites[3];
-                Button2.GetComponent<Image>().sprite=sprites[3];
-                Button3.GetComponent<Image>().sprite=sprites[3];
-                Button4.GetComponent<Image>().sprite=sprites[3];
-                Button5.GetComponent<Image>().sprite=sprites[3];
-                Button6.GetComponent<Image>().sprite=sprites[3];
-                Button7.GetComponent<Image>().sprite=sprites[3];
-                Button8.GetComponent<Image>().sprite=sprites[3];*/
-            }
-            if(TotalButtonOn==4) {
-                TempChar=(char)(LastClickedButton+'0');
-                TempString=TempChar.ToString();
-                PrintLog();
-                /*
-                Button1.GetComponent<Image>().sprite=sprites[4];
-                Button2.GetComponent<Image>().sprite=sprites[4];
-                Button3.GetComponent<Image>().sprite=sprites[4];
-                Button4.GetComponent<Image>().sprite=sprites[4];
-                Button5.GetComponent<Image>().sprite=sprites[4];
-                Button6.GetComponent<Image>().sprite=sprites[4];
-                Button7.GetComponent<Image>().sprite=sprites[4];
-                Button8.GetComponent<Image>().sprite=sprites[4];*/
-                m_IsSuccess=true;
-                ButtontoTutorialOn=true;
+                if(TotalButtonOn==1) {
+                    TempChar=(char)(LastClickedButton+'0');
+                    TempString=TempChar.ToString();
+                    PrintLog();
+                    /*
+                    Button1.GetComponent<Image>().sprite=sprites[1];
+                    Button2.GetComponent<Image>().sprite=sprites[1];
+                    Button3.GetComponent<Image>().sprite=sprites[1];
+                    Button4.GetComponent<Image>().sprite=sprites[1];
+                    Button5.GetComponent<Image>().sprite=sprites[1];
+                    Button6.GetComponent<Image>().sprite=sprites[1];
+                    Button7.GetComponent<Image>().sprite=sprites[1];
+                    Button8.GetComponent<Image>().sprite=sprites[1];*/
+                }
+                if(TotalButtonOn==2) {
+                    TempChar=(char)(LastClickedButton+'0');
+                    TempString=TempChar.ToString();
+                    PrintLog();
+                    /*
+                    Button1.GetComponent<Image>().sprite=sprites[2];
+                    Button2.GetComponent<Image>().sprite=sprites[2];
+                    Button3.GetComponent<Image>().sprite=sprites[2];
+                    Button4.GetComponent<Image>().sprite=sprites[2];
+                    Button5.GetComponent<Image>().sprite=sprites[2];
+                    Button6.GetComponent<Image>().sprite=sprites[2];
+                    Button7.GetComponent<Image>().sprite=sprites[2];
+                    Button8.GetComponent<Image>().sprite=sprites[2];*/
+                    }
+                if(TotalButtonOn==3) {
+                    TempChar=(char)(LastClickedButton+'0');
+                    TempString=TempChar.ToString();
+                    PrintLog();
+                    /*
+                    Button1.GetComponent<Image>().sprite=sprites[3];
+                    Button2.GetComponent<Image>().sprite=sprites[3];
+                    Button3.GetComponent<Image>().sprite=sprites[3];
+                    Button4.GetComponent<Image>().sprite=sprites[3];
+                    Button5.GetComponent<Image>().sprite=sprites[3];
+                    Button6.GetComponent<Image>().sprite=sprites[3];
+                    Button7.GetComponent<Image>().sprite=sprites[3];
+                    Button8.GetComponent<Image>().sprite=sprites[3];*/
+                }
+                if(TotalButtonOn==4) {
+                    TempChar=(char)(LastClickedButton+'0');
+                    TempString=TempChar.ToString();
+                    PrintLog();
+                    /*
+                    Button1.GetComponent<Image>().sprite=sprites[4];
+                    Button2.GetComponent<Image>().sprite=sprites[4];
+                    Button3.GetComponent<Image>().sprite=sprites[4];
+                    Button4.GetComponent<Image>().sprite=sprites[4];
+                    Button5.GetComponent<Image>().sprite=sprites[4];
+                    Button6.GetComponent<Image>().sprite=sprites[4];
+                    Button7.GetComponent<Image>().sprite=sprites[4];
+                    Button8.GetComponent<Image>().sprite=sprites[4];*/
+                    m_IsSuccess=true;
+                    ButtontoTutorialOn=true;
+                }
             }
         }
     }
