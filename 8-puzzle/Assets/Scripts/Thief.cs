@@ -8,6 +8,7 @@ using UnityEngine;
 public class Thief : ThiefBehavior
 {
     public Transform camera;
+    public float timer_BearTrap = 0f;
 
     // Start is called before the first frame update
     protected override void NetworkStart()
@@ -42,6 +43,16 @@ public class Thief : ThiefBehavior
                     Receivers.Server
                 );
             }
+
+            if(timer_BearTrap > 0)
+            {
+                timer_BearTrap -= Time.deltaTime;
+                GetComponentInChildren<PlayerMovement>().enabled = false;
+                if(timer_BearTrap <= 0)
+                {
+                    GetComponentInChildren<PlayerMovement>().enabled = true;
+                }
+            }
         }
         else
         {
@@ -62,5 +73,11 @@ public class Thief : ThiefBehavior
     {
         // TODO
         throw new System.NotImplementedException();
+    }
+
+    public override void Stop(RpcArgs args)
+    {
+        if (!networkObject.IsOwner) return;
+        timer_BearTrap = 3f;
     }
 }

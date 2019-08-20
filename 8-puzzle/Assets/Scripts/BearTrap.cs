@@ -1,9 +1,11 @@
-﻿using BeardedManStudios.Forge.Networking.Unity;
+﻿using BeardedManStudios.Forge.Networking;
+using BeardedManStudios.Forge.Networking.Unity;
+using BeardedManStudios.Forge.Networking.Generated;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemStep : MonoBehaviour
+public class BearTrap : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
@@ -15,7 +17,8 @@ public class ItemStep : MonoBehaviour
         {
             if (other.tag.Equals("Thief"))
             {
-                Debug.Log("Thief stepped on item");
+                Debug.Log("Thief stepped on beartrap");
+                other.GetComponent<Thief>().networkObject.SendRpc(ThiefBehavior.RPC_STOP, Receivers.All);
             }
         }
     }
