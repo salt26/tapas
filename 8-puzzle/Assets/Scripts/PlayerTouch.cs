@@ -19,6 +19,7 @@ public class PlayerTouch : MonoBehaviour
 
     public void Touch()
     {
+        BMSLogger.DebugLog("Touch");
         touchTimer = 5;
     }
 
@@ -37,7 +38,7 @@ public class PlayerTouch : MonoBehaviour
 
                 if (other.tag.Equals("Switch"))
                 {
-                    Debug.Log("Touch with " + other.name);
+                    BMSLogger.DebugLog("Touch with " + other.name);
                     GameData.Instance.CollisionEnter(other.transform);
                     // TODO: 누른 스위치가 모든 클라이언트에서 보이도록 하기
                 }

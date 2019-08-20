@@ -11,7 +11,12 @@ using UnityEngine.UI;
 public class GameManager : GameManagerBehavior
 {
     public static GameManager instance;
-    public Text timeUI;
+    public Text timeMsg;
+    public Text normalMsg;
+    public Text importantMsg;
+    public Text supportMsg;
+    
+    public float normalMsgShowTime;
 
     public float time;
     public Transform maze;
@@ -21,6 +26,14 @@ public class GameManager : GameManagerBehavior
     private float roundTime = 320f;
     
     private float mazeScale = 1f;
+
+    public int M_TeamID
+    {
+        get
+        {
+            return m_TeamID;
+        }
+    }
 
     public int Win_TeamID
     {
@@ -79,7 +92,9 @@ public class GameManager : GameManagerBehavior
         {
             time = roundTime;
         }
-    }
+
+        normalMsgShowTime = 0;
+}
     
     void Update()
     {
@@ -111,11 +126,21 @@ public class GameManager : GameManagerBehavior
             int t = Mathf.CeilToInt(networkObject.time);
             if (t % 60 < 10)
             {
-                timeUI.text = (t / 60) + " : 0" + (t % 60);
+                timeMsg.text = (t / 60) + " : 0" + (t % 60);
             }
             else
             {
-                timeUI.text = (t / 60) + " : " + (t % 60);
+                timeMsg.text = (t / 60) + " : " + (t % 60);
+            }
+
+            if (normalMsgShowTime > 0)
+            {
+                normalMsg.enabled = true;
+                normalMsgShowTime -= Time.deltaTime;
+            }
+            else
+            {
+                normalMsg.enabled = false;
             }
         }
     }
