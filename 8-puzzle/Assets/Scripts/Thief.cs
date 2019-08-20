@@ -8,7 +8,9 @@ using UnityEngine;
 public class Thief : ThiefBehavior
 {
     public Transform camera;
-    public float timer_BearTrap = 0f;
+
+    private float timer_BearTrap = 0f;
+    private float timer_Wire = 0f;
 
     // Start is called before the first frame update
     protected override void NetworkStart()
@@ -53,6 +55,16 @@ public class Thief : ThiefBehavior
                     GetComponentInChildren<PlayerMovement>().enabled = true;
                 }
             }
+
+            if(timer_Wire > 0)
+            {
+                timer_Wire -= Time.deltaTime;
+                GetComponentInChildren<PlayerMovement>().walkingSpeed = 0.5f;
+                if(timer_Wire <= 0)
+                {
+                    GetComponentInChildren<PlayerMovement>().walkingSpeed = 1f;
+                }
+            }
         }
         else
         {
@@ -79,5 +91,11 @@ public class Thief : ThiefBehavior
     {
         if (!networkObject.IsOwner) return;
         timer_BearTrap = 3f;
+    }
+
+    public override void Slow(RpcArgs args)
+    {
+        if (!networkObject.IsOwner) return;
+        timer_Wire = 3f;
     }
 }

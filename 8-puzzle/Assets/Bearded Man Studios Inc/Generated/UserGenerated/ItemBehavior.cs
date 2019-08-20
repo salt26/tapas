@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[[\"int\", \"Vector3\"]]")]
-	[GeneratedRPCVariableNames("{\"types\":[[\"itemNum\", \"policePos\"]]")]
-	public abstract partial class ItemManagerBehavior : NetworkBehavior
+	[GeneratedRPC("{\"types\":[[]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[]]")]
+	public abstract partial class ItemBehavior : NetworkBehavior
 	{
-		public const byte RPC_CREATE_ITEM = 0 + 5;
+		public const byte RPC_DESTROY_IT = 0 + 5;
 		
-		public ItemManagerNetworkObject networkObject = null;
+		public ItemNetworkObject networkObject = null;
 
 		public override void Initialize(NetworkObject obj)
 		{
@@ -18,11 +18,11 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			if (networkObject != null && networkObject.AttachedBehavior != null)
 				return;
 			
-			networkObject = (ItemManagerNetworkObject)obj;
+			networkObject = (ItemNetworkObject)obj;
 			networkObject.AttachedBehavior = this;
 
 			base.SetupHelperRpcs(networkObject);
-			networkObject.RegisterRpc("CreateItem", CreateItem, typeof(int), typeof(Vector3));
+			networkObject.RegisterRpc("DestroyIt", DestroyIt);
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -80,7 +80,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 
 		public override void Initialize(NetWorker networker, byte[] metadata = null)
 		{
-			Initialize(new ItemManagerNetworkObject(networker, createCode: TempAttachCode, metadata: metadata));
+			Initialize(new ItemNetworkObject(networker, createCode: TempAttachCode, metadata: metadata));
 		}
 
 		private void DestroyGameObject(NetWorker sender)
@@ -91,7 +91,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 
 		public override NetworkObject CreateNetworkObject(NetWorker networker, int createCode, byte[] metadata = null)
 		{
-			return new ItemManagerNetworkObject(networker, this, createCode, metadata);
+			return new ItemNetworkObject(networker, this, createCode, metadata);
 		}
 
 		protected override void InitializedTransform()
@@ -101,10 +101,8 @@ namespace BeardedManStudios.Forge.Networking.Generated
 
 		/// <summary>
 		/// Arguments:
-		/// int itemNum
-		/// Vector3 policePos
 		/// </summary>
-		public abstract void CreateItem(RpcArgs args);
+		public abstract void DestroyIt(RpcArgs args);
 
 		// DO NOT TOUCH, THIS GETS GENERATED PLEASE EXTEND THIS CLASS IF YOU WISH TO HAVE CUSTOM CODE ADDITIONS
 	}

@@ -92,21 +92,21 @@ public class Police : PoliceBehavior
         {
             // Wire
             Debug.Log("Used Item1");
-            ItemManager.instance.networkObject.SendRpc(ItemManagerBehavior.RPC_CREATE_ITEM, Receivers.All, i, networkObject.position);
+            NetworkManager.Instance.InstantiateItem(i - 1, transform.position, Quaternion.identity);
             networkObject.item1Num--;
         }
         else if(networkObject.item2Num > 0 && i == 2)
         {
             // BearTrap
             Debug.Log("Used Item2");
-            ItemManager.instance.networkObject.SendRpc(ItemManagerBehavior.RPC_CREATE_ITEM, Receivers.All, i, networkObject.position);
+            NetworkManager.Instance.InstantiateItem(i - 1, transform.position, Quaternion.identity);
             networkObject.item2Num--;
         }
         else if(networkObject.item3Num > 0 && i == 3)
         {
             // Alert
             Debug.Log("Used Item3");
-            ItemManager.instance.networkObject.SendRpc(ItemManagerBehavior.RPC_CREATE_ITEM, Receivers.All, i, networkObject.position);
+            NetworkManager.Instance.InstantiateItem(i - 1, transform.position, Quaternion.identity);
             networkObject.item3Num--;
         }
     }
