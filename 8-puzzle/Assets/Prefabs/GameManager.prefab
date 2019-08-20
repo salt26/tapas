@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6527541136905919574}
-  - component: {fileID: 6527541136905919577}
   - component: {fileID: 5715750567344172837}
   - component: {fileID: 211386841}
   m_Layer: 0
@@ -34,19 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6527541136905919577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6527541136905919576}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8535f91a6ce53743bfbdb4c1153e7ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  switchGroup: {fileID: 0}
 --- !u!114 &5715750567344172837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,6 +240,11 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2879569045601016974, guid: efc5830e3fdeef4479cebc76d331c02d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.000051907766
+      objectReference: {fileID: 0}
     - target: {fileID: 5427915909268143124, guid: efc5830e3fdeef4479cebc76d331c02d,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -272,12 +263,17 @@ PrefabInstance:
     - target: {fileID: 4682825884166171973, guid: efc5830e3fdeef4479cebc76d331c02d,
         type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4682825884166171973, guid: efc5830e3fdeef4479cebc76d331c02d,
+        type: 3}
+      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5112712201349369958, guid: efc5830e3fdeef4479cebc76d331c02d,
         type: 3}
       propertyPath: m_Value
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: efc5830e3fdeef4479cebc76d331c02d, type: 3}

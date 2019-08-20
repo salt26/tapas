@@ -126,7 +126,7 @@ public class GameData : SwitchManagerBehavior
 
     public void CollisionEnter(Transform others)
     {
-        Debug.Log("CollisionEnter");
+        BMSLogger.DebugLog("CollisionEnter");
 
         if (Score() == state.Length) return; // puzzle already cleared
         
@@ -136,14 +136,14 @@ public class GameData : SwitchManagerBehavior
             {
                 if (recentNum == i + 1)
                 {
-                    networkObject.SendRpc(RPC_CANT_PUSH_AGAIN, Receivers.All); /////////////////////////////
+                    networkObject.SendRpc(RPC_CANT_PUSH_AGAIN, Receivers.All);
                     BMSLogger.DebugLog("thief tried to push a single switch again");
                     break;
                 }
 
                 recentNum = i + 1;
                 Toggle(recentNum);
-                Debug.Log("Switch " + recentNum + " pushed");
+                BMSLogger.DebugLog("Switch " + recentNum + " pushed");
 
                 networkObject.recentNum = recentNum; // it can be executed by server only (only server can call CollsionEnter method)
 
@@ -203,11 +203,11 @@ public class GameData : SwitchManagerBehavior
 
     public override void UpdateSwitches(RpcArgs args)
     {
-        switchGroup.GetComponent<SwitchPuzzle>().SetRotNum(recentNum);
+        switchGroup.GetComponent<SwitchPuzzle>().SetRotNum(networkObject.recentNum);
 
-        int team_id = GameManager.instance.M_TeamID;
+        int teamID = GameManager.instance.M_TeamID;
 
-        switch (team_id)
+        switch (teamID)
         {
             case 1: // Police
                 break;
@@ -257,6 +257,10 @@ public class GameData : SwitchManagerBehavior
 
     public override void CantPushAgain(RpcArgs args)
     {
-        throw new System.NotImplementedException();
+        if (GameManager.instance.M_TeamID == 2)
+        {
+            GameManager.instance.normalMsg.text = "같은 스위치를 연속해서 누를 수 없습니다.";
+            GameManager.instance.normalMsgShowTime = 3f;
+        }
     }
 }

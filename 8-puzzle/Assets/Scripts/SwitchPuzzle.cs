@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿using BeardedManStudios.Forge.Networking;
+using BeardedManStudios.Forge.Networking.Generated;
+using BeardedManStudios.Forge.Networking.Unity;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +18,14 @@ public class SwitchPuzzle : MonoBehaviour
     private Transform emissiveObject0;
     private Transform emissiveObject1;
     */
+
+    public int RotNum
+    {
+        get
+        {
+            return rotNum;
+        }
+    }
     
     void Start()
     {
@@ -39,8 +50,8 @@ public class SwitchPuzzle : MonoBehaviour
     {
         if (rotNum == 0) return;
 
-        switches[rotNum - 1].transform.Find("Switch/ApertureSwitchEmission/SwitchEmission").Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
-        switches[rotNum - 1].transform.Find("Switch/ApertureSwitchEmission/SwitchEmissionCenter").Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+        switches[rotNum - 1].transform.Find("Switch/ApertureSwitchEmission/SwitchEmission").Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
+        switches[rotNum - 1].transform.Find("Switch/ApertureSwitchEmission/SwitchEmissionCenter").Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
 
         /*
         if (isRotate)
@@ -55,6 +66,8 @@ public class SwitchPuzzle : MonoBehaviour
     public void SetRotNum(int rotNum)
     {
         this.rotNum = rotNum;
+        Debug.Log("SetRotNum : " + rotNum);
+        GameManager.instance.importantMsg.text = "SetRotNum : " + rotNum;
     }
 
     /*

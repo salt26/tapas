@@ -1416,7 +1416,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2289465600721454829}
   m_HandleRect: {fileID: 4682825884166171973}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1502,7 +1502,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uD0C8\uCD9C\uAD6C\uAC00 \uAC1C\uBC29\uB418\uC5C8\uC2B5\uB2C8\uB2E4!"
+  m_Text: 
 --- !u!1 &6437761365030140901
 GameObject:
   m_ObjectHideFlags: 0
@@ -2119,4 +2119,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC2A4\uC704\uCE58\uB97C \uB20C\uB800\uC2B5\uB2C8\uB2E4."
+  m_Text: 
