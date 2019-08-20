@@ -354,7 +354,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000022888184}
+  m_AnchoredPosition: {x: 0, y: 0.00007338227}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1034906394598222404
@@ -560,21 +560,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC870\uB825\uC790\uAC00 \uC5D4\uD130\uB97C \uCCE4\uC744 \uB54C\uB9CC \uBCF4\uC774\uB294
-    \uAC70\n\n\uB3C4\uB451\uC870\uB825\uC790\n\uC2A4\uC704\uCE58 \uC791\uB3D9 \uB0B4\uC5ED(\uCD5C\uB300
-    \uCD5C\uADFC 20\uAC74)\n\uC2DC\uC791\n\uC791\uB3D9\uB41C \uC2A4\uC704\uCE58 \uBC88\uD638
-    : 1 - \uCF1C\uC9C4 \uADF8\uB8F9 \uAC1C\uC218 : 1\n\uC791\uB3D9\uB41C \uC2A4\uC704\uCE58
-    \uBC88\uD638 : 4 - \uCF1C\uC9C4 \uADF8\uB8F9 \uAC1C\uC218 : 2\n\uC791\uB3D9\uB41C
-    \uC2A4\uC704\uCE58 \uBC88\uD638 : 3 - \uCF1C\uC9C4 \uADF8\uB8F9 \uAC1C\uC218 :
-    1\n\uC791\uB3D9\uB41C \uC2A4\uC704\uCE58 \uBC88\uD638 : 6 - \uCF1C\uC9C4 \uADF8\uB8F9
-    \uAC1C\uC218 : 2\n\uC791\uB3D9\uB41C \uC2A4\uC704\uCE58 \uBC88\uD638 : 1 - \uCF1C\uC9C4
-    \uADF8\uB8F9 \uAC1C\uC218 : 1\n\uC791\uB3D9\uB41C \uC2A4\uC704\uCE58 \uBC88\uD638
-    : 8 - \uCF1C\uC9C4 \uADF8\uB8F9 \uAC1C\uC218 : 2\n\uC791\uB3D9\uB41C \uC2A4\uC704\uCE58
-    \uBC88\uD638 : 3 - \uCF1C\uC9C4 \uADF8\uB8F9 \uAC1C\uC218 : 3\n\n\n\uACBD\uCC30\uC870\uB825\uC790\n\uD604\uC7AC
-    \uC2A4\uC704\uCE58 \uC0C1\uD669)\n\uADF8\uB8F9 1 - \uC2A4\uC704\uCE58 3, 8 - ON\n\uADF8\uB8F9
-    2 - \uC2A4\uC704\uCE58 4, 7 - OFF\n\uADF8\uB8F9 3 - \uC2A4\uC704\uCE58 2, 1 -
-    ON\n\uADF8\uB8F9 4 - \uC2A4\uC704\uCE58 5, 6 - ON\n\uCF1C\uC9C4 \uADF8\uB8F9 \uAC1C\uC218
-    : 2"
+  m_Text: 
 --- !u!1 &1864577881845657325
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,8 +817,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 916, y: -341}
-  m_SizeDelta: {x: 60, y: 360}
+  m_AnchoredPosition: {x: 920, y: -359.82}
+  m_SizeDelta: {x: 80, y: 360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2110022924325533149
 CanvasRenderer:
@@ -1417,7 +1403,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4682825884166171973}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99990565
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

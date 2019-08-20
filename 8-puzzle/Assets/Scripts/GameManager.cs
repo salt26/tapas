@@ -83,9 +83,9 @@ public class GameManager : GameManagerBehavior
             NetworkManager.Instance.InstantiatePolice(position: policePositions[r], rotation: policeRotations[r]);
         else if (m_TeamID == 2)
             NetworkManager.Instance.InstantiateThief(position: new Vector3(53.3f * mazeScale, 0f, 53.3f * mazeScale));
-        else if (m_TeamID == 3)
+        else if (m_TeamID == 3) // Police Supporter
             NetworkManager.Instance.InstantiateSupporter(0, position: new Vector3(48.3f * mazeScale, 7f * mazeScale, 53.3f * mazeScale));
-        else if (m_TeamID == 4)
+        else if (m_TeamID == 4) // Thief Supporter
             NetworkManager.Instance.InstantiateSupporter(1, position: new Vector3(58.3f * mazeScale, 7f * mazeScale, 53.3f * mazeScale));
 
         if (NetworkManager.Instance.IsServer)

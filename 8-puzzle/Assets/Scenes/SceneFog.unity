@@ -5415,6 +5415,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5777186878118298368, guid: 825745f769e1d4a488efda80aaf22b07,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6527541136905919577, guid: 825745f769e1d4a488efda80aaf22b07,
         type: 3}
       propertyPath: switchGroup
