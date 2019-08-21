@@ -36,7 +36,7 @@ public class TutorialPicture : MonoBehaviour
     // Update is called once per frame
     void GoBacktoTutorial()
     {
-        SceneManager.LoadScene("Tutorial");
+        SceneManager.LoadScene("Tutorial1");
     }
     void GoBacktoMainMenu()
     {

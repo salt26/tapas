@@ -10,7 +10,6 @@ public class Thief : ThiefBehavior
     public Transform camera;
 
     private float timer_BearTrap = 0f;
-    private float timer_Wire = 0f;
 
     // Start is called before the first frame update
     protected override void NetworkStart()
@@ -57,18 +56,6 @@ public class Thief : ThiefBehavior
                     GetComponentInChildren<PlayerMovement>().runningSpeed = 1f;
                 }
             }
-
-            if(timer_Wire > 0)
-            {
-                timer_Wire -= Time.deltaTime;
-                GetComponentInChildren<PlayerMovement>().walkingSpeed = 0.5f;
-                GetComponentInChildren<PlayerMovement>().runningSpeed = 0.5f;
-                if (timer_Wire <= 0)
-                {
-                    GetComponentInChildren<PlayerMovement>().walkingSpeed = 1f;
-                    GetComponentInChildren<PlayerMovement>().runningSpeed = 1f;
-                }
-            }
         }
         else
         {
@@ -94,12 +81,21 @@ public class Thief : ThiefBehavior
     public override void Stop(RpcArgs args)
     {
         if (!networkObject.IsOwner) return;
-        timer_BearTrap = 3f;
+        float t = args.GetNext<float>();
+        timer_BearTrap = t;
     }
 
     public override void Slow(RpcArgs args)
     {
         if (!networkObject.IsOwner) return;
-        timer_Wire = 3f;
+        GetComponentInChildren<PlayerMovement>().walkingSpeed = 0.7f;
+        GetComponentInChildren<PlayerMovement>().runningSpeed = 0.7f;
+    }
+
+    public override void Restore(RpcArgs args)
+    {
+        if (!networkObject.IsOwner) return;
+        GetComponentInChildren<PlayerMovement>().walkingSpeed = 1f;
+        GetComponentInChildren<PlayerMovement>().runningSpeed = 1f;
     }
 }

@@ -15,12 +15,20 @@ public class Tutorial : MonoBehaviour
     public GameObject Button7;
     public GameObject Button8;
     public GameObject ButtontoTutorialPictures;
+    public GameObject ResetButton;
     public List<Sprite> sprites = new List<Sprite>();
+    public List<Sprite> BatterySprites = new List<Sprite>();
+
     public Image ToolTipTutorial;
+    public Image BatteryImage;
+    public Text TutorialLogText;
+
+    /*
     public Text TutorialLogText1;
     public Text TutorialLogText2;
     public Text TutorialLogText3;
     public Text TutorialLogText4;
+    */
 
     public Image SuccessImage;
     public Image TutorialInstructionImage;
@@ -32,20 +40,25 @@ public class Tutorial : MonoBehaviour
     bool m_IsSuccess=false;
 
     int nKey;
-    int Button16=0;
+    int Button15=0;
     int Button24=0;
     int Button38=0;
-    int Button57=0;
+    int Button67=0;
     int TotalButtonOn=0;
     int LastClickedButton=0;
     float speed=1.0f;
     float Timer;
     bool TimerWorks;
     public bool ButtontoTutorialOn;
+    string LogText;
+    bool FirstLog;
+    /*
     string LogText1="";
     string LogText2="";
     string LogText3="";
     string LogText4="";
+    */
+
     char TempChar;
     string TempString;
     int NumberofTest=0;
@@ -62,12 +75,15 @@ public class Tutorial : MonoBehaviour
         Button6.GetComponent<Image>().sprite=sprites[4];
         Button7.GetComponent<Image>().sprite=sprites[4];
         Button8.GetComponent<Image>().sprite=sprites[4];
+        BatteryImage.GetComponent<Image>().sprite=BatterySprites[0];
+        LogText="";
         SuccessImage.enabled=false;
         ButtontoTutorialOn=false;
         ToolTipTutorial.enabled=false;
         TimerWorks=false;
         TutorialInstructionImage.enabled=false;
         ExitTutorialInstructionButton.SetActive(false);
+        FirstLog=true;
 //        ButtontoTutorialPictures.GetComponent<Button>().interactable=false;
  /*       Right1.SetActive(false);
         Right2.SetActive(false);
@@ -130,8 +146,8 @@ public class Tutorial : MonoBehaviour
             switch (nKey) 
             {
                 case 1:
-                    if(Button16==0) Button16=1;
-                    else Button16=0;
+                    if(Button15==0) Button15=1;
+                    else Button15=0;
                     init_ButtonRotation();
                     LastClickedButton=1;
                     break;
@@ -154,20 +170,20 @@ public class Tutorial : MonoBehaviour
                     LastClickedButton=4;
                     break;
                 case 5:
-                    if(Button57==0) Button57=1;
-                    else Button57=0;
+                    if(Button15==0) Button15=1;
+                    else Button15=0;
                     init_ButtonRotation();
                     LastClickedButton=5;
                     break;
                 case 6:
-                    if(Button16==0) Button16=1;
-                    else Button16=0;
+                    if(Button67==0) Button67=1;
+                    else Button67=0;
                     init_ButtonRotation();
                     LastClickedButton=6;
                     break;
                 case 7:
-                    if(Button57==0) Button57=1;
-                    else Button57=0;
+                    if(Button67==0) Button67=1;
+                    else Button67=0;
                     init_ButtonRotation();
                     LastClickedButton=7;
                     break;
@@ -186,77 +202,15 @@ public class Tutorial : MonoBehaviour
                 case 11:
                     QuitTutorialInstruction();
                     break;
+                case 12:
+                    ResetTutorial();
+                    break;
             }
             if(nKey<=8) {
-                TotalButtonOn=Button16+Button24+Button38+Button57;
-                if(TotalButtonOn==0) {
-                    TempChar=(char)(LastClickedButton+'0');
-                    TempString=TempChar.ToString();
-                    PrintLog();
-        /*            Button1.GetComponent<Image>().sprite=sprites[0];
-                    Button2.GetComponent<Image>().sprite=sprites[0];
-                    Button3.GetComponent<Image>().sprite=sprites[0];
-                    Button4.GetComponent<Image>().sprite=sprites[0];
-                    Button5.GetComponent<Image>().sprite=sprites[0];
-                    Button6.GetComponent<Image>().sprite=sprites[0];
-                    Button7.GetComponent<Image>().sprite=sprites[0];
-                    Button8.GetComponent<Image>().sprite=sprites[0];*/
-                }
-                if(TotalButtonOn==1) {
-                    TempChar=(char)(LastClickedButton+'0');
-                    TempString=TempChar.ToString();
-                    PrintLog();
-                    /*
-                    Button1.GetComponent<Image>().sprite=sprites[1];
-                    Button2.GetComponent<Image>().sprite=sprites[1];
-                    Button3.GetComponent<Image>().sprite=sprites[1];
-                    Button4.GetComponent<Image>().sprite=sprites[1];
-                    Button5.GetComponent<Image>().sprite=sprites[1];
-                    Button6.GetComponent<Image>().sprite=sprites[1];
-                    Button7.GetComponent<Image>().sprite=sprites[1];
-                    Button8.GetComponent<Image>().sprite=sprites[1];*/
-                }
-                if(TotalButtonOn==2) {
-                    TempChar=(char)(LastClickedButton+'0');
-                    TempString=TempChar.ToString();
-                    PrintLog();
-                    /*
-                    Button1.GetComponent<Image>().sprite=sprites[2];
-                    Button2.GetComponent<Image>().sprite=sprites[2];
-                    Button3.GetComponent<Image>().sprite=sprites[2];
-                    Button4.GetComponent<Image>().sprite=sprites[2];
-                    Button5.GetComponent<Image>().sprite=sprites[2];
-                    Button6.GetComponent<Image>().sprite=sprites[2];
-                    Button7.GetComponent<Image>().sprite=sprites[2];
-                    Button8.GetComponent<Image>().sprite=sprites[2];*/
-                    }
-                if(TotalButtonOn==3) {
-                    TempChar=(char)(LastClickedButton+'0');
-                    TempString=TempChar.ToString();
-                    PrintLog();
-                    /*
-                    Button1.GetComponent<Image>().sprite=sprites[3];
-                    Button2.GetComponent<Image>().sprite=sprites[3];
-                    Button3.GetComponent<Image>().sprite=sprites[3];
-                    Button4.GetComponent<Image>().sprite=sprites[3];
-                    Button5.GetComponent<Image>().sprite=sprites[3];
-                    Button6.GetComponent<Image>().sprite=sprites[3];
-                    Button7.GetComponent<Image>().sprite=sprites[3];
-                    Button8.GetComponent<Image>().sprite=sprites[3];*/
-                }
+                TotalButtonOn=Button15+Button24+Button38+Button67;
+                BatteryImage.GetComponent<Image>().sprite=BatterySprites[TotalButtonOn];
+                ShowLog();
                 if(TotalButtonOn==4) {
-                    TempChar=(char)(LastClickedButton+'0');
-                    TempString=TempChar.ToString();
-                    PrintLog();
-                    /*
-                    Button1.GetComponent<Image>().sprite=sprites[4];
-                    Button2.GetComponent<Image>().sprite=sprites[4];
-                    Button3.GetComponent<Image>().sprite=sprites[4];
-                    Button4.GetComponent<Image>().sprite=sprites[4];
-                    Button5.GetComponent<Image>().sprite=sprites[4];
-                    Button6.GetComponent<Image>().sprite=sprites[4];
-                    Button7.GetComponent<Image>().sprite=sprites[4];
-                    Button8.GetComponent<Image>().sprite=sprites[4];*/
                     m_IsSuccess=true;
                     ButtontoTutorialOn=true;
                 }
@@ -264,6 +218,42 @@ public class Tutorial : MonoBehaviour
         }
     }
 
+    void ShowLog() 
+    {
+        TempChar=(char)(LastClickedButton+'0');
+        TempString=TempChar.ToString();
+        if(!FirstLog) {
+            LogText=LogText+"\n ";
+        } else {
+            LogText=LogText+" ";
+            FirstLog=false;
+        }
+        if(TotalButtonOn==0) {
+            LogText=LogText+TempString+" 0/4";
+        } else if(TotalButtonOn==1) {
+            LogText=LogText+TempString+" 1/4";
+        } else if(TotalButtonOn==2) {
+            LogText=LogText+TempString+" 2/4";
+        } else if(TotalButtonOn==3) {
+            LogText=LogText+TempString+" 3/4";
+        } else if(TotalButtonOn==4) {
+            LogText=LogText+TempString+" 4/4";
+        }
+        Debug.Log(LogText);
+        TutorialLogText.GetComponent<Text>().text=LogText;
+
+    }
+    void ResetTutorial() 
+    {
+        init_ButtonRotation();
+        Button15=0;
+        Button24=0;
+        Button67=0;
+        Button38=0;
+        TotalButtonOn=0;
+        LastClickedButton=0;
+        BatteryImage.GetComponent<Image>().sprite=BatterySprites[TotalButtonOn];
+    }
     void init_ButtonRotation()
     {
         switch(LastClickedButton) {
@@ -323,6 +313,9 @@ public class Tutorial : MonoBehaviour
         TutorialInstructionImage.enabled=false;
         ExitTutorialInstructionButton.SetActive(false);
     }
+}
+
+    /*
     void PrintLog() {
         NumberofTest++;
         int divi=NumberofTest/11;
@@ -380,7 +373,8 @@ public class Tutorial : MonoBehaviour
             TutorialLogText4.GetComponent<Text>().text=LogText4;
         }
     }
-}
+    */
+
     /*
     Right1.SetActive(false);
     Right2.SetActive(false);
