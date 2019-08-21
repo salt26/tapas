@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[[\"int\"]]")]
-	[GeneratedRPCVariableNames("{\"types\":[[\"win_TeamID\"]]")]
+	[GeneratedRPC("{\"types\":[[\"int\", \"bool\"]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[\"win_TeamID\", \"timeOver\"]]")]
 	public abstract partial class GameManagerBehavior : NetworkBehavior
 	{
 		public const byte RPC_GAME_END = 0 + 5;
@@ -22,7 +22,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.AttachedBehavior = this;
 
 			base.SetupHelperRpcs(networkObject);
-			networkObject.RegisterRpc("GameEnd", GameEnd, typeof(int));
+			networkObject.RegisterRpc("GameEnd", GameEnd, typeof(int), typeof(bool));
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -102,6 +102,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		/// <summary>
 		/// Arguments:
 		/// int win_TeamID
+		/// bool timeOver
 		/// </summary>
 		public abstract void GameEnd(RpcArgs args);
 
