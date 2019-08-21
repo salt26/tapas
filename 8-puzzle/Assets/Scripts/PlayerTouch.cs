@@ -44,7 +44,9 @@ public class PlayerTouch : MonoBehaviour
                 }
                 if (other.tag.Equals("Box"))
                 {
+                    GetComponentinChildren<Police>().networkObject.SendRpc(PoliceBehavior.RPC_OPEN_BOX, Receivers.All);
                     // TODO: open box
+                    // police내 함수 구현해서 police 의 item을? item1num~item3num 그냥 랜덤으로 늘려
                 }
                 if (other.tag.Equals("Thief"))
                 {

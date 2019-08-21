@@ -239,7 +239,6 @@ public class Tutorial : MonoBehaviour
         } else if(TotalButtonOn==4) {
             LogText=LogText+TempString+" 4/4";
         }
-        Debug.Log(LogText);
         TutorialLogText.GetComponent<Text>().text=LogText;
 
     }
