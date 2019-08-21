@@ -114,7 +114,7 @@ public class GameData : SwitchManagerBehavior
                 secondNum = answer[i * 2 + 1];
             }
 
-            policeSuppMsg += "\n그룹 " + i + " / " + "스위치 " + firstNum + ", " + secondNum + " / " + (state[i] ? "ON" : "OFF");
+            policeSuppMsg += "\n그룹 " + i + " - " + "스위치 " + firstNum + ", " + secondNum + " - " + (state[i] ? "ON" : "OFF");
         }
     }
 

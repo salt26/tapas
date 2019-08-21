@@ -15,7 +15,19 @@ public class GameManager : GameManagerBehavior
     public Text normalMsg;
     public Text importantMsg;
     public Text supportMsg;
-    
+    public Text item1Txt;
+    public Text item2Txt;
+    public Text item3Txt;
+    public Image item1;
+    public Image item2;
+    public Image item3;
+    public Image staminaBackground;
+    public Image stamina;
+    public Image staminaBar;
+    public Image map;
+    public Image mapIconSupp;
+    public Image mapIconAlly;
+
     public float normalMsgShowTime;
 
     public float time;
@@ -24,6 +36,7 @@ public class GameManager : GameManagerBehavior
     private int m_TeamID = -1;
     private int win_TeamID = 0; // 0 : Game running, 1 : Police win, 2 : Thief win, 3 : Game end
     private float roundTime = 320f;
+    public bool timeOver = false;
     
     private float mazeScale = 1f;
 
@@ -79,14 +92,38 @@ public class GameManager : GameManagerBehavior
             Quaternion.Euler(0f, -135f, 0f),
             Quaternion.Euler(0f, 135f, 0f)
         };
-        if (m_TeamID == 1)
+        if (m_TeamID == 1) // Police
+        {
             NetworkManager.Instance.InstantiatePolice(position: policePositions[r], rotation: policeRotations[r]);
-        else if (m_TeamID == 2)
+            item1.enabled = true;
+            item2.enabled = true;
+            item3.enabled = true;
+            item1Txt.enabled = true;
+            item2Txt.enabled = true;
+            item3Txt.enabled = true;
+            staminaBackground.enabled = true;
+            stamina.enabled = true;
+            staminaBar.enabled = true;
+        }
+        else if (m_TeamID == 2) // Thief
+        {
             NetworkManager.Instance.InstantiateThief(position: new Vector3(53.3f * mazeScale, 0f, 53.3f * mazeScale));
+
+        }
         else if (m_TeamID == 3) // Police Supporter
+        {
             NetworkManager.Instance.InstantiateSupporter(0, position: new Vector3(48.3f * mazeScale, 7f * mazeScale, 53.3f * mazeScale));
+            map.enabled = true;
+            mapIconSupp.enabled = true;
+            mapIconAlly.enabled = true;
+        }
         else if (m_TeamID == 4) // Thief Supporter
+        {
             NetworkManager.Instance.InstantiateSupporter(1, position: new Vector3(58.3f * mazeScale, 7f * mazeScale, 53.3f * mazeScale));
+            map.enabled = true;
+            mapIconSupp.enabled = true;
+            mapIconAlly.enabled = true;
+        }
 
         if (NetworkManager.Instance.IsServer)
         {
@@ -104,7 +141,7 @@ public class GameManager : GameManagerBehavior
 
             if (win_TeamID != 0) // Police or thief win
             {
-                networkObject.SendRpc(RPC_GAME_END, Receivers.All, win_TeamID);
+                networkObject.SendRpc(RPC_GAME_END, Receivers.All, win_TeamID, timeOver);
                 win_TeamID = 3;
                 return;
             }
@@ -116,6 +153,7 @@ public class GameManager : GameManagerBehavior
             {
                 time = 0;
                 networkObject.time = time;
+                timeOver = true;
                 Win_TeamID = 1;
             }
 
@@ -148,17 +186,25 @@ public class GameManager : GameManagerBehavior
     public override void GameEnd(RpcArgs args)
     {
         int win = args.GetNext<int>();
+        bool timeOver = args.GetNext<bool>();
         if (win == 1) // Police win
         {
             Debug.Log("Police win");
-            // TODO: POLICE WIN
+            if (timeOver)
+            {
+                importantMsg.text = "경찰의 승리! 도둑이 탈출에 실패하였습니다!";
+            }
+            else
+            {
+                importantMsg.text = "경찰의 승리! 도둑이 경찰에게 잡혔습니다!";
+            }
         }
         else if (win == 2) // Thief win
         {
             Debug.Log("Thief win");
-            // TODO: THIEF WIN
+            importantMsg.text = "도둑의 승리! 도둑이 탈출에 성공하였습니다!";
         }
 
-        SceneManager.LoadScene(1); //is it right??
+        //SceneManager.LoadScene(1); //is it right??
     }
 }

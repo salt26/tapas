@@ -68,6 +68,9 @@ public class Police : PoliceBehavior
                     3
                 );
             }
+            GameManager.instance.item1Txt.text = networkObject.item1Num.ToString();
+            GameManager.instance.item2Txt.text = networkObject.item2Num.ToString();
+            GameManager.instance.item3Txt.text = networkObject.item3Num.ToString();
         }
         else
         {
