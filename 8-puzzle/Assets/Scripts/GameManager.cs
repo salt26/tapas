@@ -183,6 +183,11 @@ public class GameManager : GameManagerBehavior
         }
     }
 
+    private void ReturnLobby()
+    {
+        SceneManager.LoadScene(1);
+    }
+
     public override void GameEnd(RpcArgs args)
     {
         int win = args.GetNext<int>();
@@ -205,6 +210,6 @@ public class GameManager : GameManagerBehavior
             importantMsg.text = "도둑의 승리! 도둑이 탈출에 성공하였습니다!";
         }
 
-        //SceneManager.LoadScene(1); //is it right??
+        Invoke("ReturnLobby", 5f);
     }
 }
