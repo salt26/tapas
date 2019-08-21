@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class PoliceSupporter : SupporterBehavior
 {
+    private bool canChat = false;
+
     [SerializeField]
     private Transform cameraTransform;
 
@@ -22,6 +24,7 @@ public class PoliceSupporter : SupporterBehavior
         else
         {
             GetComponentInChildren<Camera>().enabled = false;
+            GetComponentInChildren<AudioListener>().enabled = false;
             GetComponent<DroneMovement>().enabled = false;
         }
     }
@@ -34,6 +37,23 @@ public class PoliceSupporter : SupporterBehavior
             networkObject.position = transform.position;
             networkObject.droneRotation = transform.rotation;
             networkObject.cameraRotation = cameraTransform.rotation;
+
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                if (canChat)
+                {
+                    GameManager.instance.SendPlayersMessage(1);
+                    GameManager.instance.chatUI.alpha = 0.5f;
+                    canChat = false;
+                }
+                else
+                {
+                    GameManager.instance.chatUI.alpha = 1f;
+                    canChat = true;
+                    GameManager.instance.chatInputBox.ActivateInputField();
+                }
+            }
+
         }
         else
         {
@@ -53,4 +73,16 @@ public class PoliceSupporter : SupporterBehavior
     {
         // Do nothing
     }
+
+    /*
+    public override void Chat(RpcArgs args)
+    {
+        int id = args.GetNext<int>();
+        if(networkObject.IsOwner && id == 1)
+        {
+            string message = args.GetNext<string>();
+            GameManager.instance.ReceiveMessage(message);
+        }
+    }
+    */
 }

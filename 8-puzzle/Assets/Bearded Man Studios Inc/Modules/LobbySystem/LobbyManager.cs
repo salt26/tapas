@@ -36,15 +36,8 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		private LobbyPlayer _myself;
 		private NetworkObject _networkObjectReference;
         private bool isSetupCompleted = false;
-        private bool hasRejectTeamChange = false;
-
-        public bool HasRejectTeamChange
-        {
-            get
-            {
-                return hasRejectTeamChange;
-            }
-        }
+        private bool isStarted = false;
+        private float startTimer = 0f;
 
 		#region Interface Members
 		private List<IClientMockPlayer> _lobbyPlayers = new List<IClientMockPlayer>();
@@ -73,6 +66,15 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 				return _lobbyTeams;
 			}
 		}
+
+        private Dictionary<int, uint> _lobbyPlayersStarted = new Dictionary<int, uint>();   // <TeamID, NetworkID>
+        public Dictionary<int, uint> LobbyPlayersStarted
+        {
+            get
+            {
+                return _lobbyPlayersStarted;
+            }
+        }
 		#endregion
 
 		public void Awake()
@@ -227,6 +229,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                 if (LobbyService.Instance.MasterLobby.LobbyPlayers.Count != 5)
                 {
                     BMSLogger.DebugLog("Player number must be 5!");
+                    startTimer = 0f;
                     return;
                 }
                 bool[] teams = new bool[5] { false, false, false, false, false };
@@ -235,6 +238,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                     if (p.TeamID < 0 || p.TeamID > 4)
                     {
                         BMSLogger.DebugLog("Player TeamID must be in range of [0, 4]!");
+                        startTimer = 0f;
                         return;
                     }
 
@@ -245,6 +249,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                     else
                     {
                         BMSLogger.DebugLog("Player TeamID must not be duplicated!");
+                        startTimer = 0f;
                         return;
                     }
                 }
@@ -253,17 +258,31 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                     BMSLogger.DebugLog("Host TeamID must be 0!");
                     return;
                 }
-                ((IServer)NetworkManager.Instance.Networker).StopAcceptingConnections();
-                foreach (Button b in GameObject.FindObjectsOfType<Button>())
+
+                startTimer += Time.deltaTime;
+
+                if (startTimer >= 3f && !isStarted)
                 {
-                    b.interactable = false;
-                }
-                hasRejectTeamChange = true;
+                    isStarted = true;
+                    ((IServer)NetworkManager.Instance.Networker).StopAcceptingConnections();
+                    foreach (Button b in GameObject.FindObjectsOfType<Button>())
+                    {
+                        b.interactable = false;
+                    }
+
+                    foreach (var p in LobbyService.Instance.MasterLobby.LobbyPlayers)
+                    {
+                        // Copy and archive LobbyPlayers' information to use it in game
+                        if (p.TeamID == 0) continue;
+                        _lobbyPlayersStarted.Add(p.TeamID, p.NetworkId);
+                    }
+
 #if UNITY_5_6_OR_NEWER
-                SceneManager.LoadScene(sceneID);
+                    SceneManager.LoadScene(sceneID);
 #else
-                Application.LoadLevel(sceneID);
+                    Application.LoadLevel(sceneID);
 #endif
+                }
             }
         }
 #endregion
@@ -678,7 +697,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
         {
             if (isSetupCompleted) return;
             isSetupCompleted = true;
-            BMSLogger.DebugLog("SetupComplete");
+            //BMSLogger.DebugLog("SetupComplete");
 
             LobbyService.Instance.SetLobbyMaster(this);
             LobbyService.Instance.Initialize(NetworkManager.Instance.Networker);

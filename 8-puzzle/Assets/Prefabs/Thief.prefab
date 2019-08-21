@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1245807084}
   - component: {fileID: 2108060792}
   - component: {fileID: 596481493}
+  - component: {fileID: 1976163027546343199}
   m_Layer: 0
   m_Name: FirstPersonCamera
   m_TagString: Untagged
@@ -151,6 +152,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   touchArea: {fileID: 0}
   touchableTags: []
+--- !u!81 &1976163027546343199
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245807080}
+  m_Enabled: 1
 --- !u!1 &85573202427707451
 GameObject:
   m_ObjectHideFlags: 0
@@ -3236,15 +3245,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c31180525a5a7147aa9ef8d2ebfa22b, type: 3}
---- !u!64 &7100187454911477983 stripped
-MeshCollider:
-  m_CorrespondingSourceObject: {fileID: 7744904513372305480, guid: 7c31180525a5a7147aa9ef8d2ebfa22b,
-    type: 3}
-  m_PrefabInstance: {fileID: 717061084406530199}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6456130684917050698 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5794808801919249885, guid: 7c31180525a5a7147aa9ef8d2ebfa22b,
+    type: 3}
+  m_PrefabInstance: {fileID: 717061084406530199}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &7100187454911477983 stripped
+MeshCollider:
+  m_CorrespondingSourceObject: {fileID: 7744904513372305480, guid: 7c31180525a5a7147aa9ef8d2ebfa22b,
     type: 3}
   m_PrefabInstance: {fileID: 717061084406530199}
   m_PrefabAsset: {fileID: 0}

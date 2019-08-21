@@ -60,6 +60,9 @@ MonoBehaviour:
   map: {fileID: 4947648777817139484}
   mapIconSupp: {fileID: 6430307318828911971}
   mapIconAlly: {fileID: 1762455161372971269}
+  chatUI: {fileID: 848863059969540891}
+  chatInputBox: {fileID: 2261853218914812464}
+  chatBox: {fileID: 6995941744081120444}
   normalMsgShowTime: 0
   time: 0
   maze: {fileID: 0}
@@ -249,12 +252,12 @@ PrefabInstance:
     - target: {fileID: 2879569045601016974, guid: efc5830e3fdeef4479cebc76d331c02d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00002926588
+      value: -0.000025868416
       objectReference: {fileID: 0}
     - target: {fileID: 2879569045601016974, guid: efc5830e3fdeef4479cebc76d331c02d,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.000017434359
+      value: -0.0000032186508
       objectReference: {fileID: 0}
     - target: {fileID: 4531890214968472824, guid: efc5830e3fdeef4479cebc76d331c02d,
         type: 3}
@@ -562,6 +565,36 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!225 &848863059969540891 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 1204889291100781583, guid: efc5830e3fdeef4479cebc76d331c02d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1981412421982781204}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2261853218914812464 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 296344347881356580, guid: efc5830e3fdeef4479cebc76d331c02d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1981412421982781204}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 575553740, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6995941744081120444 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8820853932539270056, guid: efc5830e3fdeef4479cebc76d331c02d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1981412421982781204}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
