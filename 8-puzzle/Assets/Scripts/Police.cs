@@ -9,6 +9,8 @@ public class Police : PoliceBehavior
 {
     public Transform camera;
 
+    private bool canChat = false;
+
     // Start is called before the first frame update
     protected override void NetworkStart()
     {
@@ -74,6 +76,23 @@ public class Police : PoliceBehavior
             GameManager.instance.item1Txt.text = networkObject.item1Num.ToString();
             GameManager.instance.item2Txt.text = networkObject.item2Num.ToString();
             GameManager.instance.item3Txt.text = networkObject.item3Num.ToString();
+
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                if (canChat)
+                {
+                    GameManager.instance.SendPlayersMessage(1);
+                    GameManager.instance.chatUI.alpha = 0.5f;
+                    canChat = false;
+                }
+                else
+                {
+                    GameManager.instance.chatUI.alpha = 1f;
+                    canChat = true;
+                    GameManager.instance.chatInputBox.ActivateInputField();
+                }
+            }
+
         }
         else
         {
@@ -132,7 +151,13 @@ public class Police : PoliceBehavior
 
     public override void Chat(RpcArgs args)
     {
-        // TODO
-        throw new System.NotImplementedException();
+        /*
+        int id = args.GetNext<int>();
+        if (networkObject.IsOwner && id == 1)
+        {
+            string message = args.GetNext<string>();
+            GameManager.instance.ReceiveMessage(message);
+        }
+        */
     }
 }
