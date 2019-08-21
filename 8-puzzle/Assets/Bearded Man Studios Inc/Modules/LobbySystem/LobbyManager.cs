@@ -697,7 +697,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
         {
             if (isSetupCompleted) return;
             isSetupCompleted = true;
-            BMSLogger.DebugLog("SetupComplete");
+            //BMSLogger.DebugLog("SetupComplete");
 
             LobbyService.Instance.SetLobbyMaster(this);
             LobbyService.Instance.Initialize(NetworkManager.Instance.Networker);

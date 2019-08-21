@@ -152,7 +152,7 @@ public class GameManager : GameManagerBehavior
     public override void GameStart(RpcArgs args)
     {
         m_TeamID = args.GetNext<int>();
-        BMSLogger.DebugLog("GameStart: my teamID is " + m_TeamID);
+        //BMSLogger.DebugLog("GameStart: my teamID is " + m_TeamID);
 
         mazeScale = maze.localScale.x;
 
@@ -222,7 +222,7 @@ public class GameManager : GameManagerBehavior
         if (!NetworkManager.Instance.IsServer) return;
 
         int playerTeamID = args.GetNext<int>();
-        BMSLogger.DebugLog("Ready: his/her teamID is " + playerTeamID);
+        //BMSLogger.DebugLog("Ready: his/her teamID is " + playerTeamID);
         if (playerTeamID < 1 || playerTeamID > 4) return;
 
         if (readyPlayers.IndexOf(playerTeamID) == -1)
@@ -234,7 +234,7 @@ public class GameManager : GameManagerBehavior
             time = roundTime;
             isReady = true;
             networkObject.isReady = true;
-            BMSLogger.DebugLog("Ready: Server ready!");
+            //BMSLogger.DebugLog("Ready: Server ready!");
         }
     }
 

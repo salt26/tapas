@@ -15,6 +15,8 @@ public class Police : PoliceBehavior
         base.NetworkStart();
         if (networkObject.IsOwner)
         {
+            float m = GameManager.instance.maze.localScale.x;
+            transform.rotation = Quaternion.FromToRotation(transform.rotation * new Vector3(0f, 0f, 0f), new Vector3(53.3f * m, 0f, 53.3f * m) - transform.position);
             networkObject.item1Num = 5;
             networkObject.item2Num = 5;
             networkObject.item3Num = 5;
