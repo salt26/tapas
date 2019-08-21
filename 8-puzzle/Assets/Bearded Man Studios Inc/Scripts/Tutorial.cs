@@ -17,23 +17,17 @@ public class Tutorial : MonoBehaviour
     public GameObject ButtontoTutorialPictures;
     public GameObject ResetButton;
     public List<Sprite> sprites = new List<Sprite>();
-    public List<Sprite> BatterySprites = new List<Sprite>();
-
-    public Image ToolTipTutorial;
-    public Image BatteryImage;
-    public Text TutorialLogText;
-
-    /*
-    public Text TutorialLogText1;
-    public Text TutorialLogText2;
-    public Text TutorialLogText3;
-    public Text TutorialLogText4;
-    */
-
+    public List<Sprite> Doorsprites = new List<Sprite>();
+    public List<Sprite> Numbersprites = new List<Sprite>();
+    public List<Sprite> Tutorialsprites = new List<Sprite>();
     public Image SuccessImage;
-    public Image TutorialInstructionImage;
-    public GameObject ExitTutorialInstructionButton;
-
+    public Image ButtonBackground;
+    public Image NumberofGroup;
+    public Text ShowLogText;
+    public Image TutorialInstrction;
+    public GameObject TutorialInstrctionNextButton;
+    public GameObject TutorialInstrctionBeforeButton;
+    
     public float fadeDuration = 1f;
     float m_Timer;
     public float displayImageDuration = 1f;
@@ -49,21 +43,14 @@ public class Tutorial : MonoBehaviour
     float speed=1.0f;
     float Timer;
     bool TimerWorks;
-    public bool ButtontoTutorialOn;
-    string LogText;
-    bool FirstLog;
-    /*
-    string LogText1="";
-    string LogText2="";
-    string LogText3="";
-    string LogText4="";
-    */
+    int i;
+    string LogText="";
+    bool succeed;
+    List<string> LogList = new List<string>();
 
     char TempChar;
     string TempString;
-    int NumberofTest=0;
-    // Start is called before the first frame update
-
+    int TutorialInstrctionPage;
 
     void Start()
     {
@@ -75,20 +62,20 @@ public class Tutorial : MonoBehaviour
         Button6.GetComponent<Image>().sprite=sprites[4];
         Button7.GetComponent<Image>().sprite=sprites[4];
         Button8.GetComponent<Image>().sprite=sprites[4];
-        BatteryImage.GetComponent<Image>().sprite=BatterySprites[0];
-        LogText="";
         SuccessImage.enabled=false;
-        ButtontoTutorialOn=false;
-        ToolTipTutorial.enabled=false;
+        ButtontoTutorialPictures.SetActive(false);
         TimerWorks=false;
-        TutorialInstructionImage.enabled=false;
-        ExitTutorialInstructionButton.SetActive(false);
-        FirstLog=true;
-//        ButtontoTutorialPictures.GetComponent<Button>().interactable=false;
- /*       Right1.SetActive(false);
-        Right2.SetActive(false);
-        Right3.SetActive(false);
-        Right4.SetActive(false);        */
+        ButtonBackground.GetComponent<Image>().sprite=Doorsprites[0];
+        NumberofGroup.GetComponent<Image>().sprite=Numbersprites[0];
+        for(i=0;i<13;i++) {
+            LogList.Add("\n");
+            LogText=LogText+LogList[i];
+        }
+        ShowLogText.GetComponent<Text>().text=LogText;
+        TutorialInstrctionNextButton.SetActive(false);
+        TutorialInstrctionBeforeButton.SetActive(false);
+        TutorialInstrction.enabled=false;
+        succeed=false;
     }
     void Update() 
     {
@@ -96,52 +83,50 @@ public class Tutorial : MonoBehaviour
             Timer+=Time.deltaTime;
             if(Timer>2) {
                 TimerWorks=false;
-                ToolTipTutorial.enabled=false;
             }
         }
+        Debug.Log(m_IsSuccess);
         if(m_IsSuccess==true) {
+//            Debug.Log("suc");
             SuccessImage.enabled=true;
+            Timer=0f;
+            TimerWorks=true;
             EndTutorial(SuccessImage);
         } else {
             if(LastClickedButton!=0) {
                 if(LastClickedButton==1) {
-                    //transform.rotation=Quaternion.identity;
                     Button1.transform.Rotate(Vector3.forward*speed);
                 }
                 if(LastClickedButton==2) {
-                    //transform.rotation=Quaternion.identity;
                     Button2.transform.Rotate(Vector3.forward*speed);
                 }
                 if(LastClickedButton==3) {
-                    //transform.rotation=Quaternion.identity;
                     Button3.transform.Rotate(Vector3.forward*speed);
                 }
                 if(LastClickedButton==4) {
-                    //transform.rotation=Quaternion.identity;
                     Button4.transform.Rotate(Vector3.forward*speed);
                 }
                 if(LastClickedButton==5) {
-                    //transform.rotation=Quaternion.identity;
                     Button5.transform.Rotate(Vector3.forward*speed);
                 }
                 if(LastClickedButton==6) {
-                    //transform.rotation=Quaternion.identity;
                     Button6.transform.Rotate(Vector3.forward*speed);
                 }
                 if(LastClickedButton==7) {
-                    //transform.rotation=Quaternion.identity;
                     Button7.transform.Rotate(Vector3.forward*speed);
                 }
                 if(LastClickedButton==8) {
-                    //transform.rotation=Quaternion.identity;
                     Button8.transform.Rotate(Vector3.forward*speed);
                 }
             }
         }
     }
-    // Update is called once per frame
+
     public void PressKey(int nKey)
     {
+        if(succeed) {
+            if(nKey<=8) return;
+        }
         if(nKey!=LastClickedButton) {
             switch (nKey) 
             {
@@ -200,46 +185,51 @@ public class Tutorial : MonoBehaviour
                     ShowTutorialInstruction();
                     break;
                 case 11:
-                    QuitTutorialInstruction();
+                    NextTutorialInstruction();
                     break;
                 case 12:
                     ResetTutorial();
                     break;
+                case 13:
+                    BeforeTutorialInstruction();
+                    break;
             }
             if(nKey<=8) {
                 TotalButtonOn=Button15+Button24+Button38+Button67;
-                BatteryImage.GetComponent<Image>().sprite=BatterySprites[TotalButtonOn];
-                ShowLog();
+                for(i=0;i<12;i++) {
+                    LogList[i]=LogList[i+1];
+                }
+                TempChar=(char)(nKey+'0');
+                TempString=TempChar.ToString();
+                if(TotalButtonOn==0) {
+                    LogList[12]=TempString+"번 스위치 -> 그룹 0개 켜짐\n";
+                    NumberofGroup.GetComponent<Image>().sprite=Numbersprites[0];
+                }
+                if(TotalButtonOn==1) {
+                    LogList[12]=TempString+"번 스위치 -> 그룹 1개 켜짐\n";
+                    NumberofGroup.GetComponent<Image>().sprite=Numbersprites[1];
+                }
+                if(TotalButtonOn==2) {
+                    LogList[12]=TempString+"번 스위치 -> 그룹 2개 켜짐\n";
+                    NumberofGroup.GetComponent<Image>().sprite=Numbersprites[2];
+                }
+                if(TotalButtonOn==3) {
+                    LogList[12]=TempString+"번 스위치 -> 그룹 3개 켜짐\n";
+                    NumberofGroup.GetComponent<Image>().sprite=Numbersprites[3];
+                }
                 if(TotalButtonOn==4) {
                     m_IsSuccess=true;
-                    ButtontoTutorialOn=true;
+                    LogList[12]=TempString+"번 스위치 -> 그룹 4개 켜짐";
+                    NumberofGroup.GetComponent<Image>().sprite=Numbersprites[4];
+                    ButtonBackground.GetComponent<Image>().sprite=Doorsprites[1];
+                    LastClickedButton=0;
+                    init_ButtonRotation();
+                    ButtontoTutorialPictures.SetActive(true);
+                    succeed=true;
                 }
+                ShowLog();
             }
         }
-    }
-
-    void ShowLog() 
-    {
-        TempChar=(char)(LastClickedButton+'0');
-        TempString=TempChar.ToString();
-        if(!FirstLog) {
-            LogText=LogText+"\n ";
-        } else {
-            LogText=LogText+" ";
-            FirstLog=false;
-        }
-        if(TotalButtonOn==0) {
-            LogText=LogText+TempString+" 0/4";
-        } else if(TotalButtonOn==1) {
-            LogText=LogText+TempString+" 1/4";
-        } else if(TotalButtonOn==2) {
-            LogText=LogText+TempString+" 2/4";
-        } else if(TotalButtonOn==3) {
-            LogText=LogText+TempString+" 3/4";
-        } else if(TotalButtonOn==4) {
-            LogText=LogText+TempString+" 4/4";
-        }
-        TutorialLogText.GetComponent<Text>().text=LogText;
     }
     void ResetTutorial() 
     {
@@ -250,11 +240,25 @@ public class Tutorial : MonoBehaviour
         Button38=0;
         TotalButtonOn=0;
         LastClickedButton=0;
-        BatteryImage.GetComponent<Image>().sprite=BatterySprites[TotalButtonOn];
+        ButtonBackground.GetComponent<Image>().sprite=Doorsprites[0];
         LogText="";
-        FirstLog=true;
-        TutorialLogText.GetComponent<Text>().text=LogText;
+        for(i=0;i<13;i++) {
+            LogList[i]="\n";
+        }
+        ShowLog();
+        succeed=false;
+        NumberofGroup.GetComponent<Image>().sprite=Numbersprites[TotalButtonOn];
     }
+
+    void ShowLog()
+    {
+        LogText="";
+        for(i=0;i<13;i++) {
+            LogText+=LogList[i];
+        }
+        ShowLogText.GetComponent<Text>().text=LogText;
+    }
+
     void init_ButtonRotation()
     {
         switch(LastClickedButton) {
@@ -290,138 +294,40 @@ public class Tutorial : MonoBehaviour
         image.color = new Color(image.color.r,image.color.g,image.color.b, m_Timer / fadeDuration);
         if(m_Timer>fadeDuration + displayImageDuration) {
             m_IsSuccess=false;
+            TimerWorks=false;
             SuccessImage.enabled=false;
         }
     }
 
     void ChangeScenetoTutorialPicture() {
-        if(ButtontoTutorialOn) {                                    //이거 public으로 하면 못받나???
-            SceneManager.LoadScene("TutorialPicture");
-        } else {
-            ShowToolTip();
-        }
-    }
-    void ShowToolTip() {
-        ToolTipTutorial.enabled=true;
-        Timer=0;
-        TimerWorks=true;
+        SceneManager.LoadScene("TutorialPicture");
     }
     void ShowTutorialInstruction() {
-        TutorialInstructionImage.enabled=true;
-        ExitTutorialInstructionButton.SetActive(true);
+        TutorialInstrctionNextButton.SetActive(true);
+        TutorialInstrctionBeforeButton.SetActive(true);
+        TutorialInstrction.enabled=true;
+        TutorialInstrctionPage=0;
+        TutorialInstrction.GetComponent<Image>().sprite=Tutorialsprites[TutorialInstrctionPage];
     }
-    void QuitTutorialInstruction() {
-        TutorialInstructionImage.enabled=false;
-        ExitTutorialInstructionButton.SetActive(false);
+    void NextTutorialInstruction() {
+        TutorialInstrctionPage++;
+        if(TutorialInstrctionPage>=0 && TutorialInstrctionPage<=3) {
+            TutorialInstrction.GetComponent<Image>().sprite=Tutorialsprites[TutorialInstrctionPage];
+        } else if(TutorialInstrctionPage==4) {
+            ExitTutorialInstruction();
+        }
+    }
+    void BeforeTutorialInstruction() {
+        TutorialInstrctionPage--;
+        if(TutorialInstrctionPage>=0 && TutorialInstrctionPage<=3) {
+            TutorialInstrction.GetComponent<Image>().sprite=Tutorialsprites[TutorialInstrctionPage];
+        } else if(TutorialInstrctionPage==-1) {
+            ExitTutorialInstruction();
+        }
+    }
+    void ExitTutorialInstruction() {
+        TutorialInstrctionNextButton.SetActive(false);
+        TutorialInstrctionBeforeButton.SetActive(false);
+        TutorialInstrction.enabled=false;
     }
 }
-
-    /*
-    void PrintLog() {
-        NumberofTest++;
-        int divi=NumberofTest/11;
-        if(divi==0) {
-            if(TotalButtonOn==0) {
-                LogText1=LogText1+"\n"+TempString+"   0/4";
-            } else if(TotalButtonOn==1) {
-                LogText1=LogText1+"\n"+TempString+"   1/4";
-            } else if(TotalButtonOn==2) {
-                LogText1=LogText1+"\n"+TempString+"   2/4";
-            } else if(TotalButtonOn==3) {
-                LogText1=LogText1+"\n"+TempString+"   3/4";
-            } else if(TotalButtonOn==4) {
-                LogText1=LogText1+"\n"+TempString+"   4/4";
-            }
-            TutorialLogText1.GetComponent<Text>().text=LogText1;
-        } else if(divi==1) {
-            if(TotalButtonOn==0) {
-                LogText2=LogText2+"\n"+TempString+"   0/4";
-            } else if(TotalButtonOn==1) {
-                LogText2=LogText2+"\n"+TempString+"   1/4";
-            } else if(TotalButtonOn==2) {
-                LogText2=LogText2+"\n"+TempString+"   2/4";
-            } else if(TotalButtonOn==3) {
-                LogText2=LogText2+"\n"+TempString+"   3/4";
-            } else if(TotalButtonOn==4) {
-                LogText2=LogText2+"\n"+TempString+"   4/4";
-            }
-            TutorialLogText2.GetComponent<Text>().text=LogText2;
-        } else if(divi==2) {
-            if(TotalButtonOn==0) {
-                LogText3=LogText3+"\n"+TempString+"   0/4";
-            } else if(TotalButtonOn==1) {
-                LogText3=LogText3+"\n"+TempString+"   1/4";
-            } else if(TotalButtonOn==2) {
-                LogText3=LogText3+"\n"+TempString+"   2/4";
-            } else if(TotalButtonOn==3) {
-                LogText3=LogText3+"\n"+TempString+"   3/4";
-            } else if(TotalButtonOn==4) {
-                LogText3=LogText3+"\n"+TempString+"   4/4";
-            }
-            TutorialLogText3.GetComponent<Text>().text=LogText3;
-        } else if(divi==3) {
-            if(TotalButtonOn==0) {
-                LogText4=LogText4+"\n"+TempString+"   0/4";
-            } else if(TotalButtonOn==1) {
-                LogText4=LogText4+"\n"+TempString+"   1/4";
-            } else if(TotalButtonOn==2) {
-                LogText4=LogText4+"\n"+TempString+"   2/4";
-            } else if(TotalButtonOn==3) {
-                LogText4=LogText4+"\n"+TempString+"   3/4";
-            } else if(TotalButtonOn==4) {
-                LogText4=LogText4+"\n"+TempString+"   4/4";
-            }
-            TutorialLogText4.GetComponent<Text>().text=LogText4;
-        }
-    }
-    */
-
-    /*
-    Right1.SetActive(false);
-    Right2.SetActive(false);
-    Right3.SetActive(false);
-    Right4.SetActive(false);
-    switch (TotalButtonOn) {
-        case 4:
-            Right4.SetActive(true);
-            Right3.SetActive(true);
-            Right2.SetActive(true);
-            Right1.SetActive(true);
-            break;
-        case 3:
-            Right3.SetActive(true);
-            Right2.SetActive(true);
-            Right1.SetActive(true);
-            break;
-        case 2:
-            Right2.SetActive(true);
-            Right1.SetActive(true);
-            break;
-        case 1:
-            Right1.SetActive(true);
-            break;
-    }
-    }*/
-/*
-    void CastRay() 
-    {
-        target=null;
-        Vector2 pos=Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        RaycastHit2D hit=Physics2D.Raycast(pos,Vector2.zero,0f);
-
-        if(hit.collider !=null) {
-            target=hit.collider.gameObject;
-        }
-    }
-    private GameObject GetClickedobject() 
-    {
-        RaycastHit hit;
-        GameObject target=null;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); 
-        if( true == (Physics.Raycast(ray.origin, ray.direction * 10, out hit))) 
-        {
-            target = hit.collider.gameObject; 
-        }
-        return target;
-    }*/
-
