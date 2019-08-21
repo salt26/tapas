@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Bearded Man Studios Inc/Scenes/TutorialPicture.unity
     guid: c33aa81567f86b34b866d8d21f64e78f
+  - enabled: 1
+    path: Assets/Bearded Man Studios Inc/Scenes/Tutorial1.unity
+    guid: be6435c0de745d44094089950d6272ea
   m_configObjects: {}

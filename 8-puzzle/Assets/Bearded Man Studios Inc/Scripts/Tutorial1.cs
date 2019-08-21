@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class Tutorial : MonoBehaviour
+public class Tutorial1 : MonoBehaviour
 {
     public GameObject Button1;
     public GameObject Button2;
@@ -76,13 +76,13 @@ public class Tutorial : MonoBehaviour
         Button7.GetComponent<Image>().sprite=sprites[4];
         Button8.GetComponent<Image>().sprite=sprites[4];
         BatteryImage.GetComponent<Image>().sprite=BatterySprites[0];
-        LogText="";
         SuccessImage.enabled=false;
-        ButtontoTutorialOn=false;
+        ButtontoTutorialOn=true;
         ToolTipTutorial.enabled=false;
         TimerWorks=false;
         TutorialInstructionImage.enabled=false;
         ExitTutorialInstructionButton.SetActive(false);
+        LogText="";
         FirstLog=true;
 //        ButtontoTutorialPictures.GetComponent<Button>().interactable=false;
  /*       Right1.SetActive(false);
@@ -217,7 +217,6 @@ public class Tutorial : MonoBehaviour
             }
         }
     }
-
     void ShowLog() 
     {
         TempChar=(char)(LastClickedButton+'0');
@@ -239,7 +238,6 @@ public class Tutorial : MonoBehaviour
         } else if(TotalButtonOn==4) {
             LogText=LogText+TempString+" 4/4";
         }
-        Debug.Log(LogText);
         TutorialLogText.GetComponent<Text>().text=LogText;
 
     }
