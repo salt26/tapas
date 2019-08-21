@@ -53,7 +53,7 @@ public class GameManager : GameManagerBehavior
 
         if (LobbyManager.lm != null)
         {
-            m_TeamID = LobbyManager.lm.Myself.GetComponent<LobbyPlayerItem>().AssociatedPlayer.TeamID;
+            m_TeamID = LobbyManager.lm.Myself.AssociatedPlayer.TeamID;
             LobbyManager.lm.GetComponent<Canvas>().enabled = false;
         }
     }
@@ -94,7 +94,7 @@ public class GameManager : GameManagerBehavior
         }
 
         normalMsgShowTime = 0;
-}
+    }
     
     void Update()
     {

@@ -17,7 +17,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
         public GameObject PlayerItem;
 		public LobbyPlayerItem Myself;
-		public InputField ChatInputBox;
+        public InputField ChatInputBox;
 		public Text Chatbox;
 		public Transform[] Grid;
         public List<GameObject> chosen1s;
@@ -36,6 +36,15 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		private LobbyPlayer _myself;
 		private NetworkObject _networkObjectReference;
         private bool isSetupCompleted = false;
+        private bool hasRejectTeamChange = false;
+
+        public bool HasRejectTeamChange
+        {
+            get
+            {
+                return hasRejectTeamChange;
+            }
+        }
 
 		#region Interface Members
 		private List<IClientMockPlayer> _lobbyPlayers = new List<IClientMockPlayer>();
@@ -120,18 +129,17 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
         void Update()
         {
-            StartGame(2);
+            if (isSetupCompleted && SceneManager.GetActiveScene().name.Equals("Lobby") && NetworkManager.Instance.IsServer)
+                StartGame(2);
         }
 
 		private void CheckForService(NetWorker networker, int identity, uint id, Frame.FrameStream frame, Action<NetworkObject> callback)
 		{
-            BMSLogger.DebugLog("CheckForService 1");
 			if (identity != LobbyService.LobbyServiceNetworkObject.IDENTITY)
 			{
 				return;
 			}
-
-            BMSLogger.DebugLog("CheckForService 2");
+            
             NetworkManager.Instance.Networker.objectCreateRequested -= CheckForService;
 			NetworkObject obj = new LobbyService.LobbyServiceNetworkObject(networker, id, frame);
 			if (callback != null)
@@ -250,6 +258,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                 {
                     b.interactable = false;
                 }
+                hasRejectTeamChange = true;
 #if UNITY_5_6_OR_NEWER
                 SceneManager.LoadScene(sceneID);
 #else
@@ -469,6 +478,8 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 			LobbyPlayer convertedPlayer = GrabPlayer(player);
 			if (convertedPlayer == _myself || _myself == null)
 				return; //Ignore re-adding ourselves
+
+            if (convertedPlayer == null) return;
             
             bool playerCreated = false;
             for (int i = 0; i < _lobbyPlayersPool.Count; ++i)

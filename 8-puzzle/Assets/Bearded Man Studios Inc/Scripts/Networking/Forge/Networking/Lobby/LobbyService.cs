@@ -18,6 +18,7 @@ namespace BeardedManStudios.Forge.Networking.Lobby
 		public const byte RPC_PLAYER_JOINED = 8;
 		public const byte RPC_PLAYER_LEFT = 9;
 		public const byte RPC_PLAYER_SYNC = 10;
+        //public const byte RPC_REQUEST_TEAM = 11;
 
 		#region Private Data
 		private LobbyServiceNetworkObject networkObject = null;
@@ -421,10 +422,11 @@ namespace BeardedManStudios.Forge.Networking.Lobby
 		public void SetTeamId(int teamId)
 		{
 			IClientMockPlayer player = GetClientMockPlayer(networkObject.MyPlayerId);
-			player.TeamID = teamId;
-			// TODO:  When someone joins they need to get the current players selections
-			networkObject.SendRpc(RPC_ASSIGN_TEAM, true, Receivers.All, networkObject.MyPlayerId, teamId);
-		}
+            player.TeamID = teamId;
+            // TODO:  When someone joins they need to get the current players selections
+            networkObject.SendRpc(RPC_ASSIGN_TEAM, true, Receivers.All, networkObject.MyPlayerId, teamId);
+            //networkObject.SendRpc(RPC_REQUEST_TEAM, true, Receivers.Server, networkObject.MyPlayerId, teamId);
+        }
 
 		/// <summary>
 		/// Send a message to everyone connected
@@ -485,7 +487,8 @@ namespace BeardedManStudios.Forge.Networking.Lobby
 			networkObject.RegisterRpc("PlayerJoined", PlayerJoined, typeof(uint));
 			networkObject.RegisterRpc("PlayerLeft", PlayerLeft, typeof(uint));
 			networkObject.RegisterRpc("SyncPlayer", SyncPlayer, typeof(uint), typeof(string), typeof(int), typeof(int));
-			networkObject.RegistrationComplete();
+            //networkObject.RegisterRpc("RequestTeam", RequestTeam, typeof(uint), typeof(int));
+            networkObject.RegistrationComplete();
 			_initialized = true;
 
 			//Logging.BMSLog.Log("SERVICE ID: " + networkObject.NetworkId);
@@ -639,6 +642,15 @@ namespace BeardedManStudios.Forge.Networking.Lobby
 			player.AvatarID = avatarID;
 			MasterLobby.OnFNPlayerSync(player);
 		}
+        /*
+        private void RequestTeam(RpcArgs args)
+        {
+            uint playerId = args.GetNext<uint>();
+            int teamId = args.GetNext<int>();
+            // TODO: if LobbyManager.HasRejectTeamChange is true, then return immediately.
+            networkObject.SendRpc(RPC_ASSIGN_TEAM, true, Receivers.All, networkObject.MyPlayerId, teamId);
+        }
+        */
 
 		private IClientMockPlayer CreateClientMockPlayer(uint playerId, string playerName)
 		{
