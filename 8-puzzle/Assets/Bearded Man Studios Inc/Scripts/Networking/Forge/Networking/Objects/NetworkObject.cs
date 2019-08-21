@@ -944,7 +944,7 @@ namespace BeardedManStudios.Forge.Networking
 			// If we are the server we need to determine if this RPC is okay to replicate
 			if (Networker is IServer && receivers != Receivers.Target)
 			{
-                BMSLogger.DebugLog("InvokeRPC SendRpc");
+                //BMSLogger.DebugLog("InvokeRPC SendRpc");
 				string methodName = inverseRpcLookup[methodId];
 
 				// Validate the RPC call using the method name and the supplied arguments from the client
@@ -1240,7 +1240,7 @@ namespace BeardedManStudios.Forge.Networking
 			// Map all of the data to bytes
 			BMSByte data = ObjectMapper.BMSByte(NetworkId, methodId, behaviorFlags);
 			ObjectMapper.Instance.MapBytes(data, args);
-            
+            /*
             string s = "";
             foreach (byte b in data.byteArr)
             {
@@ -1248,7 +1248,7 @@ namespace BeardedManStudios.Forge.Networking
                 s += " ";
             }
             BMSLogger.DebugLog("SendRPC: " + s);
-
+            */
             if (Networker is IServer)
 			{
 				// Buffered RPC messages are stored on the NetworkObject level and not on the NetWorker level
@@ -1383,7 +1383,7 @@ namespace BeardedManStudios.Forge.Networking
             // Map all of the data to bytes
             BMSByte data = ObjectMapper.BMSByte(NetworkId, methodId, behaviorFlags);
             ObjectMapper.Instance.MapBytes(data, args);
-
+            /*
             string s = "";
             foreach (byte b in data.byteArr)
             {
@@ -1391,7 +1391,7 @@ namespace BeardedManStudios.Forge.Networking
                 s += " ";
             }
             BMSLogger.DebugLog("CancelingRPC: " + s);
-
+            */
             if (Networker is IServer)
             {
                 // Buffered RPC messages are stored on the NetworkObject level and not on the NetWorker level
@@ -1422,7 +1422,7 @@ namespace BeardedManStudios.Forge.Networking
                                 {
                                     if (rpcBuffer[i].data.Equals(data))
                                     {
-                                        BMSLogger.DebugLog("Remove RPC " + rpcBuffer[i].data.GetByteArray(0) + " from rpcBuffer");
+                                        //BMSLogger.DebugLog("Remove RPC " + rpcBuffer[i].data.GetByteArray(0) + " from rpcBuffer");
                                         rpcBuffer.RemoveAt(i);
                                         replaced = true;
                                         break;
@@ -1439,7 +1439,7 @@ namespace BeardedManStudios.Forge.Networking
                     }
                 }
             }
-
+            /*
             if (!Networker.IsServer || receivers != Receivers.Server)
                 ;// FinalizeSendRpc(data, receivers, methodId, timestep, reliable, targetPlayer, sender);
 
@@ -1457,6 +1457,7 @@ namespace BeardedManStudios.Forge.Networking
                     ;// InvokeRpcOnSelfServer(methodId, sender, timestep, args);
                 }
             }
+            */
         }
 
         private void InvokeRpcOnSelfServer(byte methodId, NetworkingPlayer sender, ulong timestep, object[] args)

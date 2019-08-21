@@ -4,11 +4,13 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[[\"int\"]]")]
-	[GeneratedRPCVariableNames("{\"types\":[[\"win_TeamID\"]]")]
+	[GeneratedRPC("{\"types\":[[\"int\", \"bool\"][\"int\"][\"int\"]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[\"win_TeamID\", \"timeOver\"][\"teamID\"][\"playerTeamID\"]]")]
 	public abstract partial class GameManagerBehavior : NetworkBehavior
 	{
 		public const byte RPC_GAME_END = 0 + 5;
+		public const byte RPC_GAME_START = 1 + 5;
+		public const byte RPC_READY = 2 + 5;
 		
 		public GameManagerNetworkObject networkObject = null;
 
@@ -22,7 +24,9 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.AttachedBehavior = this;
 
 			base.SetupHelperRpcs(networkObject);
-			networkObject.RegisterRpc("GameEnd", GameEnd, typeof(int));
+			networkObject.RegisterRpc("GameEnd", GameEnd, typeof(int), typeof(bool));
+			networkObject.RegisterRpc("GameStart", GameStart, typeof(int));
+			networkObject.RegisterRpc("Ready", Ready, typeof(int));
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -102,8 +106,19 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		/// <summary>
 		/// Arguments:
 		/// int win_TeamID
+		/// bool timeOver
 		/// </summary>
 		public abstract void GameEnd(RpcArgs args);
+		/// <summary>
+		/// Arguments:
+		/// int teamID
+		/// </summary>
+		public abstract void GameStart(RpcArgs args);
+		/// <summary>
+		/// Arguments:
+		/// int playerTeamID
+		/// </summary>
+		public abstract void Ready(RpcArgs args);
 
 		// DO NOT TOUCH, THIS GETS GENERATED PLEASE EXTEND THIS CLASS IF YOU WISH TO HAVE CUSTOM CODE ADDITIONS
 	}

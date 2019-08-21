@@ -9,9 +9,9 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Speed Settings")]
     public float idleSpeed = 0.3f;
-    public float walkingSpeed = 1f;
-    public float runningSpeed = 2f;
-    public float transitionSpeed = 4f;
+    public float walkingSpeed = 2.5f;
+    public float runningSpeed = 5f;
+    public float transitionSpeed = 10f;
 
     [Header("Rotation Settings")]
     public float rotationThreshold = 50f;
@@ -84,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 targetMovement = new Vector3(horizontalInput, 0, verticalInput);
         targetMovement.Normalize();
-        targetMovement *= isMoving ? (isRunning ? runningSpeed : walkingSpeed) : 0f;
+        targetMovement *= isMoving ? (isRunning ? runningSpeed : walkingSpeed) : 0f; 
         currentMovement = Vector3.MoveTowards(currentMovement, targetMovement, transitionSpeed * Time.fixedDeltaTime);
 
         float direction = Mathf.DeltaAngle(transform.eulerAngles.y, m_Camera.transform.eulerAngles.y);
@@ -95,13 +95,17 @@ public class PlayerMovement : MonoBehaviour
         m_Animator.SetFloat("Vertical", currentMovement.z);
         m_Animator.SetBool("RotateLeft", isRotatingLeft);
         m_Animator.SetBool("RotateRight", isRotatingRight);
+
+
     }
 
-    
+
     void OnAnimatorMove()
     {
         if (!isReady) return;
 
+        // 애니메이션에 따른 움직임   
+        /*
         m_Rigidbody.MovePosition(m_Animator.rootPosition);
 
         // rotation management
@@ -120,7 +124,15 @@ public class PlayerMovement : MonoBehaviour
             m_Rigidbody.MoveRotation(Quaternion.Euler(0f, currentAngle + towardAngle + 
                 Mathf.Rad2Deg * m_Animator.angularVelocity.y * Time.fixedDeltaTime, 0f));
         }
+        */
+
+        // 애니메이션 무시한 움직임
+        Quaternion currentRotation = Quaternion.Euler(0f, m_Camera.transform.eulerAngles.y, 0f);
+        m_Rigidbody.MovePosition(m_Rigidbody.position +
+            currentRotation * currentMovement * Time.fixedDeltaTime);
+        m_Rigidbody.MoveRotation(currentRotation);
     }
+
 
     void OnAnimatorIK(int layerIndex)
     {
