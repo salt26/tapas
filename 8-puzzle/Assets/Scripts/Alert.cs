@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class Alert : ItemBehavior
 {
+    public MeshRenderer laser;
+
     private void OnTriggerEnter(Collider other)
     {
         if (NetworkManager.Instance == null)
@@ -25,6 +27,8 @@ public class Alert : ItemBehavior
 
     public override void DestroyIt(RpcArgs args)
     {
+        laser.enabled = true;
         Destroy(this.gameObject);
     }
+
 }

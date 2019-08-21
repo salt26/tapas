@@ -49,10 +49,12 @@ public class Thief : ThiefBehavior
             if(timer_BearTrap > 0)
             {
                 timer_BearTrap -= Time.deltaTime;
-                GetComponentInChildren<PlayerMovement>().enabled = false;
-                if(timer_BearTrap <= 0)
+                GetComponentInChildren<PlayerMovement>().walkingSpeed = 0f;
+                GetComponentInChildren<PlayerMovement>().runningSpeed = 0f;
+                if (timer_BearTrap <= 0)
                 {
-                    GetComponentInChildren<PlayerMovement>().enabled = true;
+                    GetComponentInChildren<PlayerMovement>().walkingSpeed = 1f;
+                    GetComponentInChildren<PlayerMovement>().runningSpeed = 1f;
                 }
             }
 
@@ -60,9 +62,11 @@ public class Thief : ThiefBehavior
             {
                 timer_Wire -= Time.deltaTime;
                 GetComponentInChildren<PlayerMovement>().walkingSpeed = 0.5f;
-                if(timer_Wire <= 0)
+                GetComponentInChildren<PlayerMovement>().runningSpeed = 0.5f;
+                if (timer_Wire <= 0)
                 {
                     GetComponentInChildren<PlayerMovement>().walkingSpeed = 1f;
+                    GetComponentInChildren<PlayerMovement>().runningSpeed = 1f;
                 }
             }
         }
