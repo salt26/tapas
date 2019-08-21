@@ -4,6 +4,7 @@ using BeardedManStudios.Forge.Networking.Unity;
 using BeardedManStudios.Forge.Networking.Unity.Lobby;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -36,11 +37,13 @@ public class GameManager : GameManagerBehavior
 
     public float time;
     public Transform maze;
+    public bool timeOver = false;
 
     private int m_TeamID = -1;
     private int win_TeamID = 0; // 0 : Game running, 1 : Police win, 2 : Thief win, 3 : Game end
     private float roundTime = 320f;
-    public bool timeOver = false;
+    private bool isReady = false;   // Used by client and server
+    private List<int> readyPlayers = new List<int>();   // Server only
     
     private float mazeScale = 1f;
 
@@ -67,16 +70,94 @@ public class GameManager : GameManagerBehavior
     void Awake()
     {
         instance = this;
+    }
 
+    protected override void NetworkStart()
+    {
+        base.NetworkStart();
         if (LobbyManager.lm != null)
         {
-            m_TeamID = LobbyManager.lm.Myself.AssociatedPlayer.TeamID;
+            //m_TeamID = LobbyManager.lm.Myself.AssociatedPlayer.TeamID;
             LobbyManager.lm.GetComponent<Canvas>().enabled = false;
+
+            if (NetworkManager.Instance.IsServer)
+            {
+                networkObject.isReady = false;
+                foreach (var p in LobbyManager.lm.LobbyPlayersStarted)
+                {
+                    NetworkManager.Instance.Networker.IteratePlayers((np) => {
+                        if (np.NetworkId == p.Value && p.Key >= 1 && p.Key <= 4)
+                        {
+                            // 각 클라이언트에게 어떤 직업인지 알려줌
+                            networkObject.SendRpc(np, RPC_GAME_START, p.Key);
+                        }
+                    });
+                }
+            }
         }
     }
 
-    void Start()
+    void Update()
     {
+        if (!isReady || !networkObject.isReady) return;
+        if (NetworkManager.Instance.IsServer)
+        {
+            if (win_TeamID == 3) return; // game ended
+
+            if (win_TeamID != 0) // Police or thief win
+            {
+                networkObject.SendRpc(RPC_GAME_END, Receivers.All, win_TeamID, timeOver);
+                win_TeamID = 3;
+                return;
+            }
+
+            time -= Time.deltaTime;
+            networkObject.time = time;
+
+            if (time <= 0)
+            {
+                time = 0;
+                networkObject.time = time;
+                timeOver = true;
+                Win_TeamID = 1;
+            }
+
+            //BMSLogger.DebugLog(win_TeamID.ToString());
+        }
+        else // IsClient
+        {
+            int t = Mathf.CeilToInt(networkObject.time);
+            if (t % 60 < 10)
+            {
+                timeMsg.text = (t / 60) + " : 0" + (t % 60);
+            }
+            else
+            {
+                timeMsg.text = (t / 60) + " : " + (t % 60);
+            }
+
+            if (normalMsgShowTime > 0)
+            {
+                normalMsg.enabled = true;
+                normalMsgShowTime -= Time.deltaTime;
+            }
+            else
+            {
+                normalMsg.enabled = false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 클라이언트에서 서버로부터 자신의 직업을 할당받은 다음
+    /// 캐릭터를 생성하고 서버에게 준비됨을 알립니다.
+    /// </summary>
+    /// <param name="args"></param>
+    public override void GameStart(RpcArgs args)
+    {
+        m_TeamID = args.GetNext<int>();
+        BMSLogger.DebugLog("GameStart: my teamID is " + m_TeamID);
+
         mazeScale = maze.localScale.x;
 
         int r = Random.Range(0, 4);
@@ -129,61 +210,35 @@ public class GameManager : GameManagerBehavior
             mapIconAlly.enabled = true;
         }
 
-        if (NetworkManager.Instance.IsServer)
-        {
-            time = roundTime;
-        }
-
         normalMsgShowTime = 0;
+        if (!NetworkManager.Instance.IsServer)
+            isReady = true;
+        networkObject.SendRpc(RPC_READY, Receivers.Server, m_TeamID);
     }
-    
-    void Update()
+
+    /// <summary>
+    /// 서버에서, 클라이언트가 준비되었음을 알고
+    /// 모든 클라이언트가 준비되면 게임을 시작합니다.
+    /// </summary>
+    /// <param name="args"></param>
+    public override void Ready(RpcArgs args)
     {
-        if (NetworkManager.Instance.IsServer)
+        if (!NetworkManager.Instance.IsServer) return;
+
+        int playerTeamID = args.GetNext<int>();
+        BMSLogger.DebugLog("Ready: his/her teamID is " + playerTeamID);
+        if (playerTeamID < 1 || playerTeamID > 4) return;
+
+        if (readyPlayers.IndexOf(playerTeamID) == -1)
+            readyPlayers.Add(m_TeamID);
+
+        if (readyPlayers.Count == 4)
         {
-            if (win_TeamID == 3) return; // game ended
-
-            if (win_TeamID != 0) // Police or thief win
-            {
-                networkObject.SendRpc(RPC_GAME_END, Receivers.All, win_TeamID, timeOver);
-                win_TeamID = 3;
-                return;
-            }
-
-            time -= Time.deltaTime;
-            networkObject.time = time;
-
-            if (time <= 0)
-            {
-                time = 0;
-                networkObject.time = time;
-                timeOver = true;
-                Win_TeamID = 1;
-            }
-
-            //BMSLogger.DebugLog(win_TeamID.ToString());
-        }
-        else // IsClient
-        {
-            int t = Mathf.CeilToInt(networkObject.time);
-            if (t % 60 < 10)
-            {
-                timeMsg.text = (t / 60) + " : 0" + (t % 60);
-            }
-            else
-            {
-                timeMsg.text = (t / 60) + " : " + (t % 60);
-            }
-
-            if (normalMsgShowTime > 0)
-            {
-                normalMsg.enabled = true;
-                normalMsgShowTime -= Time.deltaTime;
-            }
-            else
-            {
-                normalMsg.enabled = false;
-            }
+            normalMsgShowTime = 0;
+            time = roundTime;
+            isReady = true;
+            networkObject.isReady = true;
+            BMSLogger.DebugLog("Ready: Server ready!");
         }
     }
 
@@ -211,6 +266,7 @@ public class GameManager : GameManagerBehavior
 
     public override void GameEnd(RpcArgs args)
     {
+        if (!isReady || !networkObject.isReady) return;
         int win = args.GetNext<int>();
         bool timeOver = args.GetNext<bool>();
         if (win == 1) // Police win
