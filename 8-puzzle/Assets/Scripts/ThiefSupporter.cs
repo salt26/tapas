@@ -22,6 +22,7 @@ public class ThiefSupporter : SupporterBehavior
         else
         {
             GetComponentInChildren<Camera>().enabled = false;
+            GetComponentInChildren<AudioListener>().enabled = false;
             GetComponent<DroneMovement>().enabled = false;
         }
     }
