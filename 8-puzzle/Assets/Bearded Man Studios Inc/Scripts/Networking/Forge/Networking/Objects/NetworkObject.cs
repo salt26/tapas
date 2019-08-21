@@ -1439,7 +1439,7 @@ namespace BeardedManStudios.Forge.Networking
                     }
                 }
             }
-
+            /*
             if (!Networker.IsServer || receivers != Receivers.Server)
                 ;// FinalizeSendRpc(data, receivers, methodId, timestep, reliable, targetPlayer, sender);
 
@@ -1457,6 +1457,7 @@ namespace BeardedManStudios.Forge.Networking
                     ;// InvokeRpcOnSelfServer(methodId, sender, timestep, args);
                 }
             }
+            */
         }
 
         private void InvokeRpcOnSelfServer(byte methodId, NetworkingPlayer sender, ulong timestep, object[] args)
