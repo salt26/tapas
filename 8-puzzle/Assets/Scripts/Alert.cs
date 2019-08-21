@@ -24,7 +24,7 @@ public class Alert : ItemBehavior
             if (timer > 0)
             {
                 timer -= Time.deltaTime;
-                Debug.Log(timer);
+                //Debug.Log(timer);
                 if (timer <= 0)
                 {
                     networkObject.SendRpc(RPC_ALERT_OFF, Receivers.All);
