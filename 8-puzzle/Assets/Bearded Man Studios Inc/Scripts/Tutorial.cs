@@ -240,7 +240,6 @@ public class Tutorial : MonoBehaviour
             LogText=LogText+TempString+" 4/4";
         }
         TutorialLogText.GetComponent<Text>().text=LogText;
-
     }
     void ResetTutorial() 
     {
@@ -252,6 +251,9 @@ public class Tutorial : MonoBehaviour
         TotalButtonOn=0;
         LastClickedButton=0;
         BatteryImage.GetComponent<Image>().sprite=BatterySprites[TotalButtonOn];
+        LogText="";
+        FirstLog=true;
+        TutorialLogText.GetComponent<Text>().text=LogText;
     }
     void init_ButtonRotation()
     {
