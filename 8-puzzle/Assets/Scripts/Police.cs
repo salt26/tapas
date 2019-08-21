@@ -87,6 +87,19 @@ public class Police : PoliceBehavior
         GetComponentInChildren<PlayerTouch>().Touch();
     }
 
+    public override void OpenBox(RpcArgs args) 
+    {
+        if (!networkObject.IsOwner) return;
+        int NumbertoIncrease = Random.Range(1, 3);
+        if(NumbertoIncrease == 1) {
+            networkObject.item1Num++;
+        } else if(NumbertoIncrease == 2) {
+            networkObject.item2Num++;
+        } else if(NumbertoIncrease == 3) {
+            networkObject.item3Num++;
+        }
+    }
+
     public override void UseItem(RpcArgs args)
     {
         if (!NetworkManager.Instance.IsServer) return;

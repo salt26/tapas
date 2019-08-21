@@ -4,13 +4,14 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[[][\"int\"][\"string\"]]")]
-	[GeneratedRPCVariableNames("{\"types\":[[][\"itemID\"][\"message\"]]")]
+	[GeneratedRPC("{\"types\":[[][\"int\"][\"string\"][]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[][\"itemID\"][\"message\"][]]")]
 	public abstract partial class PoliceBehavior : NetworkBehavior
 	{
 		public const byte RPC_TOUCH = 0 + 5;
 		public const byte RPC_USE_ITEM = 1 + 5;
 		public const byte RPC_CHAT = 2 + 5;
+		public const byte RPC_OPEN_BOX = 3 + 5;
 		
 		public PoliceNetworkObject networkObject = null;
 
@@ -27,6 +28,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.RegisterRpc("Touch", Touch);
 			networkObject.RegisterRpc("UseItem", UseItem, typeof(int));
 			networkObject.RegisterRpc("Chat", Chat, typeof(string));
+			networkObject.RegisterRpc("OpenBox", OpenBox);
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -115,6 +117,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		/// Arguments:
 		/// </summary>
 		public abstract void Chat(RpcArgs args);
+		/// <summary>
+		/// Arguments:
+		/// </summary>
+		public abstract void OpenBox(RpcArgs args);
 
 		// DO NOT TOUCH, THIS GETS GENERATED PLEASE EXTEND THIS CLASS IF YOU WISH TO HAVE CUSTOM CODE ADDITIONS
 	}
