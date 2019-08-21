@@ -610,6 +610,7 @@ GameObject:
   - component: {fileID: 4013857582712094471}
   - component: {fileID: 83751842}
   - component: {fileID: 665996424394000364}
+  - component: {fileID: 5820771881436564233}
   m_Layer: 0
   m_Name: PoliceDrone
   m_TagString: Untagged
@@ -709,6 +710,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 8181733595883020165}
+--- !u!81 &5820771881436564233
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7690331090536809184}
+  m_Enabled: 1
 --- !u!1 &7772851496398824431
 GameObject:
   m_ObjectHideFlags: 0

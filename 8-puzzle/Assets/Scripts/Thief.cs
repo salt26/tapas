@@ -23,6 +23,7 @@ public class Thief : ThiefBehavior
         else
         {
             GetComponentInChildren<Camera>().enabled = false;
+            GetComponentInChildren<AudioListener>().enabled = false;
             GetComponent<PlayerMovement>().enabled = false;
         }
     }

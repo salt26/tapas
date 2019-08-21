@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3156389874451467044}
   - component: {fileID: 1579538868}
   - component: {fileID: 3626754251618413679}
+  - component: {fileID: 4852727551861176571}
   m_Layer: 0
   m_Name: ThiefDrone
   m_TagString: Untagged
@@ -112,6 +113,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 7510017292398517270}
+--- !u!81 &4852727551861176571
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1035698624846868439}
+  m_Enabled: 1
 --- !u!1 &1096826930197057240
 GameObject:
   m_ObjectHideFlags: 0
