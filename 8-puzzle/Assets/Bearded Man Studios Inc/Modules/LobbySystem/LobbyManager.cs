@@ -35,6 +35,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		private List<LobbyPlayerItem> _lobbyPlayersPool = new List<LobbyPlayerItem>();
 		private LobbyPlayer _myself;
 		private NetworkObject _networkObjectReference;
+        private bool isSetupCompleted = false;
 
 		#region Interface Members
 		private List<IClientMockPlayer> _lobbyPlayers = new List<IClientMockPlayer>();
@@ -115,6 +116,11 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                     return;
                 }
             }
+        }
+
+        void Update()
+        {
+            StartGame(2);
         }
 
 		private void CheckForService(NetWorker networker, int identity, uint id, Frame.FrameStream frame, Action<NetworkObject> callback)
@@ -460,12 +466,10 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 #region Interface API
 		public void OnFNPlayerConnected(IClientMockPlayer player)
 		{
-            BMSLogger.DebugLog("OnFNPlayerConnected 1");
 			LobbyPlayer convertedPlayer = GrabPlayer(player);
 			if (convertedPlayer == _myself || _myself == null)
 				return; //Ignore re-adding ourselves
-
-            BMSLogger.DebugLog("OnFNPlayerConnected 2");
+            
             bool playerCreated = false;
             for (int i = 0; i < _lobbyPlayersPool.Count; ++i)
             {
@@ -478,8 +482,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             playerCreated = convertedPlayer.Created;
             if (playerCreated)
                 return;
-
-            BMSLogger.DebugLog("OnFNPlayerConnected 3");
+            
             convertedPlayer.Created = true;
 
             if (!LobbyPlayers.Contains(convertedPlayer))
@@ -662,7 +665,10 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
 		private void SetupComplete()
         {
+            if (isSetupCompleted) return;
+            isSetupCompleted = true;
             BMSLogger.DebugLog("SetupComplete");
+
             LobbyService.Instance.SetLobbyMaster(this);
             LobbyService.Instance.Initialize(NetworkManager.Instance.Networker);
 
