@@ -87,8 +87,7 @@ public class Police : PoliceBehavior
     public override void OpenBox(RpcArgs args) 
     {
         if (!networkObject.IsOwner) return;
-        Random r= new Random();
-        int NumbertoIncrease=r.Next(1,3);
+        int NumbertoIncrease = Random.Range(1, 3);
         if(NumbertoIncrease == 1) {
             networkObject.item1Num++;
         } else if(NumbertoIncrease == 2) {
