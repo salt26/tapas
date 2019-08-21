@@ -28,6 +28,10 @@ public class GameManager : GameManagerBehavior
     public Image mapIconSupp;
     public Image mapIconAlly;
 
+    public CanvasGroup chatUI;
+    public InputField chatInputBox;
+    public Text chatBox;
+
     public float normalMsgShowTime;
 
     public float time;
@@ -182,6 +186,28 @@ public class GameManager : GameManagerBehavior
             }
         }
     }
+
+    public void SendPlayersMessage(int teamID)
+    {
+        string chatMessage = chatInputBox.text;
+        if (string.IsNullOrEmpty(chatMessage))
+            return;
+        /*
+         GetComponent<Police>().networkObject.SendRpc(PoliceBehavior.RPC_CHAT, Receivers.All, chatMessage, teamID);
+        GetComponent<Thief>().networkObject.SendRpc(PoliceBehavior.RPC_CHAT, Receivers.All, chatMessage, teamID);
+        GetComponent<SupporterNetworkObject>().SendRpc(SupporterBehavior.RPC_CHAT, Receivers.All, chatMessage, teamID);
+        */
+
+        chatInputBox.text = string.Empty;
+        chatInputBox.DeactivateInputField();
+    }
+
+    /*
+    public void ReceiveMessage(string message)
+    {
+        chatBox.text += (message + "\n");
+    }
+    */
 
     public override void GameEnd(RpcArgs args)
     {
