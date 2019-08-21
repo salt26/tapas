@@ -61,7 +61,9 @@ public class MultiplayerMenu : MonoBehaviour
 			NetWorker.localServerLocated += LocalServerLocated;
 			NetWorker.RefreshLocalUdpListings(ushort.Parse(portNumber.text));
 		}
-	}
+
+        if (Application.platform == RuntimePlatform.LinuxPlayer) Host();
+    }
 
 	private void LocalServerLocated(NetWorker.BroadcastEndpoints endpoint, NetWorker sender)
 	{

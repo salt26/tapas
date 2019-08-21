@@ -7,8 +7,10 @@ using UnityEngine;
 
 public class BearTrap : ItemBehavior
 {
+    public AudioSource clank;
     public Transform left;
     public Transform right;
+    public float stopTime = 3f;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -21,7 +23,7 @@ public class BearTrap : ItemBehavior
             if (other.tag.Equals("Thief"))
             {
                 Debug.Log("Thief stepped on beartrap");
-                other.GetComponent<Thief>().networkObject.SendRpc(ThiefBehavior.RPC_STOP, Receivers.All);
+                other.GetComponent<Thief>().networkObject.SendRpc(ThiefBehavior.RPC_STOP, Receivers.All, stopTime);
                 networkObject.SendRpc(RPC_DESTROY_IT, Receivers.All);
             }
         }
@@ -33,6 +35,11 @@ public class BearTrap : ItemBehavior
         
     }
 
+    public override void AlertOff(RpcArgs args)
+    {
+        
+    }
+
     IEnumerator Activate()
     {
         for(int i = 0; i <= 20; i++)
@@ -41,7 +48,8 @@ public class BearTrap : ItemBehavior
             right.rotation = Quaternion.Slerp(Quaternion.Euler(-90f, 0f, 0f), Quaternion.Euler(0f, 0f, 0f), i / 20f);
             yield return null;
         }
-        yield return new WaitForSeconds(3f);
+        clank.Play();
+        yield return new WaitForSeconds(stopTime);
         Destroy(this.gameObject);
     }
 }

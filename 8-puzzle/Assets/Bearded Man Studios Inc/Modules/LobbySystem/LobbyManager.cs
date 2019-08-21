@@ -17,7 +17,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
         public GameObject PlayerItem;
 		public LobbyPlayerItem Myself;
-		public InputField ChatInputBox;
+        public InputField ChatInputBox;
 		public Text Chatbox;
 		public Transform[] Grid;
         public List<GameObject> chosen1s;
@@ -35,6 +35,16 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		private List<LobbyPlayerItem> _lobbyPlayersPool = new List<LobbyPlayerItem>();
 		private LobbyPlayer _myself;
 		private NetworkObject _networkObjectReference;
+        private bool isSetupCompleted = false;
+        private bool hasRejectTeamChange = false;
+
+        public bool HasRejectTeamChange
+        {
+            get
+            {
+                return hasRejectTeamChange;
+            }
+        }
 
 		#region Interface Members
 		private List<IClientMockPlayer> _lobbyPlayers = new List<IClientMockPlayer>();
@@ -117,15 +127,19 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             }
         }
 
+        void Update()
+        {
+            if (isSetupCompleted && SceneManager.GetActiveScene().name.Equals("Lobby") && NetworkManager.Instance.IsServer)
+                StartGame(2);
+        }
+
 		private void CheckForService(NetWorker networker, int identity, uint id, Frame.FrameStream frame, Action<NetworkObject> callback)
 		{
-            BMSLogger.DebugLog("CheckForService 1");
 			if (identity != LobbyService.LobbyServiceNetworkObject.IDENTITY)
 			{
 				return;
 			}
-
-            BMSLogger.DebugLog("CheckForService 2");
+            
             NetworkManager.Instance.Networker.objectCreateRequested -= CheckForService;
 			NetworkObject obj = new LobbyService.LobbyServiceNetworkObject(networker, id, frame);
 			if (callback != null)
@@ -244,6 +258,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                 {
                     b.interactable = false;
                 }
+                hasRejectTeamChange = true;
 #if UNITY_5_6_OR_NEWER
                 SceneManager.LoadScene(sceneID);
 #else
@@ -460,12 +475,12 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 #region Interface API
 		public void OnFNPlayerConnected(IClientMockPlayer player)
 		{
-            BMSLogger.DebugLog("OnFNPlayerConnected 1");
 			LobbyPlayer convertedPlayer = GrabPlayer(player);
 			if (convertedPlayer == _myself || _myself == null)
 				return; //Ignore re-adding ourselves
 
-            BMSLogger.DebugLog("OnFNPlayerConnected 2");
+            if (convertedPlayer == null) return;
+            
             bool playerCreated = false;
             for (int i = 0; i < _lobbyPlayersPool.Count; ++i)
             {
@@ -478,8 +493,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             playerCreated = convertedPlayer.Created;
             if (playerCreated)
                 return;
-
-            BMSLogger.DebugLog("OnFNPlayerConnected 3");
+            
             convertedPlayer.Created = true;
 
             if (!LobbyPlayers.Contains(convertedPlayer))
@@ -662,7 +676,10 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
 		private void SetupComplete()
         {
+            if (isSetupCompleted) return;
+            isSetupCompleted = true;
             BMSLogger.DebugLog("SetupComplete");
+
             LobbyService.Instance.SetLobbyMaster(this);
             LobbyService.Instance.Initialize(NetworkManager.Instance.Networker);
 

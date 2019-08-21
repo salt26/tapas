@@ -106,7 +106,7 @@ public class Police : PoliceBehavior
         {
             // Wire
             Debug.Log("Used Item1");
-            NetworkManager.Instance.InstantiateItem(i - 1, transform.position, Quaternion.identity);
+            NetworkManager.Instance.InstantiateItem(i - 1, transform.position, Quaternion.Euler(-90f, 0f, 0f));
             networkObject.item1Num--;
         }
         else if(networkObject.item2Num > 0 && i == 2)

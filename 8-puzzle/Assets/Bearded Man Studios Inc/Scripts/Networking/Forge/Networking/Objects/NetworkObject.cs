@@ -1240,8 +1240,16 @@ namespace BeardedManStudios.Forge.Networking
 			// Map all of the data to bytes
 			BMSByte data = ObjectMapper.BMSByte(NetworkId, methodId, behaviorFlags);
 			ObjectMapper.Instance.MapBytes(data, args);
+            
+            string s = "";
+            foreach (byte b in data.byteArr)
+            {
+                s += b.ToString();
+                s += " ";
+            }
+            BMSLogger.DebugLog("SendRPC: " + s);
 
-			if (Networker is IServer)
+            if (Networker is IServer)
 			{
 				// Buffered RPC messages are stored on the NetworkObject level and not on the NetWorker level
 				if (receivers == Receivers.AllBuffered || receivers == Receivers.OthersBuffered)
@@ -1376,6 +1384,14 @@ namespace BeardedManStudios.Forge.Networking
             BMSByte data = ObjectMapper.BMSByte(NetworkId, methodId, behaviorFlags);
             ObjectMapper.Instance.MapBytes(data, args);
 
+            string s = "";
+            foreach (byte b in data.byteArr)
+            {
+                s += b.ToString();
+                s += " ";
+            }
+            BMSLogger.DebugLog("CancelingRPC: " + s);
+
             if (Networker is IServer)
             {
                 // Buffered RPC messages are stored on the NetworkObject level and not on the NetWorker level
@@ -1402,11 +1418,15 @@ namespace BeardedManStudios.Forge.Networking
                         {
                             for (int i = 0; i < rpcBuffer.Count; i++)
                             {
-                                if (rpcBuffer[i].methodId == methodId && rpcBuffer[i].data == data)
+                                if (rpcBuffer[i].methodId == methodId)
                                 {
-                                    rpcBuffer.RemoveAt(i);
-                                    replaced = true;
-                                    break;
+                                    if (rpcBuffer[i].data.Equals(data))
+                                    {
+                                        BMSLogger.DebugLog("Remove RPC " + rpcBuffer[i].data.GetByteArray(0) + " from rpcBuffer");
+                                        rpcBuffer.RemoveAt(i);
+                                        replaced = true;
+                                        break;
+                                    }
                                 }
                             }
                         }
