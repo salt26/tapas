@@ -4,14 +4,15 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[[][\"string\"][][]]")]
-	[GeneratedRPCVariableNames("{\"types\":[[][\"message\"][][]]")]
+	[GeneratedRPC("{\"types\":[[][\"string\"][\"float\"][][]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[][\"message\"][\"time\"][][]]")]
 	public abstract partial class ThiefBehavior : NetworkBehavior
 	{
 		public const byte RPC_TOUCH = 0 + 5;
 		public const byte RPC_CHAT = 1 + 5;
 		public const byte RPC_STOP = 2 + 5;
 		public const byte RPC_SLOW = 3 + 5;
+		public const byte RPC_RESTORE = 4 + 5;
 		
 		public ThiefNetworkObject networkObject = null;
 
@@ -27,8 +28,9 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			base.SetupHelperRpcs(networkObject);
 			networkObject.RegisterRpc("Touch", Touch);
 			networkObject.RegisterRpc("Chat", Chat, typeof(string));
-			networkObject.RegisterRpc("Stop", Stop);
+			networkObject.RegisterRpc("Stop", Stop, typeof(float));
 			networkObject.RegisterRpc("Slow", Slow);
+			networkObject.RegisterRpc("Restore", Restore);
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -121,6 +123,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		/// Arguments:
 		/// </summary>
 		public abstract void Slow(RpcArgs args);
+		/// <summary>
+		/// Arguments:
+		/// </summary>
+		public abstract void Restore(RpcArgs args);
 
 		// DO NOT TOUCH, THIS GETS GENERATED PLEASE EXTEND THIS CLASS IF YOU WISH TO HAVE CUSTOM CODE ADDITIONS
 	}

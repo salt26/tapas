@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class Wire : ItemBehavior
 {
+
     private void OnTriggerEnter(Collider other)
     {
         if (NetworkManager.Instance == null)
@@ -19,13 +20,32 @@ public class Wire : ItemBehavior
             {
                 Debug.Log("Thief stepped on wire");
                 other.GetComponent<Thief>().networkObject.SendRpc(ThiefBehavior.RPC_SLOW, Receivers.All);
-                networkObject.SendRpc(RPC_DESTROY_IT, Receivers.All);
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (NetworkManager.Instance == null)
+        {
+            return;
+        }
+        else if (NetworkManager.Instance.IsServer && other != null)
+        {
+            if (other.tag.Equals("Thief"))
+            {
+                other.GetComponent<Thief>().networkObject.SendRpc(ThiefBehavior.RPC_RESTORE, Receivers.All);
             }
         }
     }
 
     public override void DestroyIt(RpcArgs args)
     {
-        Destroy(this.gameObject);
+
+    }
+
+    public override void AlertOff(RpcArgs args)
+    {
+
     }
 }
