@@ -681,7 +681,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d8dbe0115d4ff4b86dbb0e4927df1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wingRpm: 10000
   forceMagnitude: 12
   dragMagnitude: 4
   tiltTimeScale: 0.5
@@ -691,12 +690,6 @@ MonoBehaviour:
   maxAngle: 0
   CameraOffset: {x: 0, y: 0, z: 0}
   cameraModel: {fileID: 7670399070837610953}
-  wingOrdered:
-  - {fileID: 1530470031438025128}
-  - {fileID: 1643754215345314735}
-  wingReversed:
-  - {fileID: 3835341842217001063}
-  - {fileID: 2352964264545234506}
 --- !u!114 &665996424394000364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -710,6 +703,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 8181733595883020165}
+  wingRpm: 10000
+  wingOrdered:
+  - {fileID: 1530470031438025128}
+  - {fileID: 1643754215345314735}
+  wingReversed:
+  - {fileID: 3835341842217001063}
+  - {fileID: 2352964264545234506}
 --- !u!81 &5820771881436564233
 AudioListener:
   m_ObjectHideFlags: 0
