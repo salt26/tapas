@@ -9,8 +9,14 @@ public class Thief : ThiefBehavior
 {
     public Transform camera;
     private Animator m_Animator;
+    private bool isNetworkReady = false;
 
     private float timer_BearTrap = 0f;
+
+    void Awake()
+    {
+        m_Animator = GetComponent<Animator>();
+    }
 
     // Start is called before the first frame update
     protected override void NetworkStart()
@@ -26,13 +32,14 @@ public class Thief : ThiefBehavior
             GetComponentInChildren<Camera>().enabled = false;
             GetComponentInChildren<AudioListener>().enabled = false;
             GetComponent<PlayerMovement>().enabled = false;
-            m_Animator=GetComponent<Animator>();
         }
+        isNetworkReady = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!isNetworkReady) return;
         if (networkObject.IsOwner)
         {
             networkObject.position = transform.position;
