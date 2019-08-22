@@ -28,10 +28,6 @@ public class Police : PoliceBehavior
             float m = GameManager.instance.maze.localScale.x;
             transform.rotation = Quaternion.FromToRotation(transform.rotation * new Vector3(0f, 0f, 0f), new Vector3(53.3f * m, 0f, 53.3f * m) - transform.position);
 
-            networkObject.item1Num = 0;
-            networkObject.item2Num = 0;
-            networkObject.item3Num = 0;
-
             //PlayerPrefs.SetInt("UnitySelectMonitor", 1);
             //Display.displays[0].Activate();
         }
@@ -47,7 +43,7 @@ public class Police : PoliceBehavior
 
     void Start()
     {
-        itemNum = new int[3] { 5, 5, 5 };
+        itemNum = new int[3] { 1, 1, 1 };
     }
 
     void Update()
@@ -85,8 +81,8 @@ public class Police : PoliceBehavior
                     itemNum[2]--;
                     networkObject.SendRpc(RPC_USE_ITEM, Receivers.Server, 3);
                 }
-                GetComponent<PlayerMovement>().walkingSpeed = 2.2f; //change these if you change default speed
-                GetComponent<PlayerMovement>().runningSpeed = 4f;
+                GetComponent<PlayerMovement>().walkingSpeed = 2.6f; //change these if you change default speed
+                GetComponent<PlayerMovement>().runningSpeed = 4.2f;
             }
             
             GameManager.instance.item1Txt.text = itemNum[0].ToString();

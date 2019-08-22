@@ -1133,8 +1133,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idleSpeed: 0.3
-  walkingSpeed: 2.2
-  runningSpeed: 4
+  walkingSpeed: 2.6
+  runningSpeed: 4.2
   transitionSpeed: 10
   rotationThreshold: 50
   rotationSpeed: 90
@@ -1142,7 +1142,6 @@ MonoBehaviour:
   minAngle: -70
   maxAngle: 70
   CameraOffset: {x: 0, y: 0, z: 0.1}
-  teamID: 0
 --- !u!114 &8952776728060845795
 MonoBehaviour:
   m_ObjectHideFlags: 0

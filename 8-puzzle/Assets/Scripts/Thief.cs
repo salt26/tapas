@@ -78,13 +78,13 @@ public class Thief : ThiefBehavior
                 }
                 else if (inWire)
                 {
-                    GetComponent<PlayerMovement>().walkingSpeed = 1.5f;
-                    GetComponent<PlayerMovement>().runningSpeed = 1.5f;
+                    GetComponent<PlayerMovement>().walkingSpeed = 1.6f;
+                    GetComponent<PlayerMovement>().runningSpeed = 1.6f;
                 }
                 else
                 {
-                    GetComponent<PlayerMovement>().walkingSpeed = 3.2f;  //change these if you change default speed
-                    GetComponent<PlayerMovement>().runningSpeed = 3.2f;
+                    GetComponent<PlayerMovement>().walkingSpeed = 3.6f;  //change these if you change default speed
+                    GetComponent<PlayerMovement>().runningSpeed = 3.6f;
                 }
             }
         }

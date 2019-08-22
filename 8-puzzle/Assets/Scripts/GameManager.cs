@@ -43,11 +43,11 @@ public class GameManager : GameManagerBehavior
     public bool timeOver = false;
 
     public float staminaValue;
-    public float staminaValueMax = 4f;
+    public float staminaValueMax = 2.5f;
 
     private int m_TeamID = -1;
     private int win_TeamID = 0; // 0 : Game running, 1 : Police win, 2 : Thief win, 3 : Game end, 4: Game exploited by disconnect
-    private float roundTime = 320f;
+    private float roundTime = 600f;
     private float timeoutTimer = -1f;
     private bool isReady = false;   // Used by client and server
     private List<int> readyPlayers = new List<int>();   // Server only
@@ -179,10 +179,6 @@ public class GameManager : GameManagerBehavior
                     chatInputBox.interactable = false;
                     view.enabled = false;
                     chatBox.color = deactivatedColor;
-                    if (m_TeamID == 3 || m_TeamID == 4)
-                    {
-                        supportMsg.enabled = false;
-                    }
                     canChat = false;
                 }
                 else
@@ -192,10 +188,6 @@ public class GameManager : GameManagerBehavior
                     chatInputBox.ActivateInputField();
                     view.enabled = true;
                     chatBox.color = activatedColor;
-                    if (m_TeamID == 3 || m_TeamID == 4)
-                    {
-                        supportMsg.enabled = true;
-                    }
                     canChat = true;
                 }
             }
@@ -300,18 +292,20 @@ public class GameManager : GameManagerBehavior
         }
         else if (m_TeamID == 3) // Police Supporter
         {
-            NetworkManager.Instance.InstantiateSupporter(0, position: new Vector3(48.3f * mazeScale, 7f * mazeScale, 53.3f * mazeScale));
+            NetworkManager.Instance.InstantiateSupporter(0, position: new Vector3(48.3f * mazeScale, 9f * mazeScale, 53.3f * mazeScale));
             map.enabled = true;
             mapGuide.enabled = true;
             mapIcon.enabled = true;
+            supportMsg.enabled = true;
             drone = GameObject.Find("PoliceDrone(Clone)");
         }
         else if (m_TeamID == 4) // Thief Supporter
         {
-            NetworkManager.Instance.InstantiateSupporter(1, position: new Vector3(58.3f * mazeScale, 7f * mazeScale, 53.3f * mazeScale));
+            NetworkManager.Instance.InstantiateSupporter(1, position: new Vector3(58.3f * mazeScale, 9f * mazeScale, 53.3f * mazeScale));
             map.enabled = true;
             mapGuide.enabled = true;
             mapIcon.enabled = true;
+            supportMsg.enabled = true;
             drone = GameObject.Find("ThiefDrone(Clone)");
         }
 

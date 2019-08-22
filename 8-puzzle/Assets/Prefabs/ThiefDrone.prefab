@@ -84,7 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d8dbe0115d4ff4b86dbb0e4927df1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMagnitude: 12
+  forceMagnitude: 14
   dragMagnitude: 4
   tiltTimeScale: 0.5
   maxTiltAngle: 20
