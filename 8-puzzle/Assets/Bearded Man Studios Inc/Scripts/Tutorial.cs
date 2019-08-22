@@ -34,10 +34,10 @@ public class Tutorial : MonoBehaviour
     bool m_IsSuccess=false;
 
     int nKey;
-    int Button15=0;
-    int Button24=0;
-    int Button38=0;
-    int Button67=0;
+    int Button12=0;
+    int Button36=0;
+    int Button48=0;
+    int Button57=0;
     int TotalButtonOn=0;
     int LastClickedButton=0;
     float speed=1.0f;
@@ -131,50 +131,50 @@ public class Tutorial : MonoBehaviour
             switch (nKey) 
             {
                 case 1:
-                    if(Button15==0) Button15=1;
-                    else Button15=0;
+                    if(Button12==0) Button12=1;
+                    else Button12=0;
                     init_ButtonRotation();
                     LastClickedButton=1;
                     break;
                 case 2:
-                    if(Button24==0) Button24=1;
-                    else Button24=0;
+                    if(Button12==0) Button12=1;
+                    else Button12=0;
                     init_ButtonRotation();
                     LastClickedButton=2;
                     break;
                 case 3:
-                    if(Button38==0) Button38=1;
-                    else Button38=0;
+                    if(Button36==0) Button36=1;
+                    else Button36=0;
                     init_ButtonRotation();
                     LastClickedButton=3;
                     break;
                 case 4:
-                    if(Button24==0) Button24=1;
-                    else Button24=0;
+                    if(Button48==0) Button48=1;
+                    else Button48=0;
                     init_ButtonRotation();
                     LastClickedButton=4;
                     break;
                 case 5:
-                    if(Button15==0) Button15=1;
-                    else Button15=0;
+                    if(Button57==0) Button57=1;
+                    else Button57=0;
                     init_ButtonRotation();
                     LastClickedButton=5;
                     break;
                 case 6:
-                    if(Button67==0) Button67=1;
-                    else Button67=0;
+                    if(Button36==0) Button36=1;
+                    else Button36=0;
                     init_ButtonRotation();
                     LastClickedButton=6;
                     break;
                 case 7:
-                    if(Button67==0) Button67=1;
-                    else Button67=0;
+                    if(Button57==0) Button57=1;
+                    else Button57=0;
                     init_ButtonRotation();
                     LastClickedButton=7;
                     break;
                 case 8:
-                    if(Button38==0) Button38=1;
-                    else Button38=0;
+                    if(Button48==0) Button48=1;
+                    else Button48=0;
                     init_ButtonRotation();
                     LastClickedButton=8;
                     break;
@@ -195,7 +195,7 @@ public class Tutorial : MonoBehaviour
                     break;
             }
             if(nKey<=8) {
-                TotalButtonOn=Button15+Button24+Button38+Button67;
+                TotalButtonOn=Button12+Button48+Button36+Button57;
                 for(i=0;i<12;i++) {
                     LogList[i]=LogList[i+1];
                 }
@@ -234,10 +234,10 @@ public class Tutorial : MonoBehaviour
     void ResetTutorial() 
     {
         init_ButtonRotation();
-        Button15=0;
-        Button24=0;
-        Button67=0;
-        Button38=0;
+        Button12=0;
+        Button48=0;
+        Button36=0;
+        Button57=0;
         TotalButtonOn=0;
         LastClickedButton=0;
         ButtonBackground.GetComponent<Image>().sprite=Doorsprites[0];
