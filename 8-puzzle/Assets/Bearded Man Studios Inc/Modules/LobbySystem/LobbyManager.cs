@@ -140,6 +140,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                 {
                     f.enabled = false;
                 }
+                return;
             }
             foreach (InputField f in otherInputFields)
             {
