@@ -83,8 +83,8 @@ public class Thief : ThiefBehavior
                 }
                 else
                 {
-                    GetComponent<PlayerMovement>().walkingSpeed = 2.5f;
-                    GetComponent<PlayerMovement>().runningSpeed = 2.5f;
+                    GetComponent<PlayerMovement>().walkingSpeed = 3.2f;  //change these if you change default speed
+                    GetComponent<PlayerMovement>().runningSpeed = 3.2f;
                 }
             }
         }
