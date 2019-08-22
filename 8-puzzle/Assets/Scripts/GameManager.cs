@@ -42,6 +42,7 @@ public class GameManager : GameManagerBehavior
     private int m_TeamID = -1;
     private int win_TeamID = 0; // 0 : Game running, 1 : Police win, 2 : Thief win, 3 : Game end, 4: Game exploited by disconnect
     private float roundTime = 320f;
+    private float timeoutTimer = -1f;
     private bool isReady = false;   // Used by client and server
     private List<int> readyPlayers = new List<int>();   // Server only
     
@@ -93,13 +94,23 @@ public class GameManager : GameManagerBehavior
                         }
                     });
                 }
+                timeoutTimer = 10f;
             }
         }
     }
 
     void Update()
     {
-        if (!isReady || !networkObject.isReady) return;
+        if (!isReady || !networkObject.isReady)
+        {
+            if (timeoutTimer > 0f)
+                timeoutTimer -= Time.deltaTime;
+            else if (timeoutTimer > -1f)
+            {
+                networkObject.SendRpc(RPC_GAME_END, Receivers.All, 4, false);
+            }
+            return;
+        }
         if (NetworkManager.Instance.IsServer)
         {
             if (win_TeamID == 3) return; // game ended
@@ -340,7 +351,6 @@ public class GameManager : GameManagerBehavior
 
     public override void GameEnd(RpcArgs args)
     {
-        if (!isReady || !networkObject.isReady) return;
         int win = args.GetNext<int>();
         bool timeOver = args.GetNext<bool>();
         if (win == 1) // Police win
