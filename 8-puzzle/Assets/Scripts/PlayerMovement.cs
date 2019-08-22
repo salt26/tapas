@@ -104,6 +104,30 @@ public class PlayerMovement : MonoBehaviour
         bool isMoving = hasHorizontalInput || hasVerticalInput;
         bool isRunning = Input.GetKey(KeyCode.LeftShift) && isMoving;
 
+        if (isRunning)
+        {
+            if (GameManager.instance.staminaValue <= 0)
+            {
+                GameManager.instance.staminaValue = 0;
+                isRunning = false;
+            }
+            else
+            {
+                GameManager.instance.staminaValue -= Time.deltaTime;
+            }
+        }
+        else
+        {
+            if (GameManager.instance.staminaValue >= GameManager.instance.staminaValueMax)
+            {
+                GameManager.instance.staminaValue = GameManager.instance.staminaValueMax;
+            }
+            else
+            {
+                GameManager.instance.staminaValue += 0.17f * Time.deltaTime;
+            }
+        }
+
         Vector3 targetMovement = new Vector3(horizontalInput, 0, verticalInput);
         targetMovement.Normalize();
         targetMovement *= isMoving ? (isRunning ? runningSpeed : walkingSpeed) : 0f; 

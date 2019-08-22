@@ -44,9 +44,13 @@ public class GameManager : GameManagerBehavior
     public List<PlayerMovement> playerMovements = new List<PlayerMovement>();
     public List<DroneMovement> droneMovements = new List<DroneMovement>();
 
+    public float staminaValue;
+    public float staminaValueMax = 4f;
+
     private int m_TeamID = -1;
     private int win_TeamID = 0; // 0 : Game running, 1 : Police win, 2 : Thief win, 3 : Game end, 4: Game exploited by disconnect
     private float roundTime = 320f;
+    private float timeoutTimer = -1f;
     private bool isReady = false;   // Used by client and server
     private List<int> readyPlayers = new List<int>();   // Server only
     
@@ -102,13 +106,23 @@ public class GameManager : GameManagerBehavior
                         }
                     });
                 }
+                timeoutTimer = 10f;
             }
         }
     }
 
     void Update()
     {
-        if (!isReady || !networkObject.isReady) return;
+        if (!isReady || !networkObject.isReady)
+        {
+            if (timeoutTimer > 0f)
+                timeoutTimer -= Time.deltaTime;
+            else if (timeoutTimer > -1f)
+            {
+                networkObject.SendRpc(RPC_GAME_END, Receivers.All, 4, false);
+            }
+            return;
+        }
         if (NetworkManager.Instance.IsServer)
         {
             if (win_TeamID == 3) return; // game ended
@@ -135,6 +149,7 @@ public class GameManager : GameManagerBehavior
         }
         else // IsClient
         {
+            // Timer
             int t = Mathf.CeilToInt(networkObject.time);
             if (t % 60 < 10)
             {
@@ -155,6 +170,7 @@ public class GameManager : GameManagerBehavior
                 normalMsg.enabled = false;
             }
 
+            // Chat
             if(Input.GetKeyDown(KeyCode.Return))
             {
                 if(canChat)
@@ -211,12 +227,18 @@ public class GameManager : GameManagerBehavior
                     canChat = true;
                 }
             }
+
             if(canChat)
             {
                 scrollbar.value += (Input.GetAxis("Mouse ScrollWheel") * scrollSpeed);
                 scrollbar.value = Mathf.Clamp(scrollbar.value, 0f, 1f);
             }
-            
+
+            // Stamina Gauge
+            if (m_TeamID == 1)
+            {
+                stamina.rectTransform.sizeDelta = new Vector2(150f * staminaValue, 60f);
+            }
         }
     }
 
@@ -271,6 +293,9 @@ public class GameManager : GameManagerBehavior
             Quaternion.Euler(0f, -135f, 0f),
             Quaternion.Euler(0f, 135f, 0f)
         };
+        
+        staminaValue = staminaValueMax;
+
         if (m_TeamID == 1) // Police
         {
             NetworkManager.Instance.InstantiatePolice(position: policePositions[r], rotation: policeRotations[r]);
@@ -399,7 +424,6 @@ public class GameManager : GameManagerBehavior
 
     public override void GameEnd(RpcArgs args)
     {
-        if (!isReady || !networkObject.isReady) return;
         int win = args.GetNext<int>();
         bool timeOver = args.GetNext<bool>();
         if (win == 1) // Police win

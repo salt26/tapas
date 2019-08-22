@@ -8,7 +8,6 @@ using UnityEngine;
 public class DroneMovement : MonoBehaviour
 {
     [Header("Drone Settings")]
-    public float wingRpm = 10000f;
     public float forceMagnitude = 12f;
     public float dragMagnitude = 4f;
     public float tiltTimeScale = .5f;
@@ -22,8 +21,6 @@ public class DroneMovement : MonoBehaviour
 
     [Header("Mesh Settings")]
     public Transform cameraModel;
-    public Transform[] wingOrdered;
-    public Transform[] wingReversed;
 
     public int teamID;
 
@@ -58,16 +55,6 @@ public class DroneMovement : MonoBehaviour
 
     void Update()
     {
-        float angle = wingRpm * 6f * Time.deltaTime;
-        for(int i = 0; i < wingOrdered.Length; i++)
-        {
-            wingOrdered[i].Rotate(Vector3.forward, -angle);
-        }
-        for(int i = 0; i < wingReversed.Length; i++)
-        {
-            wingReversed[i].Rotate(Vector3.forward, angle);
-        }
-
         // inputs for motion
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");

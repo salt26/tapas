@@ -10,6 +10,10 @@ public class PoliceSupporter : SupporterBehavior
     [SerializeField]
     private Transform cameraTransform;
 
+    public float wingRpm = 10000f;
+    public Transform[] wingOrdered;
+    public Transform[] wingReversed;
+
     // Start is called before the first frame update
     protected override void NetworkStart()
     {
@@ -31,6 +35,16 @@ public class PoliceSupporter : SupporterBehavior
     // Update is called once per frame
     void Update()
     {
+        float angle = wingRpm * 6f * Time.deltaTime;
+        for(int i = 0; i < wingOrdered.Length; i++)
+        {
+            wingOrdered[i].Rotate(Vector3.forward, -angle);
+        }
+        for(int i = 0; i < wingReversed.Length; i++)
+        {
+            wingReversed[i].Rotate(Vector3.forward, angle);
+        }
+
         if (networkObject.IsOwner)
         {
             networkObject.position = transform.position;
