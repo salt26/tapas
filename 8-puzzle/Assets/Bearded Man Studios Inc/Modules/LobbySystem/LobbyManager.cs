@@ -133,6 +133,21 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
         {
             if (isSetupCompleted && SceneManager.GetActiveScene().name.Equals("Lobby") && NetworkManager.Instance.IsServer)
                 StartGame(2);
+
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                if (ChatInputBox.isFocused)
+                {
+                    SendPlayersMessage();
+                    ChatInputBox.Select();
+                }
+                else
+                {
+                    ChatInputBox.Select();
+                    Debug.Log(ChatInputBox.isFocused);
+                }
+            }
+            Debug.Log(ChatInputBox.isFocused);
         }
 
 		private void CheckForService(NetWorker networker, int identity, uint id, Frame.FrameStream frame, Action<NetworkObject> callback)
