@@ -7,12 +7,14 @@ using UnityEngine;
 
 public class Thief : ThiefBehavior
 {
-    public Transform camera;
+    public Transform myCamera;
+    public List<AudioClip> footsteps;
     private Animator m_Animator;
     private bool isNetworkReady = false;
 
     private float timer_BearTrap = 0f;
     private bool inWire = false;
+    private Vector3 lastPosition;
 
     void Awake()
     {
@@ -34,6 +36,7 @@ public class Thief : ThiefBehavior
             GetComponentInChildren<AudioListener>().enabled = false;
             GetComponent<PlayerMovement>().enabled = false;
         }
+        lastPosition = transform.position;
         isNetworkReady = true;
     }
 
@@ -45,16 +48,11 @@ public class Thief : ThiefBehavior
         {
             networkObject.position = transform.position;
             networkObject.rotation = transform.rotation;
-            networkObject.cameraRotation = camera.rotation;
+            networkObject.cameraRotation = myCamera.rotation;
             networkObject.mHorizontal = GetComponent<PlayerMovement>().CurrentMovement.x;
             networkObject.mVertical = GetComponent<PlayerMovement>().CurrentMovement.z;
             networkObject.isRotatingLeft = GetComponent<PlayerMovement>().IsRotatingLeft;
             networkObject.isRotatingRight = GetComponent<PlayerMovement>().IsRotatingRight;
-
-            Debug.Log(networkObject.mHorizontal);
-            Debug.Log(networkObject.mVertical);
-            Debug.Log(networkObject.isRotatingLeft);
-            Debug.Log(networkObject.isRotatingRight);
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -94,12 +92,22 @@ public class Thief : ThiefBehavior
         {
             transform.position = networkObject.position;
             transform.rotation = networkObject.rotation;
-            camera.rotation = networkObject.cameraRotation;
+            myCamera.rotation = networkObject.cameraRotation;
             m_Animator.SetFloat("Horizontal", networkObject.mHorizontal);
             m_Animator.SetFloat("Vertical", networkObject.mVertical);
             m_Animator.SetBool("RotateLeft", networkObject.isRotatingLeft);
             m_Animator.SetBool("RotateRight", networkObject.isRotatingRight);
         }
+        Vector3 diff = transform.position - lastPosition;
+        if (!(Mathf.Approximately(diff.x, 0f) && Mathf.Approximately(diff.z, 0f)) && !GetComponent<AudioSource>().isPlaying)
+        {
+            int index = Random.Range(0, footsteps.Count - 1);
+            GetComponent<AudioSource>().clip = footsteps[index];
+            GetComponent<AudioSource>().Play();
+            footsteps.Add(footsteps[index]);
+            footsteps.RemoveAt(index);
+        }
+        lastPosition = transform.position;
     }
 
     public override void Touch(RpcArgs args)
