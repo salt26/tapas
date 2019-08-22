@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedInterpol("{\"inter\":[0.15,0.15,0,0,0,0.15]")]
+	[GeneratedInterpol("{\"inter\":[0.15,0.15,0,0,0,0.15,0.15,0.15,0,0]")]
 	public partial class PoliceNetworkObject : NetworkObject
 	{
-		public const int IDENTITY = 7;
+		public const int IDENTITY = 12;
 
-		private byte[] _dirtyFields = new byte[1];
+		private byte[] _dirtyFields = new byte[2];
 
 		#pragma warning disable 0067
 		public event FieldChangedEvent fieldAltered;
@@ -201,6 +201,130 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			if (cameraRotationChanged != null) cameraRotationChanged(_cameraRotation, timestep);
 			if (fieldAltered != null) fieldAltered("cameraRotation", _cameraRotation, timestep);
 		}
+		[ForgeGeneratedField]
+		private float _mHorizontal;
+		public event FieldEvent<float> mHorizontalChanged;
+		public InterpolateFloat mHorizontalInterpolation = new InterpolateFloat() { LerpT = 0.15f, Enabled = true };
+		public float mHorizontal
+		{
+			get { return _mHorizontal; }
+			set
+			{
+				// Don't do anything if the value is the same
+				if (_mHorizontal == value)
+					return;
+
+				// Mark the field as dirty for the network to transmit
+				_dirtyFields[0] |= 0x40;
+				_mHorizontal = value;
+				hasDirtyFields = true;
+			}
+		}
+
+		public void SetmHorizontalDirty()
+		{
+			_dirtyFields[0] |= 0x40;
+			hasDirtyFields = true;
+		}
+
+		private void RunChange_mHorizontal(ulong timestep)
+		{
+			if (mHorizontalChanged != null) mHorizontalChanged(_mHorizontal, timestep);
+			if (fieldAltered != null) fieldAltered("mHorizontal", _mHorizontal, timestep);
+		}
+		[ForgeGeneratedField]
+		private float _mVertical;
+		public event FieldEvent<float> mVerticalChanged;
+		public InterpolateFloat mVerticalInterpolation = new InterpolateFloat() { LerpT = 0.15f, Enabled = true };
+		public float mVertical
+		{
+			get { return _mVertical; }
+			set
+			{
+				// Don't do anything if the value is the same
+				if (_mVertical == value)
+					return;
+
+				// Mark the field as dirty for the network to transmit
+				_dirtyFields[0] |= 0x80;
+				_mVertical = value;
+				hasDirtyFields = true;
+			}
+		}
+
+		public void SetmVerticalDirty()
+		{
+			_dirtyFields[0] |= 0x80;
+			hasDirtyFields = true;
+		}
+
+		private void RunChange_mVertical(ulong timestep)
+		{
+			if (mVerticalChanged != null) mVerticalChanged(_mVertical, timestep);
+			if (fieldAltered != null) fieldAltered("mVertical", _mVertical, timestep);
+		}
+		[ForgeGeneratedField]
+		private bool _isRotatingLeft;
+		public event FieldEvent<bool> isRotatingLeftChanged;
+		public Interpolated<bool> isRotatingLeftInterpolation = new Interpolated<bool>() { LerpT = 0f, Enabled = false };
+		public bool isRotatingLeft
+		{
+			get { return _isRotatingLeft; }
+			set
+			{
+				// Don't do anything if the value is the same
+				if (_isRotatingLeft == value)
+					return;
+
+				// Mark the field as dirty for the network to transmit
+				_dirtyFields[1] |= 0x1;
+				_isRotatingLeft = value;
+				hasDirtyFields = true;
+			}
+		}
+
+		public void SetisRotatingLeftDirty()
+		{
+			_dirtyFields[1] |= 0x1;
+			hasDirtyFields = true;
+		}
+
+		private void RunChange_isRotatingLeft(ulong timestep)
+		{
+			if (isRotatingLeftChanged != null) isRotatingLeftChanged(_isRotatingLeft, timestep);
+			if (fieldAltered != null) fieldAltered("isRotatingLeft", _isRotatingLeft, timestep);
+		}
+		[ForgeGeneratedField]
+		private bool _isRotatingRight;
+		public event FieldEvent<bool> isRotatingRightChanged;
+		public Interpolated<bool> isRotatingRightInterpolation = new Interpolated<bool>() { LerpT = 0f, Enabled = false };
+		public bool isRotatingRight
+		{
+			get { return _isRotatingRight; }
+			set
+			{
+				// Don't do anything if the value is the same
+				if (_isRotatingRight == value)
+					return;
+
+				// Mark the field as dirty for the network to transmit
+				_dirtyFields[1] |= 0x2;
+				_isRotatingRight = value;
+				hasDirtyFields = true;
+			}
+		}
+
+		public void SetisRotatingRightDirty()
+		{
+			_dirtyFields[1] |= 0x2;
+			hasDirtyFields = true;
+		}
+
+		private void RunChange_isRotatingRight(ulong timestep)
+		{
+			if (isRotatingRightChanged != null) isRotatingRightChanged(_isRotatingRight, timestep);
+			if (fieldAltered != null) fieldAltered("isRotatingRight", _isRotatingRight, timestep);
+		}
 
 		protected override void OwnershipChanged()
 		{
@@ -216,6 +340,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			item2NumInterpolation.current = item2NumInterpolation.target;
 			item3NumInterpolation.current = item3NumInterpolation.target;
 			cameraRotationInterpolation.current = cameraRotationInterpolation.target;
+			mHorizontalInterpolation.current = mHorizontalInterpolation.target;
+			mVerticalInterpolation.current = mVerticalInterpolation.target;
+			isRotatingLeftInterpolation.current = isRotatingLeftInterpolation.target;
+			isRotatingRightInterpolation.current = isRotatingRightInterpolation.target;
 		}
 
 		public override int UniqueIdentity { get { return IDENTITY; } }
@@ -228,6 +356,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			UnityObjectMapper.Instance.MapBytes(data, _item2Num);
 			UnityObjectMapper.Instance.MapBytes(data, _item3Num);
 			UnityObjectMapper.Instance.MapBytes(data, _cameraRotation);
+			UnityObjectMapper.Instance.MapBytes(data, _mHorizontal);
+			UnityObjectMapper.Instance.MapBytes(data, _mVertical);
+			UnityObjectMapper.Instance.MapBytes(data, _isRotatingLeft);
+			UnityObjectMapper.Instance.MapBytes(data, _isRotatingRight);
 
 			return data;
 		}
@@ -258,6 +390,22 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			cameraRotationInterpolation.current = _cameraRotation;
 			cameraRotationInterpolation.target = _cameraRotation;
 			RunChange_cameraRotation(timestep);
+			_mHorizontal = UnityObjectMapper.Instance.Map<float>(payload);
+			mHorizontalInterpolation.current = _mHorizontal;
+			mHorizontalInterpolation.target = _mHorizontal;
+			RunChange_mHorizontal(timestep);
+			_mVertical = UnityObjectMapper.Instance.Map<float>(payload);
+			mVerticalInterpolation.current = _mVertical;
+			mVerticalInterpolation.target = _mVertical;
+			RunChange_mVertical(timestep);
+			_isRotatingLeft = UnityObjectMapper.Instance.Map<bool>(payload);
+			isRotatingLeftInterpolation.current = _isRotatingLeft;
+			isRotatingLeftInterpolation.target = _isRotatingLeft;
+			RunChange_isRotatingLeft(timestep);
+			_isRotatingRight = UnityObjectMapper.Instance.Map<bool>(payload);
+			isRotatingRightInterpolation.current = _isRotatingRight;
+			isRotatingRightInterpolation.target = _isRotatingRight;
+			RunChange_isRotatingRight(timestep);
 		}
 
 		protected override BMSByte SerializeDirtyFields()
@@ -277,6 +425,14 @@ namespace BeardedManStudios.Forge.Networking.Generated
 				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _item3Num);
 			if ((0x20 & _dirtyFields[0]) != 0)
 				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _cameraRotation);
+			if ((0x40 & _dirtyFields[0]) != 0)
+				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _mHorizontal);
+			if ((0x80 & _dirtyFields[0]) != 0)
+				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _mVertical);
+			if ((0x1 & _dirtyFields[1]) != 0)
+				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _isRotatingLeft);
+			if ((0x2 & _dirtyFields[1]) != 0)
+				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _isRotatingRight);
 
 			// Reset all the dirty fields
 			for (int i = 0; i < _dirtyFields.Length; i++)
@@ -371,6 +527,58 @@ namespace BeardedManStudios.Forge.Networking.Generated
 					RunChange_cameraRotation(timestep);
 				}
 			}
+			if ((0x40 & readDirtyFlags[0]) != 0)
+			{
+				if (mHorizontalInterpolation.Enabled)
+				{
+					mHorizontalInterpolation.target = UnityObjectMapper.Instance.Map<float>(data);
+					mHorizontalInterpolation.Timestep = timestep;
+				}
+				else
+				{
+					_mHorizontal = UnityObjectMapper.Instance.Map<float>(data);
+					RunChange_mHorizontal(timestep);
+				}
+			}
+			if ((0x80 & readDirtyFlags[0]) != 0)
+			{
+				if (mVerticalInterpolation.Enabled)
+				{
+					mVerticalInterpolation.target = UnityObjectMapper.Instance.Map<float>(data);
+					mVerticalInterpolation.Timestep = timestep;
+				}
+				else
+				{
+					_mVertical = UnityObjectMapper.Instance.Map<float>(data);
+					RunChange_mVertical(timestep);
+				}
+			}
+			if ((0x1 & readDirtyFlags[1]) != 0)
+			{
+				if (isRotatingLeftInterpolation.Enabled)
+				{
+					isRotatingLeftInterpolation.target = UnityObjectMapper.Instance.Map<bool>(data);
+					isRotatingLeftInterpolation.Timestep = timestep;
+				}
+				else
+				{
+					_isRotatingLeft = UnityObjectMapper.Instance.Map<bool>(data);
+					RunChange_isRotatingLeft(timestep);
+				}
+			}
+			if ((0x2 & readDirtyFlags[1]) != 0)
+			{
+				if (isRotatingRightInterpolation.Enabled)
+				{
+					isRotatingRightInterpolation.target = UnityObjectMapper.Instance.Map<bool>(data);
+					isRotatingRightInterpolation.Timestep = timestep;
+				}
+				else
+				{
+					_isRotatingRight = UnityObjectMapper.Instance.Map<bool>(data);
+					RunChange_isRotatingRight(timestep);
+				}
+			}
 		}
 
 		public override void InterpolateUpdate()
@@ -408,12 +616,32 @@ namespace BeardedManStudios.Forge.Networking.Generated
 				_cameraRotation = (Quaternion)cameraRotationInterpolation.Interpolate();
 				//RunChange_cameraRotation(cameraRotationInterpolation.Timestep);
 			}
+			if (mHorizontalInterpolation.Enabled && !mHorizontalInterpolation.current.UnityNear(mHorizontalInterpolation.target, 0.0015f))
+			{
+				_mHorizontal = (float)mHorizontalInterpolation.Interpolate();
+				//RunChange_mHorizontal(mHorizontalInterpolation.Timestep);
+			}
+			if (mVerticalInterpolation.Enabled && !mVerticalInterpolation.current.UnityNear(mVerticalInterpolation.target, 0.0015f))
+			{
+				_mVertical = (float)mVerticalInterpolation.Interpolate();
+				//RunChange_mVertical(mVerticalInterpolation.Timestep);
+			}
+			if (isRotatingLeftInterpolation.Enabled && !isRotatingLeftInterpolation.current.UnityNear(isRotatingLeftInterpolation.target, 0.0015f))
+			{
+				_isRotatingLeft = (bool)isRotatingLeftInterpolation.Interpolate();
+				//RunChange_isRotatingLeft(isRotatingLeftInterpolation.Timestep);
+			}
+			if (isRotatingRightInterpolation.Enabled && !isRotatingRightInterpolation.current.UnityNear(isRotatingRightInterpolation.target, 0.0015f))
+			{
+				_isRotatingRight = (bool)isRotatingRightInterpolation.Interpolate();
+				//RunChange_isRotatingRight(isRotatingRightInterpolation.Timestep);
+			}
 		}
 
 		private void Initialize()
 		{
 			if (readDirtyFlags == null)
-				readDirtyFlags = new byte[1];
+				readDirtyFlags = new byte[2];
 
 		}
 

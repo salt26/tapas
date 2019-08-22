@@ -1623,6 +1623,8 @@ MonoBehaviour:
   otherInputFields:
   - {fileID: 114000012809509130}
   - {fileID: 114000014206881012}
+  disconnectedCanvas: {fileID: 8377961570679000757, guid: 8530012b3b3ad014ea5cb8f7d3c64ae8,
+    type: 3}
 --- !u!1 &1000012499419964
 GameObject:
   m_ObjectHideFlags: 0
@@ -2964,7 +2966,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &224872279323105710
 RectTransform:
   m_ObjectHideFlags: 0
