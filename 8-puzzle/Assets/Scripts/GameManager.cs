@@ -34,15 +34,13 @@ public class GameManager : GameManagerBehavior
     public Image view;
     public Color deactivatedColor;
     public Color activatedColor;
-    public Scrollbar scrollbar;
+    public ScrollRect scroll;
 
     public float normalMsgShowTime;
 
     public float time;
     public Transform maze;
     public bool timeOver = false;
-    public List<PlayerMovement> playerMovements = new List<PlayerMovement>();
-    public List<DroneMovement> droneMovements = new List<DroneMovement>();
 
     public float staminaValue;
     public float staminaValueMax = 4f;
@@ -56,7 +54,7 @@ public class GameManager : GameManagerBehavior
     
     private float mazeScale = 1f;
 
-    private bool canChat = false;
+    public bool canChat = false;
 
     public float scrollSpeed = 0.5f;
 
@@ -180,23 +178,9 @@ public class GameManager : GameManagerBehavior
                     chatInputBox.interactable = false;
                     view.enabled = false;
                     chatBox.color = deactivatedColor;
-                    scrollbar.value = 0;
-                    if (m_TeamID == 1 || m_TeamID == 2)
-                    {
-                        foreach (PlayerMovement pm in playerMovements)
-                        {
-                            if (pm.teamID == m_TeamID)
-                                pm.enabled = true;
-                        }
-                    }
-                    else if (m_TeamID == 3 || m_TeamID == 4)
+                    if (m_TeamID == 3 || m_TeamID == 4)
                     {
                         supportMsg.enabled = false;
-                        foreach (DroneMovement dm in droneMovements)
-                        {
-                            if (dm.teamID == m_TeamID)
-                                dm.enabled = true;
-                        }
                     }
                     canChat = false;
                 }
@@ -207,22 +191,9 @@ public class GameManager : GameManagerBehavior
                     chatInputBox.ActivateInputField();
                     view.enabled = true;
                     chatBox.color = activatedColor;
-                    if (m_TeamID == 1 || m_TeamID == 2)
-                    {
-                        foreach (PlayerMovement pm in playerMovements)
-                        {
-                            if (pm.teamID == m_TeamID)
-                                pm.enabled = false;
-                        }
-                    }
-                    else if (m_TeamID == 3 || m_TeamID == 4)
+                    if (m_TeamID == 3 || m_TeamID == 4)
                     {
                         supportMsg.enabled = true;
-                        foreach(DroneMovement dm in droneMovements)
-                        {
-                            if (dm.teamID == m_TeamID)
-                                dm.enabled = false;
-                        }
                     }
                     canChat = true;
                 }
@@ -230,8 +201,8 @@ public class GameManager : GameManagerBehavior
 
             if(canChat)
             {
-                scrollbar.value += (Input.GetAxis("Mouse ScrollWheel") * scrollSpeed);
-                scrollbar.value = Mathf.Clamp(scrollbar.value, 0f, 1f);
+                float scrollpos = scroll.verticalNormalizedPosition + (Input.GetAxis("Mouse ScrollWheel") * scrollSpeed);
+                scroll.verticalNormalizedPosition = Mathf.Clamp(scrollpos, 0f, 1f);
             }
 
             // Stamina Gauge
@@ -404,6 +375,7 @@ public class GameManager : GameManagerBehavior
                 {
                     chatBox.text += string.Format("경찰 조력자: {0}\n", message);
                 }
+                scroll.verticalNormalizedPosition = 0f;
             }
         }
         else if(team == 2)
@@ -419,6 +391,7 @@ public class GameManager : GameManagerBehavior
                     chatBox.text += string.Format("도둑 조력자: {0}\n", message);
                 }
             }
+            scroll.verticalNormalizedPosition = 0f;
         }
     }
 

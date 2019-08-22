@@ -22,8 +22,6 @@ public class DroneMovement : MonoBehaviour
     [Header("Mesh Settings")]
     public Transform cameraModel;
 
-    public int teamID;
-
     private Rigidbody m_Rigidbody;
 
     private Camera m_Camera;
@@ -49,8 +47,6 @@ public class DroneMovement : MonoBehaviour
         tiltAxis.x = 0f;
         tiltAxis.y = 0f;
         tiltAxis.z = 0f;
-
-        GameManager.instance.droneMovements.Add(this);
     }
 
     void Update()
@@ -74,6 +70,15 @@ public class DroneMovement : MonoBehaviour
             * Quaternion.AngleAxis(tiltAxis.magnitude * maxTiltAngle, tiltAxis);
         cameraModel.transform.localEulerAngles = new Vector3(-angles.x + 270f, 0, 0);
         m_Camera.transform.localEulerAngles = new Vector3(-angles.x, 0, 0);
+
+        if(GameManager.instance.canChat)
+        {
+            forceMagnitude = 0f;
+        }
+        else
+        {
+            forceMagnitude = 12f;
+        }
     }
 
     void FixedUpdate()

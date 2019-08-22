@@ -12,6 +12,7 @@ public class Thief : ThiefBehavior
     private bool isNetworkReady = false;
 
     private float timer_BearTrap = 0f;
+    private bool inWire = false;
 
     void Awake()
     {
@@ -24,7 +25,6 @@ public class Thief : ThiefBehavior
         base.NetworkStart();
         if (networkObject.IsOwner)
         {
-            GetComponent<PlayerMovement>().teamID = 2;
             //PlayerPrefs.SetInt("UnitySelectMonitor", 2);
             //Display.displays[1].Activate();
         }
@@ -65,15 +65,28 @@ public class Thief : ThiefBehavior
                 );
             }
 
-            if(timer_BearTrap > 0)
+            if(GameManager.instance.canChat)
             {
-                timer_BearTrap -= Time.deltaTime;
-                GetComponentInChildren<PlayerMovement>().walkingSpeed = 0f;
-                GetComponentInChildren<PlayerMovement>().runningSpeed = 0f;
-                if (timer_BearTrap <= 0)
+                GetComponent<PlayerMovement>().walkingSpeed = 0f;
+                GetComponent<PlayerMovement>().runningSpeed = 0f;
+            }
+            else
+            {
+                if (timer_BearTrap > 0)
                 {
-                    GetComponentInChildren<PlayerMovement>().walkingSpeed = 2.5f;
-                    GetComponentInChildren<PlayerMovement>().runningSpeed = 2.5f;
+                    timer_BearTrap -= Time.deltaTime;
+                    GetComponent<PlayerMovement>().walkingSpeed = 0f;
+                    GetComponent<PlayerMovement>().runningSpeed = 0f;
+                }
+                else if (inWire)
+                {
+                    GetComponent<PlayerMovement>().walkingSpeed = 1.5f;
+                    GetComponent<PlayerMovement>().runningSpeed = 1.5f;
+                }
+                else
+                {
+                    GetComponent<PlayerMovement>().walkingSpeed = 2.5f;
+                    GetComponent<PlayerMovement>().runningSpeed = 2.5f;
                 }
             }
         }
@@ -93,7 +106,7 @@ public class Thief : ThiefBehavior
     {
         if (!NetworkManager.Instance.IsServer) return;
         BMSLogger.DebugLog("MouseClick");
-        GetComponentInChildren<PlayerTouch>().Touch();
+        GetComponent<PlayerTouch>().Touch();
     }
 
     public override void Chat(RpcArgs args)
@@ -118,14 +131,12 @@ public class Thief : ThiefBehavior
     public override void Slow(RpcArgs args)
     {
         if (!networkObject.IsOwner) return;
-        GetComponentInChildren<PlayerMovement>().walkingSpeed = 1.5f;
-        GetComponentInChildren<PlayerMovement>().runningSpeed = 1.5f;
+        inWire = true;
     }
 
     public override void Restore(RpcArgs args)
     {
         if (!networkObject.IsOwner) return;
-        GetComponentInChildren<PlayerMovement>().walkingSpeed = 2.5f;
-        GetComponentInChildren<PlayerMovement>().runningSpeed = 2.5f;
+        inWire = false;
     }
 }

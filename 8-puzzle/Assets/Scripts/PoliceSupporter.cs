@@ -20,7 +20,6 @@ public class PoliceSupporter : SupporterBehavior
         base.NetworkStart();
         if (networkObject.IsOwner)
         {
-            GetComponent<DroneMovement>().teamID = 3;
             //PlayerPrefs.SetInt("UnitySelectMonitor", 3);
             //Display.displays[2].Activate();
         }

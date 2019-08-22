@@ -23,8 +23,6 @@ public class PlayerMovement : MonoBehaviour
     public float maxAngle = 70f;
     public Vector3 CameraOffset;
 
-    public int teamID;
-
     private Rigidbody m_Rigidbody;
     private Animator m_Animator;
     private Vector3 currentMovement;
@@ -69,8 +67,6 @@ public class PlayerMovement : MonoBehaviour
         currentMovement.x = 0f;
         currentMovement.y = 0f;
         currentMovement.z = 0f;
-
-        GameManager.instance.playerMovements.Add(this);
     }
 
     void Update()

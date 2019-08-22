@@ -30,6 +30,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
         public List<Button> otherButtons;
         public List<InputField> otherInputFields;
         public GameObject disconnectedCanvas;
+        public ScrollRect scroll;
 
         private const int BUFFER_PLAYER_ITEMS = 10;
 		private List<LobbyPlayerItem> _lobbyPlayersInactive = new List<LobbyPlayerItem>();
@@ -695,6 +696,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 		{
 			LobbyPlayer convertedPlayer = GrabPlayer(player);
 			Chatbox.text += string.Format("{0}: {1}\n", convertedPlayer.Name, message);
+            scroll.verticalNormalizedPosition = 0f;
 		}
 
         public void OnFNPlayerSync(IClientMockPlayer player)

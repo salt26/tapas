@@ -26,7 +26,6 @@ public class Police : PoliceBehavior
             float m = GameManager.instance.maze.localScale.x;
             transform.rotation = Quaternion.FromToRotation(transform.rotation * new Vector3(0f, 0f, 0f), new Vector3(53.3f * m, 0f, 53.3f * m) - transform.position);
 
-            GetComponent<PlayerMovement>().teamID = 1;
             networkObject.item1Num = 5;
             networkObject.item2Num = 5;
             networkObject.item3Num = 5;
@@ -69,28 +68,40 @@ public class Police : PoliceBehavior
             Debug.Log(networkObject.isRotatingRight);
             */
             
-            if (Input.GetMouseButtonDown(0))
+            if(!GameManager.instance.canChat)
             {
-                networkObject.SendRpc(RPC_TOUCH, Receivers.Server);
+                if (Input.GetMouseButtonDown(0))
+                {
+                    networkObject.SendRpc(RPC_TOUCH, Receivers.Server);
+                }
+                if (itemNum[0] > 0 && Input.GetKeyDown(KeyCode.Alpha1))
+                {
+                    itemNum[0]--;
+                    networkObject.SendRpc(RPC_USE_ITEM, Receivers.Server, 1);
+                }
+                if (itemNum[1] > 0 && Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    itemNum[1]--;
+                    networkObject.SendRpc(RPC_USE_ITEM, Receivers.Server, 2);
+                }
+                if (itemNum[2] > 0 && Input.GetKeyDown(KeyCode.Alpha3))
+                {
+                    itemNum[2]--;
+                    networkObject.SendRpc(RPC_USE_ITEM, Receivers.Server, 3);
+                }
+                GetComponent<PlayerMovement>().walkingSpeed = 2.2f; //change these if you change default speed
+                GetComponent<PlayerMovement>().runningSpeed = 4f;
             }
-            if (itemNum[0] > 0 && Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                itemNum[0]--;
-                networkObject.SendRpc(RPC_USE_ITEM, Receivers.Server, 1);
-            }
-            if (itemNum[1] > 0 && Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                itemNum[1]--;
-                networkObject.SendRpc(RPC_USE_ITEM, Receivers.Server, 2);
-            }
-            if (itemNum[2] > 0 && Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                itemNum[2]--;
-                networkObject.SendRpc(RPC_USE_ITEM, Receivers.Server, 3);
-            }
+            
             GameManager.instance.item1Txt.text = itemNum[0].ToString();
             GameManager.instance.item2Txt.text = itemNum[1].ToString();
             GameManager.instance.item3Txt.text = itemNum[2].ToString();
+
+            if(GameManager.instance.canChat)
+            {
+                GetComponent<PlayerMovement>().walkingSpeed = 0f;
+                GetComponent<PlayerMovement>().runningSpeed = 0f;
+            }
         }
         else
         {
