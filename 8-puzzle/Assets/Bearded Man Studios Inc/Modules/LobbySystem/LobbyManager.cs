@@ -257,9 +257,9 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
             /* My custom code */
             if (NetworkManager.Instance.IsServer)
             {
-                if (LobbyService.Instance.MasterLobby.LobbyPlayers.Count != 5)
+                if (LobbyService.Instance.MasterLobby.LobbyPlayers.Count != 5) 
                 {
-                    BMSLogger.DebugLog("Player number must be 5!");
+                    //BMSLogger.DebugLog("Player number must be 5!");
                     startTimer = 0f;
                     return;
                 }
@@ -268,7 +268,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                 {
                     if (p.TeamID < 0 || p.TeamID > 4)
                     {
-                        BMSLogger.DebugLog("Player TeamID must be in range of [0, 4]!");
+                        //BMSLogger.DebugLog("Player TeamID must be in range of [0, 4]!");
                         startTimer = 0f;
                         return;
                     }
@@ -279,20 +279,20 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                     }
                     else
                     {
-                        BMSLogger.DebugLog("Player TeamID must not be duplicated!");
+                        //BMSLogger.DebugLog("Player TeamID must not be duplicated!");
                         startTimer = 0f;
                         return;
                     }
                 }
                 if (Myself.AssociatedPlayer.TeamID != 0)
                 {
-                    BMSLogger.DebugLog("Host TeamID must be 0!");
+                    //BMSLogger.DebugLog("Host TeamID must be 0!");
                     return;
                 }
 
                 startTimer += Time.deltaTime;
 
-                if (startTimer >= 3f && !isStarted)
+                if (startTimer >= 1.5f && !isStarted)
                 {
                     isStarted = true;
                     ((IServer)NetworkManager.Instance.Networker).StopAcceptingConnections();

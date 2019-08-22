@@ -9,6 +9,12 @@ public class Police : PoliceBehavior
 {
     public Transform camera;
     private Animator m_Animator;
+    private bool isNetworkReady = false;
+
+    void Awake()
+    {
+        m_Animator = GetComponent<Animator>();
+    }
 
     // Start is called before the first frame update
     protected override void NetworkStart()
@@ -29,13 +35,14 @@ public class Police : PoliceBehavior
             GetComponentInChildren<Camera>().enabled = false;
             GetComponentInChildren<AudioListener>().enabled = false;
             GetComponent<PlayerMovement>().enabled = false;
-            m_Animator=GetComponent<Animator>();
         }
+        isNetworkReady = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!isNetworkReady) return;
         if (networkObject.IsOwner)
         {
             networkObject.position = transform.position;
