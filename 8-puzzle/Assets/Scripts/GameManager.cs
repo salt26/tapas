@@ -39,6 +39,9 @@ public class GameManager : GameManagerBehavior
     public Transform maze;
     public bool timeOver = false;
 
+    public float staminaValue;
+    public float staminaValueMax = 4f;
+
     private int m_TeamID = -1;
     private int win_TeamID = 0; // 0 : Game running, 1 : Police win, 2 : Thief win, 3 : Game end, 4: Game exploited by disconnect
     private float roundTime = 320f;
@@ -126,6 +129,7 @@ public class GameManager : GameManagerBehavior
         }
         else // IsClient
         {
+            // Timer
             int t = Mathf.CeilToInt(networkObject.time);
             if (t % 60 < 10)
             {
@@ -146,6 +150,7 @@ public class GameManager : GameManagerBehavior
                 normalMsg.enabled = false;
             }
 
+            // Chat
             if(Input.GetKeyDown(KeyCode.Return))
             {
                 if(chatInputBox.isFocused)
@@ -163,6 +168,12 @@ public class GameManager : GameManagerBehavior
                 }
             }
             Debug.Log(chatInputBox.isFocused);
+
+            // Stamina Gauge
+            if (m_TeamID == 1)
+            {
+                stamina.rectTransform.sizeDelta = new Vector2(150f * staminaValue, 60f);
+            }
         }
     }
 
@@ -217,6 +228,9 @@ public class GameManager : GameManagerBehavior
             Quaternion.Euler(0f, -135f, 0f),
             Quaternion.Euler(0f, 135f, 0f)
         };
+        
+        staminaValue = staminaValueMax;
+
         if (m_TeamID == 1) // Police
         {
             NetworkManager.Instance.InstantiatePolice(position: policePositions[r], rotation: policeRotations[r]);
