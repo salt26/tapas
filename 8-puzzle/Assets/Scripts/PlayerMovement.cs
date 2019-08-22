@@ -36,6 +36,24 @@ public class PlayerMovement : MonoBehaviour
     private float mouseY;
 
     private bool isReady = false;
+    private bool isRotatingLeft;
+    private bool isRotatingRight;
+
+    public bool IsRotatingLeft {
+        get {
+            return isRotatingLeft;
+        }
+    }
+    public bool IsRotatingRight {
+        get {
+            return isRotatingRight;
+        }
+    }
+    public Vector3 CurrentMovement {
+        get {
+            return currentMovement;
+        }
+    }
 
     void Start()
     {
@@ -88,24 +106,29 @@ public class PlayerMovement : MonoBehaviour
         currentMovement = Vector3.MoveTowards(currentMovement, targetMovement, transitionSpeed * Time.fixedDeltaTime);
 
         float direction = Mathf.DeltaAngle(transform.eulerAngles.y, m_Camera.transform.eulerAngles.y);
-        bool isRotatingLeft = direction < -rotationThreshold && currentMovement.magnitude < idleSpeed;
-        bool isRotatingRight = direction > rotationThreshold && currentMovement.magnitude < idleSpeed;
+        isRotatingLeft = direction < -rotationThreshold && currentMovement.magnitude < idleSpeed;
+        isRotatingRight = direction > rotationThreshold && currentMovement.magnitude < idleSpeed;
 
         m_Animator.SetFloat("Horizontal", currentMovement.x);
         m_Animator.SetFloat("Vertical", currentMovement.z);
         m_Animator.SetBool("RotateLeft", isRotatingLeft);
         m_Animator.SetBool("RotateRight", isRotatingRight);
 
+        // 애니메이션 무시한 움직임
+        Quaternion currentRotation = Quaternion.Euler(0f, m_Camera.transform.eulerAngles.y, 0f);
+        m_Rigidbody.MovePosition(m_Rigidbody.position +
+        currentRotation * currentMovement * Time.fixedDeltaTime);
+        m_Rigidbody.MoveRotation(currentRotation);
 
     }
 
 
+    /* 
     void OnAnimatorMove()
     {
         if (!isReady) return;
 
         // 애니메이션에 따른 움직임   
-        /*
         m_Rigidbody.MovePosition(m_Animator.rootPosition);
 
         // rotation management
@@ -124,14 +147,9 @@ public class PlayerMovement : MonoBehaviour
             m_Rigidbody.MoveRotation(Quaternion.Euler(0f, currentAngle + towardAngle + 
                 Mathf.Rad2Deg * m_Animator.angularVelocity.y * Time.fixedDeltaTime, 0f));
         }
-        */
 
-        // 애니메이션 무시한 움직임
-        Quaternion currentRotation = Quaternion.Euler(0f, m_Camera.transform.eulerAngles.y, 0f);
-        m_Rigidbody.MovePosition(m_Rigidbody.position +
-            currentRotation * currentMovement * Time.fixedDeltaTime);
-        m_Rigidbody.MoveRotation(currentRotation);
     }
+    */
 
 
     void OnAnimatorIK(int layerIndex)

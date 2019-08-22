@@ -50,6 +50,6 @@ public class BearTrap : ItemBehavior
         }
         clank.Play();
         yield return new WaitForSeconds(stopTime);
-        Destroy(this.gameObject);
+        networkObject.Destroy();
     }
 }

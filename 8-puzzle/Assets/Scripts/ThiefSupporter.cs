@@ -7,8 +7,6 @@ using UnityEngine;
 
 public class ThiefSupporter : SupporterBehavior
 {
-    private bool canChat = false;
-
     [SerializeField]
     private Transform cameraTransform;
 
@@ -37,23 +35,6 @@ public class ThiefSupporter : SupporterBehavior
             networkObject.position = transform.position;
             networkObject.droneRotation = transform.rotation;
             networkObject.cameraRotation = cameraTransform.rotation;
-
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                if (canChat)
-                {
-                    GameManager.instance.SendPlayersMessage(1);
-                    GameManager.instance.chatUI.alpha = 0.5f;
-                    canChat = false;
-                }
-                else
-                {
-                    GameManager.instance.chatUI.alpha = 1f;
-                    canChat = true;
-                    GameManager.instance.chatInputBox.ActivateInputField();
-                }
-            }
-
         }
         else
         {
