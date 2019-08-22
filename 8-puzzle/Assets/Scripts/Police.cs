@@ -10,6 +10,7 @@ public class Police : PoliceBehavior
     public Transform camera;
     private Animator m_Animator;
     private bool isNetworkReady = false;
+    private int[] itemNum;
 
     void Awake()
     {
@@ -24,9 +25,6 @@ public class Police : PoliceBehavior
         {
             float m = GameManager.instance.maze.localScale.x;
             transform.rotation = Quaternion.FromToRotation(transform.rotation * new Vector3(0f, 0f, 0f), new Vector3(53.3f * m, 0f, 53.3f * m) - transform.position);
-            networkObject.item1Num = 5;
-            networkObject.item2Num = 5;
-            networkObject.item3Num = 5;
             //PlayerPrefs.SetInt("UnitySelectMonitor", 1);
             //Display.displays[0].Activate();
         }
@@ -39,10 +37,15 @@ public class Police : PoliceBehavior
         isNetworkReady = true;
     }
 
-    // Update is called once per frame
+    void Start()
+    {
+        itemNum = new int[3] { 5, 5, 5 };
+    }
+
     void Update()
     {
         if (!isNetworkReady) return;
+
         if (networkObject.IsOwner)
         {
             networkObject.position = transform.position;
@@ -53,45 +56,35 @@ public class Police : PoliceBehavior
             networkObject.isRotatingLeft = GetComponent<PlayerMovement>().IsRotatingLeft;
             networkObject.isRotatingRight = GetComponent<PlayerMovement>().IsRotatingRight;
 
+            /*
             Debug.Log(networkObject.mHorizontal);
             Debug.Log(networkObject.mVertical);
             Debug.Log(networkObject.isRotatingLeft);
             Debug.Log(networkObject.isRotatingRight);
+            */
             
             if (Input.GetMouseButtonDown(0))
             {
-                networkObject.SendRpc(
-                    RPC_TOUCH,
-                    Receivers.Server
-                );
+                networkObject.SendRpc(RPC_TOUCH, Receivers.Server);
             }
-            if (networkObject.item1Num > 0 && Input.GetKeyDown(KeyCode.Alpha1))
+            if (itemNum[0] > 0 && Input.GetKeyDown(KeyCode.Alpha1))
             {
-                networkObject.SendRpc(
-                    RPC_USE_ITEM,
-                    Receivers.Server,
-                    1
-                );
+                itemNum[0]--;
+                networkObject.SendRpc(RPC_USE_ITEM, Receivers.Server, 1);
             }
-            if (networkObject.item2Num > 0 && Input.GetKeyDown(KeyCode.Alpha2))
+            if (itemNum[1] > 0 && Input.GetKeyDown(KeyCode.Alpha2))
             {
-                networkObject.SendRpc(
-                    RPC_USE_ITEM,
-                    Receivers.Server,
-                    2
-                );
+                itemNum[1]--;
+                networkObject.SendRpc(RPC_USE_ITEM, Receivers.Server, 2);
             }
-            if (networkObject.item3Num > 0 && Input.GetKeyDown(KeyCode.Alpha3))
+            if (itemNum[2] > 0 && Input.GetKeyDown(KeyCode.Alpha3))
             {
-                networkObject.SendRpc(
-                    RPC_USE_ITEM,
-                    Receivers.Server,
-                    3
-                );
+                itemNum[2]--;
+                networkObject.SendRpc(RPC_USE_ITEM, Receivers.Server, 3);
             }
-            GameManager.instance.item1Txt.text = networkObject.item1Num.ToString();
-            GameManager.instance.item2Txt.text = networkObject.item2Num.ToString();
-            GameManager.instance.item3Txt.text = networkObject.item3Num.ToString();
+            GameManager.instance.item1Txt.text = itemNum[0].ToString();
+            GameManager.instance.item2Txt.text = itemNum[1].ToString();
+            GameManager.instance.item3Txt.text = itemNum[2].ToString();
         }
         else
         {
@@ -114,45 +107,33 @@ public class Police : PoliceBehavior
 
     public override void OpenBox(RpcArgs args) 
     {
-        if (!networkObject.IsOwner) return;
-        int NumbertoIncrease = Random.Range(1, 3);
-        if(NumbertoIncrease == 1) {
-            networkObject.item1Num++;
-        } else if(NumbertoIncrease == 2) {
-            networkObject.item2Num++;
-        } else if(NumbertoIncrease == 3) {
-            networkObject.item3Num++;
-        }
-        Debug.Log(networkObject.item1Num);
-        Debug.Log(networkObject.item2Num);
-        Debug.Log(networkObject.item3Num);
+        if (!networkObject.IsOwner) return; // only Police can modify itemNum variables
+
+        int i = Random.Range(0, 3);
+
+        itemNum[i]++;
     }
 
-    public override void UseItem(RpcArgs args)
+    public override void UseItem(RpcArgs args) // Police already validated itemNum
     {
-        if (!NetworkManager.Instance.IsServer) return;
-        int i = args.GetNext<int>();
-        if(networkObject.item1Num > 0 && i == 1)
+        if (!NetworkManager.Instance.IsServer) return;  // Server will instantiate items
+
+        int i = args.GetNext<int>(); // 1: Wire / 2: Trap / 3: Alert
+
+        Debug.Log("Used Item" + i);
+
+        Quaternion rot;
+
+        if (i == 1)
         {
-            // Wire
-            Debug.Log("Used Item1");
-            NetworkManager.Instance.InstantiateItem(i - 1, transform.position, Quaternion.Euler(-90f, 0f, 0f));
-            networkObject.item1Num--;
+            rot = Quaternion.Euler(-90f, 0f, 0f);
         }
-        else if(networkObject.item2Num > 0 && i == 2)
+        else
         {
-            // BearTrap
-            Debug.Log("Used Item2");
-            NetworkManager.Instance.InstantiateItem(i - 1, transform.position, Quaternion.identity);
-            networkObject.item2Num--;
+            rot = Quaternion.identity;
         }
-        else if(networkObject.item3Num > 0 && i == 3)
-        {
-            // Alert
-            Debug.Log("Used Item3");
-            NetworkManager.Instance.InstantiateItem(i - 1, transform.position, Quaternion.identity);
-            networkObject.item3Num--;
-        }
+
+        NetworkManager.Instance.InstantiateItem(i - 1, transform.position, rot);
     }
 
     public override void Chat(RpcArgs args)
