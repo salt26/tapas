@@ -11,7 +11,6 @@ public class Thief : ThiefBehavior
     private Animator m_Animator;
 
     private float timer_BearTrap = 0f;
-    private bool canChat = false;
 
     // Start is called before the first frame update
     protected override void NetworkStart()
@@ -69,23 +68,6 @@ public class Thief : ThiefBehavior
                     GetComponentInChildren<PlayerMovement>().runningSpeed = 2.5f;
                 }
             }
-
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                if (canChat)
-                {
-                    GameManager.instance.SendPlayersMessage(2);
-                    GameManager.instance.chatUI.alpha = 0.5f;
-                    canChat = false;
-                }
-                else
-                {
-                    GameManager.instance.chatUI.alpha = 1f;
-                    canChat = true;
-                    GameManager.instance.chatInputBox.ActivateInputField();
-                }
-            }
-
         }
         else
         {

@@ -4,13 +4,14 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[[\"int\", \"bool\"][\"int\"][\"int\"]]")]
-	[GeneratedRPCVariableNames("{\"types\":[[\"win_TeamID\", \"timeOver\"][\"teamID\"][\"playerTeamID\"]]")]
+	[GeneratedRPC("{\"types\":[[\"int\", \"bool\"][\"int\"][\"int\"][\"string\", \"int\"]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[\"win_TeamID\", \"timeOver\"][\"teamID\"][\"playerTeamID\"][\"message\", \"teamNum\"]]")]
 	public abstract partial class GameManagerBehavior : NetworkBehavior
 	{
 		public const byte RPC_GAME_END = 0 + 5;
 		public const byte RPC_GAME_START = 1 + 5;
 		public const byte RPC_READY = 2 + 5;
+		public const byte RPC_RECEIVE_MESSAGE = 3 + 5;
 		
 		public GameManagerNetworkObject networkObject = null;
 
@@ -27,6 +28,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.RegisterRpc("GameEnd", GameEnd, typeof(int), typeof(bool));
 			networkObject.RegisterRpc("GameStart", GameStart, typeof(int));
 			networkObject.RegisterRpc("Ready", Ready, typeof(int));
+			networkObject.RegisterRpc("ReceiveMessage", ReceiveMessage, typeof(string), typeof(int));
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -119,6 +121,12 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		/// int playerTeamID
 		/// </summary>
 		public abstract void Ready(RpcArgs args);
+		/// <summary>
+		/// Arguments:
+		/// string message
+		/// int teamNum
+		/// </summary>
+		public abstract void ReceiveMessage(RpcArgs args);
 
 		// DO NOT TOUCH, THIS GETS GENERATED PLEASE EXTEND THIS CLASS IF YOU WISH TO HAVE CUSTOM CODE ADDITIONS
 	}

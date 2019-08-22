@@ -145,6 +145,22 @@ public class GameManager : GameManagerBehavior
             {
                 normalMsg.enabled = false;
             }
+
+            if(Input.GetKeyDown(KeyCode.Return))
+            {
+                if(chatInputBox.isFocused)
+                {
+                    SendPlayersMessage();
+                    chatUI.alpha = 0.5f;
+                    chatInputBox.Select();
+                }
+                else
+                {
+                    chatUI.alpha = 1f;
+                    chatInputBox.Select();
+                }
+            }
+            Debug.Log(chatInputBox.isFocused);
         }
     }
 
@@ -248,19 +264,47 @@ public class GameManager : GameManagerBehavior
         SceneManager.LoadScene(1);
     }
 
-    public void SendPlayersMessage(int teamID)
+    public void SendPlayersMessage()
     {
         string chatMessage = chatInputBox.text;
         if (string.IsNullOrEmpty(chatMessage))
             return;
+
+        if (m_TeamID == 1 || m_TeamID == 3)
+        {
+            networkObject.SendRpc(RPC_RECEIVE_MESSAGE, Receivers.All, chatMessage, 1);
+        }
+        else if (m_TeamID == 2 || m_TeamID == 4)
+        {
+            networkObject.SendRpc(RPC_RECEIVE_MESSAGE, Receivers.All, chatMessage, 2);
+        }
         /*
-         GetComponent<Police>().networkObject.SendRpc(PoliceBehavior.RPC_CHAT, Receivers.All, chatMessage, teamID);
-        GetComponent<Thief>().networkObject.SendRpc(PoliceBehavior.RPC_CHAT, Receivers.All, chatMessage, teamID);
-        GetComponent<SupporterNetworkObject>().SendRpc(SupporterBehavior.RPC_CHAT, Receivers.All, chatMessage, teamID);
+         GetComponent<Police>().networkObject.SendRpc(PoliceBehavior.RPC_CHAT, Receivers.All, chatMessage, m_TeamID);
+        GetComponent<Thief>().networkObject.SendRpc(PoliceBehavior.RPC_CHAT, Receivers.All, chatMessage, m_TeamID);
+        GetComponent<SupporterNetworkObject>().SendRpc(SupporterBehavior.RPC_CHAT, Receivers.All, chatMessage, m_TeamID);
         */
 
         chatInputBox.text = string.Empty;
-        chatInputBox.DeactivateInputField();
+    }
+
+    public override void ReceiveMessage(RpcArgs args)
+    {
+        int team = args.GetNext<int>();
+        string message = args.GetNext<string>();
+        if(team == 1)
+        {
+            if(m_TeamID == 1 || m_TeamID == 3)
+            {
+                chatBox.text += (message + "\n");
+            }
+        }
+        else if(team == 2)
+        {
+            if(m_TeamID == 2 || m_TeamID == 4)
+            {
+                chatBox.text += (message + "\n");
+            }
+        }
     }
 
     /*
