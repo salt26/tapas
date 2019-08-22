@@ -8,20 +8,17 @@ using UnityEngine;
 public class Crate : CrateBehavior
 {
     public Transform CrateLid;
-    bool TimerOn=false;
+    public bool TimerOn=false;
 
     public override void CrateOpen(RpcArgs args)
     {
-        if(!TimerOn) {
-            StartCoroutine(Activate());
-            StartCoroutine(TimeCheck());
-//            BMSLogger.DebugLog("CrateActivated");
-        }
+        StartCoroutine(Activate());
+        StartCoroutine(TimeCheck());
     }
     IEnumerator TimeCheck()
     {
         TimerOn=true;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(60f);
         StartCoroutine(Deactivate());
         TimerOn=false;
     }

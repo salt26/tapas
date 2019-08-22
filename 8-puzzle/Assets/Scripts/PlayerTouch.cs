@@ -46,12 +46,15 @@ public class PlayerTouch : MonoBehaviour
                 }
                 if (other.tag.Equals("Box"))
                 {
-                    BMSLogger.DebugLog("BoxTouched");
-                    Debug.Log("BoxTouched");
-                    GetComponent<Police>().networkObject.SendRpc(PoliceBehavior.RPC_OPEN_BOX, Receivers.All);
-                    other.GetComponent<Crate>().networkObject.SendRpc(CrateBehavior.RPC_CRATE_OPEN, Receivers.All);
-                    // TODO: open box
-                    // police내 함수 구현해서 police 의 item을? item1num~item3num 그냥 랜덤으로 늘려
+                    if (!other.GetComponent<Crate>().TimerOn)
+                    {
+                        BMSLogger.DebugLog("BoxTouched");
+                        Debug.Log("BoxTouched");
+                        GetComponent<Police>().networkObject.SendRpc(PoliceBehavior.RPC_OPEN_BOX, Receivers.All);
+                        other.GetComponent<Crate>().networkObject.SendRpc(CrateBehavior.RPC_CRATE_OPEN, Receivers.All);
+                        // TODO: open box
+                        // police내 함수 구현해서 police 의 item을? item1num~item3num 그냥 랜덤으로 늘려
+                    }
                 }
                 if (other.tag.Equals("Thief"))
                 {
