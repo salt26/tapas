@@ -8,6 +8,14 @@ using UnityEditor;
 
 public class DisconnectedCanvas : MonoBehaviour
 {
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Disconnect();
+        }
+    }
+
     public void Disconnect()
     {
 #if UNITY_EDITOR
