@@ -8,6 +8,7 @@ using UnityEngine;
 public class Police : PoliceBehavior
 {
     public Transform camera;
+    private Animator m_Animator;
 
     private bool canChat = false;
 
@@ -30,6 +31,7 @@ public class Police : PoliceBehavior
             GetComponentInChildren<Camera>().enabled = false;
             GetComponentInChildren<AudioListener>().enabled = false;
             GetComponent<PlayerMovement>().enabled = false;
+            m_Animator=GetComponent<Animator>();
         }
     }
 
@@ -41,7 +43,16 @@ public class Police : PoliceBehavior
             networkObject.position = transform.position;
             networkObject.rotation = transform.rotation;
             networkObject.cameraRotation = camera.rotation;
+            networkObject.mHorizontal = GetComponent<PlayerMovement>().CurrentMovement.x;
+            networkObject.mVertical = GetComponent<PlayerMovement>().CurrentMovement.z;
+            networkObject.isRotatingLeft = GetComponent<PlayerMovement>().IsRotatingLeft;
+            networkObject.isRotatingRight = GetComponent<PlayerMovement>().IsRotatingRight;
 
+            Debug.Log(networkObject.mHorizontal);
+            Debug.Log(networkObject.mVertical);
+            Debug.Log(networkObject.isRotatingLeft);
+            Debug.Log(networkObject.isRotatingRight);
+            
             if (Input.GetMouseButtonDown(0))
             {
                 networkObject.SendRpc(
@@ -99,6 +110,10 @@ public class Police : PoliceBehavior
             transform.position = networkObject.position;
             transform.rotation = networkObject.rotation;
             camera.rotation = networkObject.cameraRotation;
+            m_Animator.SetFloat("Horizontal", networkObject.mHorizontal);
+            m_Animator.SetFloat("Vertical", networkObject.mVertical);
+            m_Animator.SetBool("RotateLeft", networkObject.isRotatingLeft);
+            m_Animator.SetBool("RotateRight", networkObject.isRotatingRight);
         }
     }
 

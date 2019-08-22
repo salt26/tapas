@@ -8,6 +8,7 @@ using UnityEngine;
 public class Thief : ThiefBehavior
 {
     public Transform camera;
+    private Animator m_Animator;
 
     private float timer_BearTrap = 0f;
     private bool canChat = false;
@@ -26,6 +27,7 @@ public class Thief : ThiefBehavior
             GetComponentInChildren<Camera>().enabled = false;
             GetComponentInChildren<AudioListener>().enabled = false;
             GetComponent<PlayerMovement>().enabled = false;
+            m_Animator=GetComponent<Animator>();
         }
     }
 
@@ -37,7 +39,16 @@ public class Thief : ThiefBehavior
             networkObject.position = transform.position;
             networkObject.rotation = transform.rotation;
             networkObject.cameraRotation = camera.rotation;
-            
+            networkObject.mHorizontal = GetComponent<PlayerMovement>().CurrentMovement.x;
+            networkObject.mVertical = GetComponent<PlayerMovement>().CurrentMovement.z;
+            networkObject.isRotatingLeft = GetComponent<PlayerMovement>().IsRotatingLeft;
+            networkObject.isRotatingRight = GetComponent<PlayerMovement>().IsRotatingRight;
+
+            Debug.Log(networkObject.mHorizontal);
+            Debug.Log(networkObject.mVertical);
+            Debug.Log(networkObject.isRotatingLeft);
+            Debug.Log(networkObject.isRotatingRight);
+
             if (Input.GetMouseButtonDown(0))
             {
                 Debug.Log("MouseClick");
@@ -81,6 +92,10 @@ public class Thief : ThiefBehavior
             transform.position = networkObject.position;
             transform.rotation = networkObject.rotation;
             camera.rotation = networkObject.cameraRotation;
+            m_Animator.SetFloat("Horizontal", networkObject.mHorizontal);
+            m_Animator.SetFloat("Vertical", networkObject.mVertical);
+            m_Animator.SetBool("RotateLeft", networkObject.isRotatingLeft);
+            m_Animator.SetBool("RotateRight", networkObject.isRotatingRight);
         }
     }
 
