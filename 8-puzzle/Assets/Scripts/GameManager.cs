@@ -244,6 +244,7 @@ public class GameManager : GameManagerBehavior
     
     private void ReturnLobby()
     {
+        LobbyManager.lm.ReturnToLobby();
         SceneManager.LoadScene(1);
     }
 

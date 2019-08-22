@@ -54,8 +54,8 @@ public class Thief : ThiefBehavior
                 GetComponentInChildren<PlayerMovement>().runningSpeed = 0f;
                 if (timer_BearTrap <= 0)
                 {
-                    GetComponentInChildren<PlayerMovement>().walkingSpeed = 1f;
-                    GetComponentInChildren<PlayerMovement>().runningSpeed = 1f;
+                    GetComponentInChildren<PlayerMovement>().walkingSpeed = 2.5f;
+                    GetComponentInChildren<PlayerMovement>().runningSpeed = 2.5f;
                 }
             }
 
@@ -113,14 +113,14 @@ public class Thief : ThiefBehavior
     public override void Slow(RpcArgs args)
     {
         if (!networkObject.IsOwner) return;
-        GetComponentInChildren<PlayerMovement>().walkingSpeed = 0.7f;
-        GetComponentInChildren<PlayerMovement>().runningSpeed = 0.7f;
+        GetComponentInChildren<PlayerMovement>().walkingSpeed = 1.5f;
+        GetComponentInChildren<PlayerMovement>().runningSpeed = 1.5f;
     }
 
     public override void Restore(RpcArgs args)
     {
         if (!networkObject.IsOwner) return;
-        GetComponentInChildren<PlayerMovement>().walkingSpeed = 1f;
-        GetComponentInChildren<PlayerMovement>().runningSpeed = 1f;
+        GetComponentInChildren<PlayerMovement>().walkingSpeed = 2.5f;
+        GetComponentInChildren<PlayerMovement>().runningSpeed = 2.5f;
     }
 }

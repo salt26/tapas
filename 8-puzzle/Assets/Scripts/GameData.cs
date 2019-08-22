@@ -23,6 +23,7 @@ public class GameData : SwitchManagerBehavior
     private int historyLimit = 3;
     
     private DoorControl[] doors;
+    private bool isReady = false;
 
     /*
     private int score;
@@ -50,8 +51,9 @@ public class GameData : SwitchManagerBehavior
         }
     }
     
-    void Start()
+    protected override void NetworkStart()
     {
+        base.NetworkStart();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -85,11 +87,12 @@ public class GameData : SwitchManagerBehavior
             networkObject.SendRpc(RPC_UPDATE_POLICE_SUPP_MSG, Receivers.All, policeSuppMsg);
             networkObject.SendRpc(RPC_UPDATE_THIEF_SUPP_MSG, Receivers.All, thiefSuppMsg);
         }
+        isReady = true;
     }
 
     void Update()
     {
-        if (Score() == 4 && !puzzleEnd)
+        if (isReady && Score() == 4 && !puzzleEnd)
         {
             networkObject.SendRpc(RPC_OPEN_EXIT, Receivers.All);
             puzzleEnd = true;

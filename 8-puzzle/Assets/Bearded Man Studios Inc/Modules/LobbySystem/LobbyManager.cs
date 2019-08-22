@@ -285,6 +285,26 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                 }
             }
         }
+
+        public void ReturnToLobby()
+        {
+            GetComponent<Canvas>().enabled = true;
+            if (NetworkManager.Instance.IsServer)
+            {
+                startTimer = 0f;
+                isStarted = false;
+                isSetupCompleted = false;
+                ((IServer)NetworkManager.Instance.Networker).StartAcceptingConnections();
+                _lobbyPlayersStarted = new Dictionary<int, uint>();
+
+                SetupComplete();
+            }
+            else
+            {
+                isSetupCompleted = false;
+                SetupComplete();
+            }
+        }
 #endregion
 
 #region Private API

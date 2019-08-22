@@ -15,12 +15,14 @@ public class TutorialPicture : MonoBehaviour
     public List<Sprite> ButtonImage = new List<Sprite>();
     public List<Sprite> PageImage = new List<Sprite>();
     int NowPage;
+
     // Start is called before the first frame update
     void Start()
     {
         NowPage = 1;
         ShowPage();
     }
+
     public void PressKey(int nKey)
     {
         if (nKey == 1)
@@ -54,13 +56,14 @@ public class TutorialPicture : MonoBehaviour
         if (NowPage == 1)
         {
             MainImage.GetComponent<Image>().sprite=sprites[0];
-            LeftButtonImage.GetComponent<Image>().sprite=ButtonImage[0];
+            LeftButtonImage.GetComponent<Image>().enabled = false;
             RightButtonImage.GetComponent<Image>().sprite=ButtonImage[3];
             Page.GetComponent<Image>().sprite=PageImage[0];
         }
         else if (NowPage == 2)
         {
             MainImage.GetComponent<Image>().sprite=sprites[1];
+            LeftButtonImage.GetComponent<Image>().enabled = true;
             LeftButtonImage.GetComponent<Image>().sprite=ButtonImage[1];
             RightButtonImage.GetComponent<Image>().sprite=ButtonImage[3];
             Page.GetComponent<Image>().sprite=PageImage[1];
@@ -68,6 +71,7 @@ public class TutorialPicture : MonoBehaviour
         else if (NowPage == 3)
         {
             MainImage.GetComponent<Image>().sprite=sprites[2];
+            LeftButtonImage.GetComponent<Image>().enabled = true;
             LeftButtonImage.GetComponent<Image>().sprite=ButtonImage[1];
             RightButtonImage.GetComponent<Image>().sprite=ButtonImage[3];
             Page.GetComponent<Image>().sprite=PageImage[2];
@@ -75,6 +79,7 @@ public class TutorialPicture : MonoBehaviour
         else if (NowPage == 4)
         {
             MainImage.GetComponent<Image>().sprite=sprites[3];
+            LeftButtonImage.GetComponent<Image>().enabled = true;
             LeftButtonImage.GetComponent<Image>().sprite=ButtonImage[1];
             RightButtonImage.GetComponent<Image>().sprite=ButtonImage[3];
             Page.GetComponent<Image>().sprite=PageImage[3];
@@ -82,6 +87,7 @@ public class TutorialPicture : MonoBehaviour
         else if (NowPage == 5)
         {
             MainImage.GetComponent<Image>().sprite=sprites[4];
+            LeftButtonImage.GetComponent<Image>().enabled = true;
             LeftButtonImage.GetComponent<Image>().sprite=ButtonImage[1];
             RightButtonImage.GetComponent<Image>().sprite=ButtonImage[2];
             Page.GetComponent<Image>().sprite=PageImage[4];
