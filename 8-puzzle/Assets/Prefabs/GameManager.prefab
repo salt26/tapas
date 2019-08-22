@@ -71,6 +71,10 @@ MonoBehaviour:
   time: 0
   maze: {fileID: 0}
   timeOver: 0
+  playerMovements: []
+  droneMovements: []
+  staminaValue: 0
+  staminaValueMax: 4
   scrollSpeed: 0.5
 --- !u!82 &6527541136233498688
 AudioSource:
@@ -285,15 +289,30 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3378040798208582746, guid: efc5830e3fdeef4479cebc76d331c02d,
+        type: 3}
+      propertyPath: m_Text
+      value: '0 : 00'
+      objectReference: {fileID: 0}
     - target: {fileID: 2879569045601016974, guid: efc5830e3fdeef4479cebc76d331c02d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.24742113
+      value: -0.00002848545
       objectReference: {fileID: 0}
-    - target: {fileID: 5112712201349369958, guid: efc5830e3fdeef4479cebc76d331c02d,
+    - target: {fileID: 4960270282958600387, guid: efc5830e3fdeef4479cebc76d331c02d,
         type: 3}
-      propertyPath: m_Size
-      value: 0.06250019
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4960270282958600387, guid: efc5830e3fdeef4479cebc76d331c02d,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4960270282958600387, guid: efc5830e3fdeef4479cebc76d331c02d,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4682825884166171973, guid: efc5830e3fdeef4479cebc76d331c02d,
         type: 3}
@@ -309,6 +328,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112712201349369958, guid: efc5830e3fdeef4479cebc76d331c02d,
+        type: 3}
+      propertyPath: m_Size
+      value: 0.9999229
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: efc5830e3fdeef4479cebc76d331c02d, type: 3}

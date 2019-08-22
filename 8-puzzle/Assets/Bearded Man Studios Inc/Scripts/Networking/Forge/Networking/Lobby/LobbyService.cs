@@ -688,8 +688,11 @@ namespace BeardedManStudios.Forge.Networking.Lobby
 
                 //BMSLogger.DebugLog(string.Format("Message to {0}, {1} has joined", player.NetworkId, p.NetworkId));
 				networkObject.SendRpc(player, RPC_PLAYER_JOINED, p.NetworkId);
-				IClientMockPlayer cPlayer = MasterLobby.LobbyPlayers.First(l => l.NetworkId == p.NetworkId);
-				networkObject.SendRpc(player, RPC_PLAYER_SYNC, p.NetworkId, cPlayer.Name, cPlayer.TeamID, cPlayer.AvatarID);
+                if (MasterLobby.LobbyPlayers.Count > 0)
+                {
+                    IClientMockPlayer cPlayer = MasterLobby.LobbyPlayers.First(l => l.NetworkId == p.NetworkId);
+                    networkObject.SendRpc(player, RPC_PLAYER_SYNC, p.NetworkId, cPlayer.Name, cPlayer.TeamID, cPlayer.AvatarID);
+                }
 			});
 		}
 
