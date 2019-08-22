@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[[\"int\", \"bool\"][\"int\"][\"int\"][\"string\", \"int\"]]")]
-	[GeneratedRPCVariableNames("{\"types\":[[\"win_TeamID\", \"timeOver\"][\"teamID\"][\"playerTeamID\"][\"message\", \"teamNum\"]]")]
+	[GeneratedRPC("{\"types\":[[\"int\", \"bool\"][\"int\"][\"int\"][\"string\", \"int\", \"int\"]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[\"win_TeamID\", \"timeOver\"][\"teamID\"][\"playerTeamID\"][\"message\", \"teamNum\", \"senderID\"]]")]
 	public abstract partial class GameManagerBehavior : NetworkBehavior
 	{
 		public const byte RPC_GAME_END = 0 + 5;
@@ -28,7 +28,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.RegisterRpc("GameEnd", GameEnd, typeof(int), typeof(bool));
 			networkObject.RegisterRpc("GameStart", GameStart, typeof(int));
 			networkObject.RegisterRpc("Ready", Ready, typeof(int));
-			networkObject.RegisterRpc("ReceiveMessage", ReceiveMessage, typeof(string), typeof(int));
+			networkObject.RegisterRpc("ReceiveMessage", ReceiveMessage, typeof(string), typeof(int), typeof(int));
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -125,6 +125,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		/// Arguments:
 		/// string message
 		/// int teamNum
+		/// int senderID
 		/// </summary>
 		public abstract void ReceiveMessage(RpcArgs args);
 

@@ -29,15 +29,20 @@ public class GameManager : GameManagerBehavior
     public Image mapGuide;
     public Image mapIcon;
 
-    public CanvasGroup chatUI;
     public InputField chatInputBox;
     public Text chatBox;
+    public Image view;
+    public Color deactivatedColor;
+    public Color activatedColor;
+    public Scrollbar scrollbar;
 
     public float normalMsgShowTime;
 
     public float time;
     public Transform maze;
     public bool timeOver = false;
+    public List<PlayerMovement> playerMovements = new List<PlayerMovement>();
+    public List<DroneMovement> droneMovements = new List<DroneMovement>();
 
     public float staminaValue;
     public float staminaValueMax = 4f;
@@ -51,6 +56,10 @@ public class GameManager : GameManagerBehavior
     private GameObject drone;
     
     private float mazeScale = 1f;
+
+    private bool canChat = false;
+
+    public float scrollSpeed = 0.5f;
 
     public int M_TeamID
     {
@@ -165,21 +174,68 @@ public class GameManager : GameManagerBehavior
             // Chat
             if(Input.GetKeyDown(KeyCode.Return))
             {
-                if(chatInputBox.isFocused)
+                if(canChat)
                 {
                     SendPlayersMessage();
-                    chatUI.alpha = 0.5f;
                     chatInputBox.Select();
                     chatInputBox.interactable = false;
+                    view.enabled = false;
+                    chatBox.color = deactivatedColor;
+                    scrollbar.value = 0;
+                    if (m_TeamID == 1 || m_TeamID == 2)
+                    {
+                        foreach (PlayerMovement pm in playerMovements)
+                        {
+                            if (pm.teamID == m_TeamID)
+                                pm.enabled = true;
+                        }
+                    }
+                    else if (m_TeamID == 3 || m_TeamID == 4)
+                    {
+                        supportMsg.enabled = false;
+                        foreach (DroneMovement dm in droneMovements)
+                        {
+                            if (dm.teamID == m_TeamID)
+                                dm.enabled = true;
+                        }
+                    }
+                    canChat = false;
                 }
                 else
                 {
-                    chatUI.alpha = 1f;
                     chatInputBox.interactable = true;
                     chatInputBox.Select();
+                    chatInputBox.ActivateInputField();
+                    view.enabled = true;
+                    chatBox.color = activatedColor;
+                    if (m_TeamID == 1 || m_TeamID == 2)
+                    {
+                        foreach (PlayerMovement pm in playerMovements)
+                        {
+                            if (pm.teamID == m_TeamID)
+                                pm.enabled = false;
+                        }
+                    }
+                    else if (m_TeamID == 3 || m_TeamID == 4)
+                    {
+                        supportMsg.enabled = true;
+                        foreach(DroneMovement dm in droneMovements)
+                        {
+                            if (dm.teamID == m_TeamID)
+                                dm.enabled = false;
+                        }
+                    }
+                    canChat = true;
                 }
             }
+
             //Debug.Log(chatInputBox.isFocused);
+
+            if(canChat)
+            {
+                scrollbar.value += (Input.GetAxis("Mouse ScrollWheel") * scrollSpeed);
+                scrollbar.value = Mathf.Clamp(scrollbar.value, 0f, 1f);
+            }
 
             // Stamina Gauge
             if (m_TeamID == 1)
@@ -328,53 +384,58 @@ public class GameManager : GameManagerBehavior
 
     public void SendPlayersMessage()
     {
+        Debug.Log("Send Message!");
         string chatMessage = chatInputBox.text;
         if (string.IsNullOrEmpty(chatMessage))
             return;
 
         if (m_TeamID == 1 || m_TeamID == 3)
         {
-            networkObject.SendRpc(RPC_RECEIVE_MESSAGE, Receivers.All, chatMessage, 1);
+            networkObject.SendRpc(RPC_RECEIVE_MESSAGE, Receivers.All, chatMessage, 1, m_TeamID);
         }
         else if (m_TeamID == 2 || m_TeamID == 4)
         {
-            networkObject.SendRpc(RPC_RECEIVE_MESSAGE, Receivers.All, chatMessage, 2);
+            networkObject.SendRpc(RPC_RECEIVE_MESSAGE, Receivers.All, chatMessage, 2, m_TeamID);
         }
-        /*
-         GetComponent<Police>().networkObject.SendRpc(PoliceBehavior.RPC_CHAT, Receivers.All, chatMessage, m_TeamID);
-        GetComponent<Thief>().networkObject.SendRpc(PoliceBehavior.RPC_CHAT, Receivers.All, chatMessage, m_TeamID);
-        GetComponent<SupporterNetworkObject>().SendRpc(SupporterBehavior.RPC_CHAT, Receivers.All, chatMessage, m_TeamID);
-        */
 
         chatInputBox.text = string.Empty;
     }
 
     public override void ReceiveMessage(RpcArgs args)
     {
-        int team = args.GetNext<int>();
         string message = args.GetNext<string>();
+        int team = args.GetNext<int>();
+        int sender = args.GetNext<int>();
+        
         if(team == 1)
         {
             if(m_TeamID == 1 || m_TeamID == 3)
             {
-                chatBox.text += (message + "\n");
+                if(sender == 1)
+                {
+                    chatBox.text += string.Format("경찰: {0}\n", message);
+                }
+                else if (sender == 3)
+                {
+                    chatBox.text += string.Format("경찰 조력자: {0}\n", message);
+                }
             }
         }
         else if(team == 2)
         {
             if(m_TeamID == 2 || m_TeamID == 4)
             {
-                chatBox.text += (message + "\n");
+                if (sender == 2)
+                {
+                    chatBox.text += string.Format("도둑: {0}\n", message);
+                }
+                else if (sender == 4)
+                {
+                    chatBox.text += string.Format("도둑 조력자: {0}\n", message);
+                }
             }
         }
     }
-
-    /*
-    public void ReceiveMessage(string message)
-    {
-        chatBox.text += (message + "\n");
-    }
-    */
 
     public override void GameEnd(RpcArgs args)
     {
