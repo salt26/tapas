@@ -2277,7 +2277,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 69162c02707c4d948b94a7838ea32e53, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 1
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -2326,9 +2326,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idleSpeed: 0.3
-  walkingSpeed: 1
-  runningSpeed: 2
-  transitionSpeed: 4
+  walkingSpeed: 2.5
+  runningSpeed: 2.5
+  transitionSpeed: 10
   rotationThreshold: 55
   rotationSpeed: 90
   mouseSensitivity: 60
@@ -3237,11 +3237,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5741241861612438057, guid: 7c31180525a5a7147aa9ef8d2ebfa22b,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c31180525a5a7147aa9ef8d2ebfa22b, type: 3}

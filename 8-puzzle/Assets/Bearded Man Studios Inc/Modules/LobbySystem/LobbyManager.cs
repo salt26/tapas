@@ -131,7 +131,9 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
         void Update()
         {
-            if (isSetupCompleted && SceneManager.GetActiveScene().name.Equals("Lobby") && NetworkManager.Instance.IsServer)
+            if (!SceneManager.GetActiveScene().name.Equals("Lobby")) return;
+
+            if (isSetupCompleted && NetworkManager.Instance.IsServer)
                 StartGame(2);
 
             if (Input.GetKeyDown(KeyCode.Return))
@@ -148,6 +150,11 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                 }
             }
             Debug.Log(ChatInputBox.isFocused);
+
+            if (!GetComponent<Canvas>().enabled)
+            {
+                ReturnToLobby();
+            }
         }
 
 		private void CheckForService(NetWorker networker, int identity, uint id, Frame.FrameStream frame, Action<NetworkObject> callback)
@@ -298,6 +305,28 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
                     Application.LoadLevel(sceneID);
 #endif
                 }
+            }
+        }
+
+        public void ReturnToLobby()
+        {
+            GetComponent<Canvas>().enabled = true;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            if (NetworkManager.Instance.IsServer)
+            {
+                startTimer = 0f;
+                isStarted = false;
+                isSetupCompleted = false;
+                ((IServer)NetworkManager.Instance.Networker).StartAcceptingConnections();
+                _lobbyPlayersStarted = new Dictionary<int, uint>();
+
+                SetupComplete();
+            }
+            else
+            {
+                isSetupCompleted = false;
+                SetupComplete();
             }
         }
 #endregion

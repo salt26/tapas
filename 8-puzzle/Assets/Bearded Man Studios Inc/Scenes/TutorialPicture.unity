@@ -539,12 +539,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1188202722}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -378}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1870725142}
-  m_RootOrder: 4
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1282655708
 GameObject:
@@ -857,7 +857,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1870725142}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1032,10 +1032,9 @@ RectTransform:
   - {fileID: 1377218847}
   - {fileID: 63332066}
   - {fileID: 1041834252}
-  - {fileID: 1188202725}
   - {fileID: 1511346059}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1106,7 +1105,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2127448258
 GameObject:
@@ -1142,8 +1141,8 @@ MonoBehaviour:
   RightButtonImage: {fileID: 63332065}
   Page: {fileID: 1511346056}
   sprites:
-  - {fileID: 21300000, guid: 83a6f8b6e9daab347bb6458a1c6e311c, type: 3}
   - {fileID: 21300000, guid: f63c1b5238158184fbdb7b7fabf30e82, type: 3}
+  - {fileID: 21300000, guid: 83a6f8b6e9daab347bb6458a1c6e311c, type: 3}
   - {fileID: 21300000, guid: 0949865d54919e94892e7c04704b9d6d, type: 3}
   - {fileID: 21300000, guid: f113524b8b6cda941a520467dcf7397a, type: 3}
   - {fileID: 21300000, guid: 0212d8c80ef5ae24da073645e5f0e9a5, type: 3}
@@ -1170,5 +1169,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -101,6 +101,9 @@ public class Police : PoliceBehavior
         } else if(NumbertoIncrease == 3) {
             networkObject.item3Num++;
         }
+        Debug.Log(networkObject.item1Num);
+        Debug.Log(networkObject.item2Num);
+        Debug.Log(networkObject.item3Num);
     }
 
     public override void UseItem(RpcArgs args)
