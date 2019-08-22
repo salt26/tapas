@@ -40,7 +40,7 @@ public class GameManager : GameManagerBehavior
     public bool timeOver = false;
 
     private int m_TeamID = -1;
-    private int win_TeamID = 0; // 0 : Game running, 1 : Police win, 2 : Thief win, 3 : Game end
+    private int win_TeamID = 0; // 0 : Game running, 1 : Police win, 2 : Thief win, 3 : Game end, 4: Game exploited by disconnect
     private float roundTime = 320f;
     private bool isReady = false;   // Used by client and server
     private List<int> readyPlayers = new List<int>();   // Server only
@@ -146,6 +146,28 @@ public class GameManager : GameManagerBehavior
                 normalMsg.enabled = false;
             }
         }
+    }
+
+    /// <summary>
+    /// RPC를 호출할 대상(NetworkingPlayer)을 teamID로 찾습니다.
+    /// 서버에서만 호출 가능합니다.
+    /// </summary>
+    /// <param name="teamID"></param>
+    /// <returns></returns>
+    public NetworkingPlayer GetNetworkingPlayerByTeamID(int teamID)
+    {
+        NetworkingPlayer player = null;
+        if (NetworkManager.Instance.IsServer && isReady && teamID >= 1 && teamID <= 4)
+        {
+            var netID = LobbyManager.lm.LobbyPlayersStarted[teamID];
+            NetworkManager.Instance.Networker.IteratePlayers((np) => {
+                if (np.NetworkId == netID)
+                {
+                    player = np;
+                }
+            });
+        }
+        return player;
     }
 
     /// <summary>
@@ -291,6 +313,11 @@ public class GameManager : GameManagerBehavior
         {
             Debug.Log("Thief win");
             importantMsg.text = "도둑의 승리! 도둑이 탈출에 성공하였습니다!";
+        }
+        else if (win == 4)  // Someone is disconnected
+        {
+            Debug.Log("Exploited!");
+            importantMsg.text = "누군가가 게임을 나갔습니다. 게임이 곧 종료됩니다.";
         }
 
         Invoke("ReturnLobby", 5f);

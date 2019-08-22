@@ -29,6 +29,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
         public List<Button> teamChangeButtons;
         public List<Button> otherButtons;
         public List<InputField> otherInputFields;
+        public GameObject disconnectedCanvas;
 
         private const int BUFFER_PLAYER_ITEMS = 10;
 		private List<LobbyPlayerItem> _lobbyPlayersInactive = new List<LobbyPlayerItem>();
@@ -117,7 +118,9 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
             NetworkManager.Instance.Networker.objectCreateRequested += CheckForService;
             NetworkManager.Instance.Networker.factoryObjectCreated += FactoryObjectCreated;
-            
+            NetworkManager.Instance.Networker.disconnected += DisconnectedFromServer;
+
+
             for (int i = 0; i < NetworkObject.NetworkObjects.Count; ++i)
             {
                 NetworkObject n = NetworkObject.NetworkObjects[i];
@@ -131,7 +134,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
         void Update()
         {
-            if (!SceneManager.GetActiveScene().name.Equals("Lobby")) return;
+            if (!SceneManager.GetActiveScene().name.Equals("Lobby") || NetworkManager.Instance == null) return;
 
             if (isSetupCompleted && NetworkManager.Instance.IsServer)
                 StartGame(2);
@@ -172,8 +175,19 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 			SetupComplete();
 		}
 
-		#region Public API
-		public void ChangeName(LobbyPlayerItem item, string newName)
+        private void DisconnectedFromServer(NetWorker sender)
+        {
+            NetworkManager.Instance.Networker.disconnected -= DisconnectedFromServer;
+
+            MainThreadManager.Run(() =>
+            {
+                NetworkManager.Instance.Disconnect();
+                Instantiate(disconnectedCanvas);
+            });
+        }
+
+        #region Public API
+        public void ChangeName(LobbyPlayerItem item, string newName)
 		{
 			LobbyService.Instance.SetName(newName);
 		}
@@ -572,7 +586,7 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
             MainThreadManager.Run(() =>
 			{
-				if (LobbyPlayers.Contains(convertedPlayer))
+                if (LobbyPlayers.Contains(convertedPlayer))
 				{
 					_lobbyPlayers.Remove(convertedPlayer);
 					_lobbyPlayersMap.Remove(convertedPlayer.NetworkId);
@@ -583,7 +597,12 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
                     UpdateChosens();
                 }
-			});
+                if (SceneManager.GetActiveScene().buildIndex == 2 && NetworkManager.Instance != null && NetworkManager.Instance.IsServer && GameManager.instance != null)
+                {
+                    GameManager.instance.networkObject.SendRpc(GameManager.RPC_GAME_END, Receivers.All, 4, false);
+                    ReturnToLobby();
+                }
+            });
 		}
 
 		public void OnFNPlayerNameChanged(IClientMockPlayer player)
