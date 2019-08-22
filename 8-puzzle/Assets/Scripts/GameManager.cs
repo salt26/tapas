@@ -28,6 +28,7 @@ public class GameManager : GameManagerBehavior
     public Image map;
     public Image mapGuide;
     public Image mapIcon;
+    public Image mapAllyIcon;
 
     public InputField chatInputBox;
     public Text chatBox;
@@ -52,6 +53,7 @@ public class GameManager : GameManagerBehavior
     private bool isReady = false;   // Used by client and server
     private List<int> readyPlayers = new List<int>();   // Server only
     private GameObject drone;
+    private GameObject ally;
     
     private float mazeScale = 1f;
 
@@ -207,13 +209,40 @@ public class GameManager : GameManagerBehavior
             }
 
             // Map Icon
-            if (m_TeamID == 3 || m_TeamID == 4)
+            if (m_TeamID == 3)
             {
-                Debug.Log("I'm supporter");
-                Debug.Log(drone.transform.position);
-                Debug.Log(drone.transform.eulerAngles);
+                if (drone == null)
+                {
+                    drone = GameObject.Find("PoliceDrone(Clone)");
+                }
+                if (ally == null)
+                {
+                    ally = GameObject.Find(("Police(Clone)"));
+                }
+
                 mapIcon.rectTransform.anchoredPosition = new Vector3(drone.transform.position.z * 347f / 106.68f, drone.transform.position.x * (-347f) / 106.68f, 0);
                 mapIcon.rectTransform.eulerAngles = new Vector3(0, 0, -drone.transform.eulerAngles.y);
+
+                mapAllyIcon.rectTransform.anchoredPosition = new Vector3(ally.transform.position.z * 347f / 106.68f, ally.transform.position.x * (-347f) / 106.68f, 0);
+                mapAllyIcon.rectTransform.eulerAngles = new Vector3(0, 0, -ally.transform.eulerAngles.y);
+            }
+
+            if (m_TeamID == 4)
+            {
+                if (drone == null)
+                {
+                    drone = GameObject.Find("ThiefDrone(Clone)");
+                }
+                if (ally == null)
+                {
+                    ally = GameObject.Find(("Thief(Clone)"));
+                }
+
+                mapIcon.rectTransform.anchoredPosition = new Vector3(ally.transform.position.z * 347f / 106.68f, drone.transform.position.x * (-347f) / 106.68f, 0);
+                mapIcon.rectTransform.eulerAngles = new Vector3(0, 0, -drone.transform.eulerAngles.y);
+                
+                mapAllyIcon.rectTransform.anchoredPosition = new Vector3(ally.transform.position.z * 347f / 106.68f, ally.transform.position.x * (-347f) / 106.68f, 0);
+                mapAllyIcon.rectTransform.eulerAngles = new Vector3(0, 0, -ally.transform.eulerAngles.y);
             }
         }
     }
@@ -296,6 +325,7 @@ public class GameManager : GameManagerBehavior
             map.enabled = true;
             mapGuide.enabled = true;
             mapIcon.enabled = true;
+            mapAllyIcon.enabled = true;
             supportMsg.enabled = true;
             drone = GameObject.Find("PoliceDrone(Clone)");
         }
@@ -305,6 +335,7 @@ public class GameManager : GameManagerBehavior
             map.enabled = true;
             mapGuide.enabled = true;
             mapIcon.enabled = true;
+            mapAllyIcon.enabled = true;
             supportMsg.enabled = true;
             drone = GameObject.Find("ThiefDrone(Clone)");
         }

@@ -27,6 +27,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 						availableCallback = true;
 						obj = new ChatManagerNetworkObject(networker, id, frame);
 						break;
+					case CrateNetworkObject.IDENTITY:
+						availableCallback = true;
+						obj = new CrateNetworkObject(networker, id, frame);
+						break;
 					case CubeForgeGameNetworkObject.IDENTITY:
 						availableCallback = true;
 						obj = new CubeForgeGameNetworkObject(networker, id, frame);
@@ -66,10 +70,6 @@ namespace BeardedManStudios.Forge.Networking.Generated
 					case ThiefNetworkObject.IDENTITY:
 						availableCallback = true;
 						obj = new ThiefNetworkObject(networker, id, frame);
-						break;
-					case CrateNetworkObject.IDENTITY:
-						availableCallback = true;
-						obj = new CrateNetworkObject(networker, id, frame);
 						break;
 				}
 

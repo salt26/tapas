@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedInterpol("{\"inter\":[0.15,0.15,0.15]")]
+	[GeneratedInterpol("{\"inter\":[0.05,0.05,0.05]")]
 	public partial class SupporterNetworkObject : NetworkObject
 	{
-		public const int IDENTITY = 8;
+		public const int IDENTITY = 9;
 
 		private byte[] _dirtyFields = new byte[1];
 
@@ -18,7 +18,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		[ForgeGeneratedField]
 		private Vector3 _position;
 		public event FieldEvent<Vector3> positionChanged;
-		public InterpolateVector3 positionInterpolation = new InterpolateVector3() { LerpT = 0.15f, Enabled = true };
+		public InterpolateVector3 positionInterpolation = new InterpolateVector3() { LerpT = 0.05f, Enabled = true };
 		public Vector3 position
 		{
 			get { return _position; }
@@ -49,7 +49,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		[ForgeGeneratedField]
 		private Quaternion _droneRotation;
 		public event FieldEvent<Quaternion> droneRotationChanged;
-		public InterpolateQuaternion droneRotationInterpolation = new InterpolateQuaternion() { LerpT = 0.15f, Enabled = true };
+		public InterpolateQuaternion droneRotationInterpolation = new InterpolateQuaternion() { LerpT = 0.05f, Enabled = true };
 		public Quaternion droneRotation
 		{
 			get { return _droneRotation; }
@@ -80,7 +80,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		[ForgeGeneratedField]
 		private Quaternion _cameraRotation;
 		public event FieldEvent<Quaternion> cameraRotationChanged;
-		public InterpolateQuaternion cameraRotationInterpolation = new InterpolateQuaternion() { LerpT = 0.15f, Enabled = true };
+		public InterpolateQuaternion cameraRotationInterpolation = new InterpolateQuaternion() { LerpT = 0.05f, Enabled = true };
 		public Quaternion cameraRotation
 		{
 			get { return _cameraRotation; }
