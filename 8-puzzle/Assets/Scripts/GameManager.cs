@@ -26,8 +26,8 @@ public class GameManager : GameManagerBehavior
     public Image stamina;
     public Image staminaBar;
     public Image map;
-    public Image mapIconSupp;
-    public Image mapIconAlly;
+    public Image mapGuide;
+    public Image mapIcon;
 
     public CanvasGroup chatUI;
     public InputField chatInputBox;
@@ -48,6 +48,7 @@ public class GameManager : GameManagerBehavior
     private float timeoutTimer = -1f;
     private bool isReady = false;   // Used by client and server
     private List<int> readyPlayers = new List<int>();   // Server only
+    private GameObject drone;
     
     private float mazeScale = 1f;
 
@@ -178,12 +179,22 @@ public class GameManager : GameManagerBehavior
                     chatInputBox.Select();
                 }
             }
-            Debug.Log(chatInputBox.isFocused);
+            //Debug.Log(chatInputBox.isFocused);
 
             // Stamina Gauge
             if (m_TeamID == 1)
             {
                 stamina.rectTransform.sizeDelta = new Vector2(150f * staminaValue, 60f);
+            }
+
+            // Map Icon
+            if (m_TeamID == 3 || m_TeamID == 4)
+            {
+                Debug.Log("I'm supporter");
+                Debug.Log(drone.transform.position);
+                Debug.Log(drone.transform.eulerAngles);
+                mapIcon.rectTransform.anchoredPosition = new Vector3(drone.transform.position.z * 347f / 106.68f, drone.transform.position.x * (-347f) / 106.68f, 0);
+                mapIcon.rectTransform.eulerAngles = new Vector3(0, 0, -drone.transform.eulerAngles.y);
             }
         }
     }
@@ -264,15 +275,17 @@ public class GameManager : GameManagerBehavior
         {
             NetworkManager.Instance.InstantiateSupporter(0, position: new Vector3(48.3f * mazeScale, 7f * mazeScale, 53.3f * mazeScale));
             map.enabled = true;
-            mapIconSupp.enabled = true;
-            mapIconAlly.enabled = true;
+            mapGuide.enabled = true;
+            mapIcon.enabled = true;
+            drone = GameObject.Find("PoliceDrone(Clone)");
         }
         else if (m_TeamID == 4) // Thief Supporter
         {
             NetworkManager.Instance.InstantiateSupporter(1, position: new Vector3(58.3f * mazeScale, 7f * mazeScale, 53.3f * mazeScale));
             map.enabled = true;
-            mapIconSupp.enabled = true;
-            mapIconAlly.enabled = true;
+            mapGuide.enabled = true;
+            mapIcon.enabled = true;
+            drone = GameObject.Find("ThiefDrone(Clone)");
         }
 
         normalMsgShowTime = 0;
