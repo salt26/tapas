@@ -134,6 +134,24 @@ public class Police : PoliceBehavior
         int i = Random.Range(0, 3);
 
         itemNum[i]++;
+
+        switch (i)
+        {
+            case 0:
+                GameManager.instance.normalMsg.text = "철조망을 획득했습니다.";
+                GameManager.instance.normalMsgShowTime = 3f;
+                break;
+            case 1:
+                GameManager.instance.normalMsg.text = "덫을 획득했습니다.";
+                GameManager.instance.normalMsgShowTime = 3f;
+                break;
+            case 2:
+                GameManager.instance.normalMsg.text = "경보기를 획득했습니다.";
+                GameManager.instance.normalMsgShowTime = 3f;
+                break;
+            default:
+                break;
+        }
     }
 
     public override void UseItem(RpcArgs args) // Police already validated itemNum
