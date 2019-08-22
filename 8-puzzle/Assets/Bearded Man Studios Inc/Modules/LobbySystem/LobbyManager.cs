@@ -289,6 +289,8 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
         public void ReturnToLobby()
         {
             GetComponent<Canvas>().enabled = true;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             if (NetworkManager.Instance.IsServer)
             {
                 startTimer = 0f;

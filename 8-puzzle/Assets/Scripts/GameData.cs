@@ -97,6 +97,17 @@ public class GameData : SwitchManagerBehavior
             networkObject.SendRpc(RPC_OPEN_EXIT, Receivers.All);
             puzzleEnd = true;
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else if (Input.GetMouseButtonDown(0))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
     private void MakePoliceSuppMsg()
