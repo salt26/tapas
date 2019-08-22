@@ -65,13 +65,6 @@ public class Police : PoliceBehavior
             networkObject.isRotatingLeft = GetComponent<PlayerMovement>().IsRotatingLeft;
             networkObject.isRotatingRight = GetComponent<PlayerMovement>().IsRotatingRight;
 
-            /*
-            Debug.Log(networkObject.mHorizontal);
-            Debug.Log(networkObject.mVertical);
-            Debug.Log(networkObject.isRotatingLeft);
-            Debug.Log(networkObject.isRotatingRight);
-            */
-            
             if (Input.GetMouseButtonDown(0))
             {
                 networkObject.SendRpc(RPC_TOUCH, Receivers.Server);
@@ -120,8 +113,11 @@ public class Police : PoliceBehavior
     public override void Touch(RpcArgs args)
     {
         if (!NetworkManager.Instance.IsServer) return;
-        Debug.Log("MouseClick");
-        GetComponentInChildren<PlayerTouch>().Touch();
+        //BMSDebug.Log("MouseClick");
+        foreach (PlayerTouch pt in GetComponents<PlayerTouch>())
+        {
+            pt.Touch();
+        }
     }
 
     public override void OpenBox(RpcArgs args) 
