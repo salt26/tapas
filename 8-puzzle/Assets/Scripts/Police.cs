@@ -103,20 +103,30 @@ public class Police : PoliceBehavior
     public override void Touch(RpcArgs args)
     {
         if (!NetworkManager.Instance.IsServer) return;
-//        BMSDebug.Log("MouseClick");
-        GetComponentInChildren<PlayerTouch>().Touch();
+        //BMSDebug.Log("MouseClick");
+        foreach (PlayerTouch pt in GetComponents<PlayerTouch>())
+        {
+            pt.Touch();
+        }
     }
 
     public override void OpenBox(RpcArgs args) 
     {
         BMSLogger.DebugLog("PoliceItemActivated");
         if (!networkObject.IsOwner) return;
-        int NumbertoIncrease = Random.Range(1, 3);
-        if(NumbertoIncrease == 1) {
+
+        int NumbertoIncrease = Random.Range(1, 4);
+
+        if (NumbertoIncrease == 1)
+        {
             networkObject.item1Num++;
-        } else if(NumbertoIncrease == 2) {
+        }
+        else if (NumbertoIncrease == 2)
+        {
             networkObject.item2Num++;
-        } else if(NumbertoIncrease == 3) {
+        }
+        else if (NumbertoIncrease == 3)
+        {
             networkObject.item3Num++;
         }
 
@@ -127,21 +137,21 @@ public class Police : PoliceBehavior
     {
         if (!NetworkManager.Instance.IsServer) return;
         int i = args.GetNext<int>();
-        if(networkObject.item1Num > 0 && i == 1)
+        if (networkObject.item1Num > 0 && i == 1)
         {
             // Wire
             Debug.Log("Used Item1");
             NetworkManager.Instance.InstantiateItem(i - 1, transform.position, Quaternion.Euler(-90f, 0f, 0f));
             networkObject.item1Num--;
         }
-        else if(networkObject.item2Num > 0 && i == 2)
+        else if (networkObject.item2Num > 0 && i == 2)
         {
             // BearTrap
             Debug.Log("Used Item2");
             NetworkManager.Instance.InstantiateItem(i - 1, transform.position, Quaternion.identity);
             networkObject.item2Num--;
         }
-        else if(networkObject.item3Num > 0 && i == 3)
+        else if (networkObject.item3Num > 0 && i == 3)
         {
             // Alert
             Debug.Log("Used Item3");
