@@ -20,7 +20,7 @@ public class GameData : SwitchManagerBehavior
     private string thiefSuppMsg;
 
     private int tryCount;
-    private int historyLimit = 3;
+    private int historyLimit = 20;
     
     private DoorControl[] doors;
     private bool isReady = false;

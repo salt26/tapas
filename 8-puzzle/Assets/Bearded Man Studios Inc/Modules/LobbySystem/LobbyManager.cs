@@ -131,8 +131,16 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
         void Update()
         {
-            if (isSetupCompleted && SceneManager.GetActiveScene().name.Equals("Lobby") && NetworkManager.Instance.IsServer)
+            if (!SceneManager.GetActiveScene().name.Equals("Lobby")) return;
+
+            if (isSetupCompleted && NetworkManager.Instance.IsServer)
                 StartGame(2);
+            
+
+            if (!GetComponent<Canvas>().enabled)
+            {
+                ReturnToLobby();
+            }
         }
 
 		private void CheckForService(NetWorker networker, int identity, uint id, Frame.FrameStream frame, Action<NetworkObject> callback)
