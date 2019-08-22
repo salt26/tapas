@@ -21,7 +21,7 @@ public class PlayerTouch : MonoBehaviour
 
     public void Touch()
     {
-        BMSLogger.DebugLog("Touch");
+        //BMSLogger.DebugLog("Touch");
         touchTimer = 5;
     }
 
@@ -40,7 +40,7 @@ public class PlayerTouch : MonoBehaviour
 
                 if (other.tag.Equals("Switch"))
                 {
-                    BMSLogger.DebugLog("Touch with " + other.name);
+                    //BMSLogger.DebugLog("Touch with " + other.name);
                     GameData.Instance.CollisionEnter(other.transform);
                     // TODO: 누른 스위치가 모든 클라이언트에서 보이도록 하기
                 }
@@ -48,7 +48,7 @@ public class PlayerTouch : MonoBehaviour
                 {
                     if (!other.GetComponent<Crate>().TimerOn)
                     {
-                        BMSLogger.DebugLog("BoxTouched");
+                        //BMSLogger.DebugLog("BoxTouched");
                         Debug.Log("BoxTouched");
                         GetComponent<Police>().networkObject.SendRpc(PoliceBehavior.RPC_OPEN_BOX, Receivers.All);
                         other.GetComponent<Crate>().networkObject.SendRpc(CrateBehavior.RPC_CRATE_OPEN, Receivers.All);

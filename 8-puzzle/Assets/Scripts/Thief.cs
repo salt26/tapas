@@ -113,7 +113,7 @@ public class Thief : ThiefBehavior
     public override void Touch(RpcArgs args)
     {
         if (!NetworkManager.Instance.IsServer) return;
-        BMSLogger.DebugLog("MouseClick");
+        //BMSLogger.DebugLog("MouseClick");
         GetComponent<PlayerTouch>().Touch();
     }
 

@@ -142,7 +142,7 @@ public class Police : PoliceBehavior
 
         int i = args.GetNext<int>(); // 1: Wire / 2: Trap / 3: Alert
 
-        Debug.Log("Used Item" + i);
+        //Debug.Log("Used Item" + i);
 
         Quaternion rot;
 
