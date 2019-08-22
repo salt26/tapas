@@ -67,6 +67,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 						availableCallback = true;
 						obj = new ThiefNetworkObject(networker, id, frame);
 						break;
+					case CrateNetworkObject.IDENTITY:
+						availableCallback = true;
+						obj = new CrateNetworkObject(networker, id, frame);
+						break;
 				}
 
 				if (!availableCallback)

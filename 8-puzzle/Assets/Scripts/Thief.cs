@@ -50,11 +50,6 @@ public class Thief : ThiefBehavior
             networkObject.isRotatingLeft = GetComponent<PlayerMovement>().IsRotatingLeft;
             networkObject.isRotatingRight = GetComponent<PlayerMovement>().IsRotatingRight;
 
-            Debug.Log(networkObject.mHorizontal);
-            Debug.Log(networkObject.mVertical);
-            Debug.Log(networkObject.isRotatingLeft);
-            Debug.Log(networkObject.isRotatingRight);
-
             if (Input.GetMouseButtonDown(0))
             {
                 Debug.Log("MouseClick");

@@ -53,11 +53,6 @@ public class Police : PoliceBehavior
             networkObject.isRotatingLeft = GetComponent<PlayerMovement>().IsRotatingLeft;
             networkObject.isRotatingRight = GetComponent<PlayerMovement>().IsRotatingRight;
 
-            Debug.Log(networkObject.mHorizontal);
-            Debug.Log(networkObject.mVertical);
-            Debug.Log(networkObject.isRotatingLeft);
-            Debug.Log(networkObject.isRotatingRight);
-            
             if (Input.GetMouseButtonDown(0))
             {
                 networkObject.SendRpc(
@@ -108,12 +103,13 @@ public class Police : PoliceBehavior
     public override void Touch(RpcArgs args)
     {
         if (!NetworkManager.Instance.IsServer) return;
-        Debug.Log("MouseClick");
+//        BMSDebug.Log("MouseClick");
         GetComponentInChildren<PlayerTouch>().Touch();
     }
 
     public override void OpenBox(RpcArgs args) 
     {
+        BMSLogger.DebugLog("PoliceItemActivated");
         if (!networkObject.IsOwner) return;
         int NumbertoIncrease = Random.Range(1, 3);
         if(NumbertoIncrease == 1) {
@@ -123,10 +119,9 @@ public class Police : PoliceBehavior
         } else if(NumbertoIncrease == 3) {
             networkObject.item3Num++;
         }
-        Debug.Log(networkObject.item1Num);
-        Debug.Log(networkObject.item2Num);
-        Debug.Log(networkObject.item3Num);
+
     }
+
 
     public override void UseItem(RpcArgs args)
     {
