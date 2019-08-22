@@ -85,7 +85,7 @@ public class Tutorial : MonoBehaviour
                 TimerWorks=false;
             }
         }
-        Debug.Log(m_IsSuccess);
+        //Debug.Log(m_IsSuccess);
         if(m_IsSuccess==true) {
 //            Debug.Log("suc");
             SuccessImage.enabled=true;
