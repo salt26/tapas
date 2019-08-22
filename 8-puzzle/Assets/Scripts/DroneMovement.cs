@@ -25,6 +25,8 @@ public class DroneMovement : MonoBehaviour
     public Transform[] wingOrdered;
     public Transform[] wingReversed;
 
+    public int teamID;
+
     private Rigidbody m_Rigidbody;
 
     private Camera m_Camera;
@@ -50,6 +52,8 @@ public class DroneMovement : MonoBehaviour
         tiltAxis.x = 0f;
         tiltAxis.y = 0f;
         tiltAxis.z = 0f;
+
+        GameManager.instance.droneMovements.Add(this);
     }
 
     void Update()

@@ -16,6 +16,7 @@ public class ThiefSupporter : SupporterBehavior
         base.NetworkStart();
         if (networkObject.IsOwner)
         {
+            GetComponent<DroneMovement>().teamID = 4;
             //PlayerPrefs.SetInt("UnitySelectMonitor", 4);
             //Display.displays[3].Activate();
         }

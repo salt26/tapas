@@ -24,6 +24,7 @@ public class Thief : ThiefBehavior
         base.NetworkStart();
         if (networkObject.IsOwner)
         {
+            GetComponent<PlayerMovement>().teamID = 2;
             //PlayerPrefs.SetInt("UnitySelectMonitor", 2);
             //Display.displays[1].Activate();
         }
