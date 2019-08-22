@@ -136,10 +136,15 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
         {
             if (!SceneManager.GetActiveScene().name.Equals("Lobby") || NetworkManager.Instance == null)
             {
-                ChatInputBox.enabled = false;
-                return;
+                foreach (InputField f in otherInputFields)
+                {
+                    f.enabled = false;
+                }
             }
-            ChatInputBox.enabled = true;
+            foreach (InputField f in otherInputFields)
+            {
+                f.enabled = true;
+            }
 
             if (isSetupCompleted && NetworkManager.Instance.IsServer)
                 StartGame(2);

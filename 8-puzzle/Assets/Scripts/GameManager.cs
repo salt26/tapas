@@ -153,10 +153,12 @@ public class GameManager : GameManagerBehavior
                     SendPlayersMessage();
                     chatUI.alpha = 0.5f;
                     chatInputBox.Select();
+                    chatInputBox.interactable = false;
                 }
                 else
                 {
                     chatUI.alpha = 1f;
+                    chatInputBox.interactable = true;
                     chatInputBox.Select();
                 }
             }
