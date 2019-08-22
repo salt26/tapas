@@ -131,25 +131,15 @@ namespace BeardedManStudios.Forge.Networking.Unity.Lobby
 
         void Update()
         {
-            if (!SceneManager.GetActiveScene().name.Equals("Lobby")) return;
+            if (!SceneManager.GetActiveScene().name.Equals("Lobby"))
+            {
+                ChatInputBox.enabled = false;
+                return;
+            }
+            ChatInputBox.enabled = true;
 
             if (isSetupCompleted && NetworkManager.Instance.IsServer)
                 StartGame(2);
-
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                if (ChatInputBox.isFocused)
-                {
-                    SendPlayersMessage();
-                    ChatInputBox.Select();
-                }
-                else
-                {
-                    ChatInputBox.Select();
-                    Debug.Log(ChatInputBox.isFocused);
-                }
-            }
-            Debug.Log(ChatInputBox.isFocused);
 
             if (!GetComponent<Canvas>().enabled)
             {
