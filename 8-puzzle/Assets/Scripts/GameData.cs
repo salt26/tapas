@@ -78,8 +78,8 @@ public class GameData : SwitchManagerBehavior
                 answer[j] = tmp;
             }
 
-            Debug.Log("server answer: " + answer[0] + " " + answer[1] + " " + answer[2] + " " + answer[3] + " " + answer[4] + " " + answer[5] + " " + answer[6] + " " + answer[7]);
-            Debug.Log("server state: " + state[0] + " " + state[1] + " " + state[2] + " " + state[3]);
+            //Debug.Log("server answer: " + answer[0] + " " + answer[1] + " " + answer[2] + " " + answer[3] + " " + answer[4] + " " + answer[5] + " " + answer[6] + " " + answer[7]);
+            //Debug.Log("server state: " + state[0] + " " + state[1] + " " + state[2] + " " + state[3]);
             
             MakePoliceSuppMsg();
             MakeThiefSuppMsg();
@@ -175,7 +175,7 @@ public class GameData : SwitchManagerBehavior
 
     public void CollisionEnter(Transform others) // only server can call CollsionEnter method
     {
-        BMSLogger.DebugLog("CollisionEnter");
+        //BMSLogger.DebugLog("CollisionEnter");
 
         if (puzzleEnd) return; // puzzle already cleared
         
@@ -195,7 +195,7 @@ public class GameData : SwitchManagerBehavior
                     tryCount++;
                     MakePoliceSuppMsg();
                     MakeThiefSuppMsg();
-                    BMSLogger.DebugLog("Switch " + recentNum + " pushed");
+                    //BMSLogger.DebugLog("Switch " + recentNum + " pushed");
 
                     networkObject.SendRpc(RPC_UPDATE_SWITCHES, Receivers.All, recentNum);
                     networkObject.SendRpc(RPC_UPDATE_POLICE_SUPP_MSG, Receivers.All, policeSuppMsg);

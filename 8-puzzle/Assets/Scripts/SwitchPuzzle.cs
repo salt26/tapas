@@ -37,6 +37,6 @@ public class SwitchPuzzle : MonoBehaviour
     public void SetRotNum(int rotNum)
     {
         this.rotNum = rotNum;
-        Debug.Log("SetRotNum : " + rotNum);
+        //Debug.Log("SetRotNum : " + rotNum);
     }
 }
