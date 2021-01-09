@@ -37,9 +37,10 @@ public class MultiplayerMenu : MonoBehaviour
 
 	private void Start()
 	{
-        ipAddress.text = "sodrak.upnl.org";
-        //ipAddress.text = "127.0.0.1";
-        portNumber.text = "15937";
+		ipAddress.text = "147.46.242.161";
+		//ipAddress.text = "sodrak.upnl.org";
+		//ipAddress.text = "127.0.0.1";
+		portNumber.text = "15937";
 
 		for (int i = 0; i < ToggledButtons.Length; ++i)
 		{
